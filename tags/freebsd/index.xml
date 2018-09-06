@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Freebsd on genneko</title>
+    <link>https://genneko.github.io/tags/freebsd/</link>
+    <description>Recent content in Freebsd on genneko</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <copyright>&amp;copy; Copyright 2018 genneko</copyright>
+    <lastBuildDate>Wed, 29 Aug 2018 15:18:01 +0900</lastBuildDate>
+    
+	<atom:link href="https://genneko.github.io/tags/freebsd/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Connecting to the IPv6 Internet via tunnel (HE TunnelBroker)</title>
+      <link>https://genneko.github.io/playing-with-bsd/networking/freebsd-tunnelv6-he/</link>
+      <pubDate>Wed, 29 Aug 2018 15:18:01 +0900</pubDate>
+      
+      <guid>https://genneko.github.io/playing-with-bsd/networking/freebsd-tunnelv6-he/</guid>
+      <description>I had been playing with IPv6 on various systems in early 2000s. They were mostly NetBSD (1.x) and FreeBSD (4.x) plus Windows XP. My home network had been connected to the IPv6 Internet with a router running NetBSD/hpcmips which was installed on a Windows CE handheld PC.
+After a decade and a half, I decided to reconnect my home network to the IPv6 Internet.
+Unfortunately, native IPv6 service is still unavailable for me.</description>
+    </item>
+    
+    <item>
+      <title>Migrating a live system from GEOM mirror to ZFS mirror</title>
+      <link>https://genneko.github.io/playing-with-bsd/storage/gmirror-to-zfs/</link>
+      <pubDate>Tue, 17 Apr 2018 15:27:13 +0900</pubDate>
+      
+      <guid>https://genneko.github.io/playing-with-bsd/storage/gmirror-to-zfs/</guid>
+      <description>I had been wanting to migrate a FreeBSD system on a GEOM mirror (gmirror) to a ZFS mirror.
+After several rehearsals on a VM, I have finally achieved that goal with the following steps.
+ Load ZFS-releated kernel modules and set a tunable to use 4K sector drives.
+sudo kldload zfs sudo sysctl vfs.zfs.min_auto_ashift=12  Remove one (da0) of the two disks (da0, da1) which make up the gmirror (gm0).</description>
+    </item>
+    
+    <item>
+      <title>Route-based VPN with FreeBSD-11.1&#39;s IPsec VTI</title>
+      <link>https://genneko.github.io/playing-with-bsd/networking/freebsd-vti-ipsec/</link>
+      <pubDate>Thu, 22 Jun 2017 15:09:50 +0900</pubDate>
+      
+      <guid>https://genneko.github.io/playing-with-bsd/networking/freebsd-vti-ipsec/</guid>
+      <description>I have managed to setup route-based IPsec VPN with FreeBSD-11.1 RC3, which had introduced ipsec virtual tunnel interface. Here is a record of my experiment just for your information.
+Prerequisite  FreeBSD-11.1-RC3/amd64 Generic kernel No special packages/ports (just added sudo and a few other must-have utilities)  Network configuration NOTE: The following text shows bsd1 configurations only.
+ 10.0.0.1 10.0.0.2 192.168.10.0/24 --- [bsd1] ----- /// ----- [bsd2] --- 192.168.20.0/24 172.</description>
+    </item>
+    
+  </channel>
+</rss>
