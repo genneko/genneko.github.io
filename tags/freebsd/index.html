@@ -44,6 +44,52 @@
   <div class="main" role="main">
     <section class="list taxonomy-list">
       <article class="article">
+        <a href="https://genneko.github.io/playing-with-bsd/storage/encrypted-temporary-storage/" class="article-titles">
+          <h2 class="article-title">Encrypted Temporary Storage with GELI</h2>
+          
+        </a>
+        <ul class="article-meta">
+          <li class="article-meta-date"><time>2018-09-07</time></li>
+          <li class="article-meta-tags">
+            <a href="https://genneko.github.io/tags/freebsd/">
+              <i class="fas fa-tag"></i>
+              freebsd
+            </a>&nbsp;
+          </li>
+          <li class="article-meta-tags">
+            <a href="https://genneko.github.io/tags/geli/">
+              <i class="fas fa-tag"></i>
+              geli
+            </a>&nbsp;
+          </li>
+          <li class="article-meta-tags">
+            <a href="https://genneko.github.io/tags/geom/">
+              <i class="fas fa-tag"></i>
+              geom
+            </a>&nbsp;
+          </li>
+          <li class="article-meta-tags">
+            <a href="https://genneko.github.io/tags/storage/">
+              <i class="fas fa-tag"></i>
+              storage
+            </a>&nbsp;
+          </li>
+          <li class="article-meta-tags">
+            <a href="https://genneko.github.io/tags/zfs/">
+              <i class="fas fa-tag"></i>
+              zfs
+            </a>&nbsp;
+          </li>
+        </ul>
+        <div class="article-content">
+          Recently, I wanted an encrypted working directory on a running FreeBSD system. The system was running on a plain (unencrypted) ZFS pool and there&rsquo;s no plan to add disks to it. I needed the working directory only temporarily. So what could I do?
+I came up with the following options.
+ Use GELI on a memory disk (md). Use GELI on a ZFS volume (zvol). Use PEFS on a directory.
+        </div>
+        <div class="article-readmore"><a href="https://genneko.github.io/playing-with-bsd/storage/encrypted-temporary-storage/">Read more...</a></div>
+        <div class="article-floatclear"></div>
+      </article>
+      <article class="article">
         <a href="https://genneko.github.io/playing-with-bsd/networking/freebsd-tunnelv6-he/" class="article-titles">
           <h2 class="article-title">Connecting to the IPv6 Internet via tunnel (HE TunnelBroker)</h2>
           

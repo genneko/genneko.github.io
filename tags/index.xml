@@ -7,7 +7,7 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>&amp;copy; Copyright 2018 genneko</copyright>
-    <lastBuildDate>Wed, 29 Aug 2018 15:18:01 +0900</lastBuildDate>
+    <lastBuildDate>Fri, 07 Sep 2018 07:13:08 +0000</lastBuildDate>
     
 	<atom:link href="https://genneko.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     
@@ -15,16 +15,25 @@
     <item>
       <title>Freebsd</title>
       <link>https://genneko.github.io/tags/freebsd/</link>
-      <pubDate>Wed, 29 Aug 2018 15:18:01 +0900</pubDate>
+      <pubDate>Fri, 07 Sep 2018 07:13:08 +0000</pubDate>
       
       <guid>https://genneko.github.io/tags/freebsd/</guid>
       <description></description>
     </item>
     
     <item>
+      <title>Geli</title>
+      <link>https://genneko.github.io/tags/geli/</link>
+      <pubDate>Fri, 07 Sep 2018 07:13:08 +0000</pubDate>
+      
+      <guid>https://genneko.github.io/tags/geli/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>Geom</title>
       <link>https://genneko.github.io/tags/geom/</link>
-      <pubDate>Tue, 17 Apr 2018 15:27:13 +0900</pubDate>
+      <pubDate>Fri, 07 Sep 2018 07:13:08 +0000</pubDate>
       
       <guid>https://genneko.github.io/tags/geom/</guid>
       <description></description>
@@ -60,7 +69,7 @@
     <item>
       <title>Storage</title>
       <link>https://genneko.github.io/tags/storage/</link>
-      <pubDate>Tue, 17 Apr 2018 15:27:13 +0900</pubDate>
+      <pubDate>Fri, 07 Sep 2018 07:13:08 +0000</pubDate>
       
       <guid>https://genneko.github.io/tags/storage/</guid>
       <description></description>
@@ -78,7 +87,7 @@
     <item>
       <title>Zfs</title>
       <link>https://genneko.github.io/tags/zfs/</link>
-      <pubDate>Tue, 17 Apr 2018 15:27:13 +0900</pubDate>
+      <pubDate>Fri, 07 Sep 2018 07:13:08 +0000</pubDate>
       
       <guid>https://genneko.github.io/tags/zfs/</guid>
       <description></description>

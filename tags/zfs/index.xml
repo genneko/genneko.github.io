@@ -7,10 +7,21 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>&amp;copy; Copyright 2018 genneko</copyright>
-    <lastBuildDate>Tue, 17 Apr 2018 15:27:13 +0900</lastBuildDate>
+    <lastBuildDate>Fri, 07 Sep 2018 07:13:08 +0000</lastBuildDate>
     
 	<atom:link href="https://genneko.github.io/tags/zfs/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Encrypted Temporary Storage with GELI</title>
+      <link>https://genneko.github.io/playing-with-bsd/storage/encrypted-temporary-storage/</link>
+      <pubDate>Fri, 07 Sep 2018 07:13:08 +0000</pubDate>
+      
+      <guid>https://genneko.github.io/playing-with-bsd/storage/encrypted-temporary-storage/</guid>
+      <description>Recently, I wanted an encrypted working directory on a running FreeBSD system. The system was running on a plain (unencrypted) ZFS pool and there&amp;rsquo;s no plan to add disks to it. I needed the working directory only temporarily. So what could I do?
+I came up with the following options.
+ Use GELI on a memory disk (md). Use GELI on a ZFS volume (zvol). Use PEFS on a directory.</description>
+    </item>
     
     <item>
       <title>Migrating a live system from GEOM mirror to ZFS mirror</title>
