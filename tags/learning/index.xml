@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Learning on genneko</title>
+    <link>https://genneko.github.io/tags/learning/</link>
+    <description>Recent content in Learning on genneko</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <copyright>&amp;copy; Copyright 2018 genneko</copyright>
+    <lastBuildDate>Sun, 07 Oct 2018 18:35:49 +0900</lastBuildDate>
+    
+	<atom:link href="https://genneko.github.io/tags/learning/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Learning Notes on FreeBSD Jails</title>
+      <link>https://genneko.github.io/playing-with-bsd/system/learning-notes-on-jails/</link>
+      <pubDate>Sun, 07 Oct 2018 18:35:49 +0900</pubDate>
+      
+      <guid>https://genneko.github.io/playing-with-bsd/system/learning-notes-on-jails/</guid>
+      <description>I have heard about jails many times since my early days of FreeBSD life but it was only the last year I began to use it in production.
+This article is a sort of personal notebook where I summarize what I learned about jails. It would be frequently updated as I learn more.
+Assumptions  The host is running FreeBSD 11.2/amd64 on ZFS. Each jail has a separate root dataset under /vm on the host.</description>
+    </item>
+    
+  </channel>
+</rss>

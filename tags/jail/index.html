@@ -3,17 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-  <title>Tags - genneko</title>
-  <meta property="og:title" content="Tags - genneko" />
-  <meta name="twitter:title" content="Tags - genneko" />
+  <title>Jail - genneko</title>
+  <meta property="og:title" content="Jail - genneko" />
+  <meta name="twitter:title" content="Jail - genneko" />
   <meta name="author" content="genneko"/>
   <meta property="og:site_name" content="genneko" />
-  <meta property="og:url" content="https://genneko.github.io/tags/" />
+  <meta property="og:url" content="https://genneko.github.io/tags/jail/" />
   <meta property="og:type" content="website" />
   <meta name="twitter:card" content="summary" />
   <meta name="generator" content="Hugo 0.48" />
-  <link href="https://genneko.github.io/tags/index.xml" rel="alternate" type="application/rss+xml" title="genneko" />
-  <link href="https://genneko.github.io/tags/index.xml" rel="feed" type="application/rss+xml" title="genneko" />
+  <link href="https://genneko.github.io/tags/jail/index.xml" rel="alternate" type="application/rss+xml" title="genneko" />
+  <link href="https://genneko.github.io/tags/jail/index.xml" rel="feed" type="application/rss+xml" title="genneko" />
   <link rel="stylesheet" href="https://genneko.github.io/css/style.css" media="all" />
   <link rel="stylesheet" href="https://genneko.github.io/css/syntax.css" media="all" />
   <link rel="stylesheet" href="https://genneko.github.io/css/custom.css" media="all" />
@@ -38,71 +38,63 @@
 <hr class="site-header-bottom">
 
 
-  
   <div class="breadcrumb">
-    Tags
+    <a href="https://genneko.github.io/tags/">Tags</a> / jail
   </div>
   <div class="main" role="main">
-    <section class="terms">
-      <ul>
-        <li>
-          <a href="https://genneko.github.io/tags/freebsd/">freebsd(5)</a>
-          <time>2018-10-07</time>
-        </li>
-        <li>
-          <a href="https://genneko.github.io/tags/geli/">geli(1)</a>
-          <time>2018-09-07</time>
-        </li>
-        <li>
-          <a href="https://genneko.github.io/tags/geom/">geom(2)</a>
-          <time>2018-09-07</time>
-        </li>
-        <li>
-          <a href="https://genneko.github.io/tags/ipsec/">ipsec(1)</a>
-          <time>2017-06-22</time>
-        </li>
-        <li>
-          <a href="https://genneko.github.io/tags/ipv6/">ipv6(1)</a>
-          <time>2018-08-29</time>
-        </li>
-        <li>
-          <a href="https://genneko.github.io/tags/jail/">jail(1)</a>
-          <time>2018-10-07</time>
-        </li>
-        <li>
-          <a href="https://genneko.github.io/tags/learning/">learning(1)</a>
-          <time>2018-10-07</time>
-        </li>
-        <li>
-          <a href="https://genneko.github.io/tags/network/">network(2)</a>
-          <time>2018-08-29</time>
-        </li>
-        <li>
-          <a href="https://genneko.github.io/tags/storage/">storage(2)</a>
-          <time>2018-09-07</time>
-        </li>
-        <li>
-          <a href="https://genneko.github.io/tags/virtualization/">virtualization(1)</a>
-          <time>2018-10-07</time>
-        </li>
-        <li>
-          <a href="https://genneko.github.io/tags/vpn/">vpn(1)</a>
-          <time>2017-06-22</time>
-        </li>
-        <li>
-          <a href="https://genneko.github.io/tags/zfs/">zfs(2)</a>
-          <time>2018-09-07</time>
-        </li>
-      </ul>
+    <section class="list taxonomy-list">
+      <article class="article">
+        <a href="https://genneko.github.io/playing-with-bsd/system/learning-notes-on-jails/" class="article-titles">
+          <h2 class="article-title">Learning Notes on FreeBSD Jails</h2>
+          
+        </a>
+        <ul class="article-meta">
+          <li class="article-meta-date"><time>2018-10-07</time></li>
+          <li class="article-meta-tags">
+            <a href="https://genneko.github.io/tags/freebsd/">
+              <i class="fas fa-tag"></i>
+              freebsd
+            </a>&nbsp;
+          </li>
+          <li class="article-meta-tags">
+            <a href="https://genneko.github.io/tags/jail/">
+              <i class="fas fa-tag"></i>
+              jail
+            </a>&nbsp;
+          </li>
+          <li class="article-meta-tags">
+            <a href="https://genneko.github.io/tags/learning/">
+              <i class="fas fa-tag"></i>
+              learning
+            </a>&nbsp;
+          </li>
+          <li class="article-meta-tags">
+            <a href="https://genneko.github.io/tags/virtualization/">
+              <i class="fas fa-tag"></i>
+              virtualization
+            </a>&nbsp;
+          </li>
+        </ul>
+        <div class="article-content">
+          I have heard about jails many times since my early days of FreeBSD life but it was only the last year I began to use it in production.
+This article is a sort of personal notebook where I summarize what I learned about jails. It would be frequently updated as I learn more.
+Assumptions  The host is running FreeBSD 11.2/amd64 on ZFS. Each jail has a separate root dataset under /vm on the host.
+        </div>
+        <div class="article-readmore"><a href="https://genneko.github.io/playing-with-bsd/system/learning-notes-on-jails/">Read more...</a></div>
+        <div class="article-floatclear"></div>
+      </article>
     </section>
+    
+
   </div>
+
 
 
 <div class="site-footer">
   <div class="copyright">&copy; Copyright 2018 genneko</div>
   <ul class="site-footer-items">
     <li class="site-footer-item-rsslink">
-      <a href="https://genneko.github.io/tags/index.xml" type="application/rss+xml" target="_blank" title="RSS">
+      <a href="https://genneko.github.io/tags/jail/index.xml" type="application/rss+xml" target="_blank" title="RSS">
         <i class="fas fa-rss"></i>
       </a>
     </li>

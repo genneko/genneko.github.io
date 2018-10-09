@@ -7,7 +7,7 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>&amp;copy; Copyright 2018 genneko</copyright>
-    <lastBuildDate>Fri, 07 Sep 2018 07:13:08 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 07 Oct 2018 18:35:49 +0900</lastBuildDate>
     
 	<atom:link href="https://genneko.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     
@@ -15,7 +15,7 @@
     <item>
       <title>Freebsd</title>
       <link>https://genneko.github.io/tags/freebsd/</link>
-      <pubDate>Fri, 07 Sep 2018 07:13:08 +0000</pubDate>
+      <pubDate>Sun, 07 Oct 2018 18:35:49 +0900</pubDate>
       
       <guid>https://genneko.github.io/tags/freebsd/</guid>
       <description></description>
@@ -58,6 +58,24 @@
     </item>
     
     <item>
+      <title>Jail</title>
+      <link>https://genneko.github.io/tags/jail/</link>
+      <pubDate>Sun, 07 Oct 2018 18:35:49 +0900</pubDate>
+      
+      <guid>https://genneko.github.io/tags/jail/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Learning</title>
+      <link>https://genneko.github.io/tags/learning/</link>
+      <pubDate>Sun, 07 Oct 2018 18:35:49 +0900</pubDate>
+      
+      <guid>https://genneko.github.io/tags/learning/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>Network</title>
       <link>https://genneko.github.io/tags/network/</link>
       <pubDate>Wed, 29 Aug 2018 15:18:01 +0900</pubDate>
@@ -72,6 +90,15 @@
       <pubDate>Fri, 07 Sep 2018 07:13:08 +0000</pubDate>
       
       <guid>https://genneko.github.io/tags/storage/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Virtualization</title>
+      <link>https://genneko.github.io/tags/virtualization/</link>
+      <pubDate>Sun, 07 Oct 2018 18:35:49 +0900</pubDate>
+      
+      <guid>https://genneko.github.io/tags/virtualization/</guid>
       <description></description>
     </item>
     

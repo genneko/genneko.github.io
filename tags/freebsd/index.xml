@@ -7,10 +7,21 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>&amp;copy; Copyright 2018 genneko</copyright>
-    <lastBuildDate>Fri, 07 Sep 2018 07:13:08 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 07 Oct 2018 18:35:49 +0900</lastBuildDate>
     
 	<atom:link href="https://genneko.github.io/tags/freebsd/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Learning Notes on FreeBSD Jails</title>
+      <link>https://genneko.github.io/playing-with-bsd/system/learning-notes-on-jails/</link>
+      <pubDate>Sun, 07 Oct 2018 18:35:49 +0900</pubDate>
+      
+      <guid>https://genneko.github.io/playing-with-bsd/system/learning-notes-on-jails/</guid>
+      <description>I have heard about jails many times since my early days of FreeBSD life but it was only the last year I began to use it in production.
+This article is a sort of personal notebook where I summarize what I learned about jails. It would be frequently updated as I learn more.
+Assumptions  The host is running FreeBSD 11.2/amd64 on ZFS. Each jail has a separate root dataset under /vm on the host.</description>
+    </item>
     
     <item>
       <title>Encrypted Temporary Storage with GELI</title>

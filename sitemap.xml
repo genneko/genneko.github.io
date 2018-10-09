@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://genneko.github.io/playing-with-bsd/system/learning-notes-on-jails/</loc>
+    <lastmod>2018-10-07T18:35:49+09:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://genneko.github.io/playing-with-bsd/storage/encrypted-temporary-storage/</loc>
     <lastmod>2018-09-07T07:13:08+00:00</lastmod>
   </url>
@@ -38,7 +43,7 @@
   
   <url>
     <loc>https://genneko.github.io/tags/freebsd/</loc>
-    <lastmod>2018-09-07T07:13:08+00:00</lastmod>
+    <lastmod>2018-10-07T18:35:49+09:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -67,6 +72,18 @@
   </url>
   
   <url>
+    <loc>https://genneko.github.io/tags/jail/</loc>
+    <lastmod>2018-10-07T18:35:49+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://genneko.github.io/tags/learning/</loc>
+    <lastmod>2018-10-07T18:35:49+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>https://genneko.github.io/tags/network/</loc>
     <lastmod>2018-08-29T15:18:01+09:00</lastmod>
     <priority>0</priority>
@@ -80,7 +97,13 @@
   
   <url>
     <loc>https://genneko.github.io/tags/</loc>
-    <lastmod>2018-09-07T07:13:08+00:00</lastmod>
+    <lastmod>2018-10-07T18:35:49+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://genneko.github.io/tags/virtualization/</loc>
+    <lastmod>2018-10-07T18:35:49+09:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -98,7 +121,7 @@
   
   <url>
     <loc>https://genneko.github.io/</loc>
-    <lastmod>2018-09-07T07:13:08+00:00</lastmod>
+    <lastmod>2018-10-07T18:35:49+09:00</lastmod>
     <priority>0</priority>
   </url>
   

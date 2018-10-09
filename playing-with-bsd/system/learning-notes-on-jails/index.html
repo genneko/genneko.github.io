@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <title>Learning Notes on FreeBSD Jails - genneko</title>
+  <meta property="og:title" content="Learning Notes on FreeBSD Jails - genneko" />
+  <meta name="twitter:title" content="Learning Notes on FreeBSD Jails - genneko" />
+  <meta name="description" content="I have heard about jails many times since my early days of FreeBSD life but it was only the last year I began to use it in production.
+This article is a sort of personal notebook where I summarize what I learned about jails. It would be frequently updated as I learn more.
+Assumptions  The host is running FreeBSD 11.2/amd64 on ZFS. Each jail has a separate root dataset under /vm on the host.">
+  <meta property="og:description" content="I have heard about jails many times since my early days of FreeBSD life but it was only the last year I began to use it in production.
+This article is a sort of personal notebook where I summarize what I learned about jails. It would be frequently updated as I learn more.
+Assumptions  The host is running FreeBSD 11.2/amd64 on ZFS. Each jail has a separate root dataset under /vm on the host.">
+  <meta name="twitter:description" content="I have heard about jails many times since my early days of FreeBSD life but it was only the last year I began to use it in production.
+This article is a sort of personal notebook where I summarize …">
+  <meta name="author" content="genneko"/>
+  <meta property="og:site_name" content="genneko" />
+  <meta property="og:url" content="https://genneko.github.io/playing-with-bsd/system/learning-notes-on-jails/" />
+  <meta property="og:type" content="article" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="generator" content="Hugo 0.48" />
+  <link rel="stylesheet" href="https://genneko.github.io/css/style.css" media="all" />
+  <link rel="stylesheet" href="https://genneko.github.io/css/syntax.css" media="all" />
+  <link rel="stylesheet" href="https://genneko.github.io/css/custom.css" media="all" />
+  <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script defer src="https://use.fontawesome.com/releases/v5.0.10/js/all.js" integrity="sha384-slN8GvtUJGnv6ca26v8EzVaR9DC58QEwsIk9q1QXdCU8Yu8ck/tL/5szYlBbqmS+" crossorigin="anonymous"></script>
+</head>
+
+<body>
+
+<header class="site-header">
+  <nav class="site-navi">
+    <img class="site-icon" src="https://genneko.github.io/images/genneko-icon.png">
+    <h1 class="site-title"><a href="https://genneko.github.io/">genneko</a></h1>
+    <ul class="site-navi-items">
+      <li class="site-navi-item-playing-with-bsd"><a href="https://genneko.github.io/playing-with-bsd/" title="Playing with BSD">Playing with BSD</a></li>
+      <li class="site-navi-item-tags"><a href="https://genneko.github.io/tags/" title="Tags">Tags</a></li>
+      <li class="site-navi-item-archives"><a href="https://genneko.github.io/archives/" title="Archives">Archives</a></li>
+      <li class="site-navi-item-about"><a href="https://genneko.github.io/about/" title="About">About</a></li>
+    </ul>
+  </nav>
+</header>
+<hr class="site-header-bottom">
+
+
+  <div class="main" role="main">
+    <article class="article">
+      
+      
+      <h1 class="article-title">Learning Notes on FreeBSD Jails</h1>
+      
+      <hr class="article-title-bottom">
+      <ul class="article-meta">
+        <li class="article-meta-date"><time>2018-10-07</time></li>
+        <li class="article-meta-tags">
+          <a href="https://genneko.github.io/tags/freebsd/">
+            <i class="fas fa-tag"></i>
+            freebsd
+          </a>&nbsp;
+        </li>
+        <li class="article-meta-tags">
+          <a href="https://genneko.github.io/tags/jail/">
+            <i class="fas fa-tag"></i>
+            jail
+          </a>&nbsp;
+        </li>
+        <li class="article-meta-tags">
+          <a href="https://genneko.github.io/tags/learning/">
+            <i class="fas fa-tag"></i>
+            learning
+          </a>&nbsp;
+        </li>
+        <li class="article-meta-tags">
+          <a href="https://genneko.github.io/tags/virtualization/">
+            <i class="fas fa-tag"></i>
+            virtualization
+          </a>&nbsp;
+        </li>
+      </ul>
+      
+<aside class="toc">
+  <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#assumptions">Assumptions</a></li>
+<li><a href="#creating-a-template">Creating a Template</a></li>
+<li><a href="#creating-jails-from-the-template">Creating Jails from the Template</a>
+<ul>
+<li><a href="#by-zfs-clone">By ZFS Clone</a></li>
+<li><a href="#by-zfs-send-receive">By ZFS Send/Receive</a></li>
+</ul></li>
+<li><a href="#configuring-jails">Configuring Jails</a>
+<ul>
+<li><a href="#system-startup-configuration">System Startup Configuration</a></li>
+<li><a href="#system-jail-configuration">System Jail Configuration</a></li>
+<li><a href="#per-jail-fstab">Per-Jail fstab</a></li>
+<li><a href="#nat-configuration">NAT Configuration</a></li>
+<li><a href="#hosts-table">Hosts Table</a></li>
+</ul></li>
+<li><a href="#managing-jails">Managing Jails</a></li>
+<li><a href="#vnet-jails">VNET Jails</a>
+<ul>
+<li><a href="#installing-and-updating-freebsd-source">Installing and Updating FreeBSD Source</a>
+<ul>
+<li><a href="#from-distribution-tarball">From Distribution Tarball</a></li>
+<li><a href="#from-subversion">From Subversion</a></li>
+</ul></li>
+<li><a href="#building-vimage-enabled-kernel">Building VIMAGE-enabled Kernel</a>
+<ul>
+<li><a href="#the-simplest-way">The Simplest Way</a></li>
+<li><a href="#minimum-configuration">Minimum Configuration</a></li>
+</ul></li>
+<li><a href="#preparing-helper-script">Preparing Helper Script</a></li>
+<li><a href="#etc-jail-conf-for-vnet-jails">/etc/jail.conf for VNET Jails</a></li>
+</ul></li>
+<li><a href="#references">References</a></li>
+</ul></li>
+</ul>
+</nav>
+</aside>
+      
+
+<p>I have heard about jails many times since my early days of FreeBSD life but it was only the last year I began to use it in production.</p>
+
+<p>This article is a sort of personal notebook where I summarize what I learned about jails. It would be frequently updated as I learn more.</p>
+
+<h2 id="assumptions">Assumptions</h2>
+
+<ul>
+<li>The host is running FreeBSD 11.2/amd64 on ZFS.</li>
+<li>Each jail has a separate root dataset under /vm on the host.</li>
+<li>Template datasets are created under /vm/tmpl like /vm/tmpl/11.2.</li>
+<li>Jails are generated by cloning or send/receive(copying) a template dataset.</li>
+<li>Jails are configured through system-standard /etc/jail.conf.<br />
+(There&rsquo;s nothing wrong with tools like iocage. But after using them for a while I realized standard toolset is good enough for simple environments like mine. It also gives me a clearer view of what&rsquo;s going on and seems more suited for learning.)</li>
+<li>Login shell is bash.<br />
+(I changed my login shell to bash the last year after using tsch for decades. It&rsquo;s not also a tcsh&rsquo;s fault. I just wanted to learn more about shell scripting even in the daily, interactive sessions.)</li>
+<li>Sudo is used to run commands with superuser privilege.</li>
+<li>For standard (non-VNET) jails, their IP addresses are assigned to the loopback interface &ldquo;lo1&rdquo;. They are translated to/from the host&rsquo;s external IP address by pf&rsquo;s NAT feature.</li>
+<li>Inspired by <a href="https://www.youtube.com/watch?v=aoW7pWuhT_A">Devin Teske&rsquo;s talk</a>, I&rsquo;m also experimenting VNET (IMAGE) jails. For VNET jails, netgraph is used to build virtual network/switch instead of if_bridge and epair which seem to be more popular.</li>
+</ul>
+
+<h2 id="creating-a-template">Creating a Template</h2>
+
+<p>When you start using jails, the first thing to do is creating a template for future jails.</p>
+
+<ol>
+<li><p>Create ZFS datasets for jails and templates.<br />
+Here I&rsquo;m going to create a FreeBSD 11.2 template in /vm/tmpl/11.2.</p>
+
+<pre><code>sudo zfs create -o mountpoint=/vm zroot/vm
+sudo zfs create zroot/vm/tmpl
+sudo zfs create zroot/vm/tmpl/11.2
+</code></pre></li>
+
+<li><p>Download a base install set tarball for FreeBSD 11.2 release.</p>
+
+<pre><code>cd ~/tmp
+fetch ftp:/ftp.freebsd.org/pub/FreeBSD/releases/amd64/11.2-RELEASE/base.txz
+</code></pre></li>
+
+<li><p>Extract the base tarball in the template directory.</p>
+
+<pre><code>sudo tar -xJvpf base.txz -C /vm/tmpl/11.2
+</code></pre></li>
+
+<li><p>Copy timezone configuration from the host to the template.<br />
+Usually /etc/resolv.conf is also copied from the host, but after some experiments I decided to copy it by using /etc/jail.conf&rsquo;s exec.prestart and delete it by exec.poststop.</p>
+
+<pre><code>sudo cp /etc/localtime etc/
+</code></pre></li>
+
+<li><p>Write a minimum /etc/rc.conf for the template.<br />
+Here I disable cron in jails but it might be better to leave it enabled and fine-tune its configurations.<br />
+I need more research on this.</p>
+
+<pre><code>sudo vi etc/rc.conf
+</code></pre>
+
+<pre><code>cron_enable=&quot;NO&quot;
+sendmail_enable=&quot;NO&quot;
+sendmail_submit_enable=&quot;NO&quot;
+sendmail_outbound_enable=&quot;NO&quot;
+sendmail_msp_queue_enable=&quot;NO&quot;
+syslogd_flags=&quot;-ss&quot;
+</code></pre></li>
+
+<li><p>Edit system crontab in the template to disable adjkern.<br />
+Obviously this is not necessary because I disabled cron in the previous step but I do this as a precaution anyway.</p>
+
+<pre><code>sudo vi etc/crontab
+</code></pre>
+
+<pre><code>#1,31 0-5 * * * root adjkerntz -a
+</code></pre></li>
+
+<li><p>Create directories to handle ports in jails.<br />
+The first one is to read-only mount host&rsquo;s ports tree and others are working spaces.<br />
+Also create /etc/make.conf to use the directories for building ports in jails.</p>
+
+<pre><code>sudo mkdir /vm/tmpl/11.2/usr/ports
+sudo mkdir -p /vm/tmpl/11.2/var/ports/{distfiles,packages}
+sudo vi etc/make.conf
+</code></pre>
+
+<pre><code>WRKDIRPREFIX = /var/ports
+DISTDIR = /var/ports/distfiles
+PACKAGES = /var/ports/packages
+</code></pre></li>
+
+<li><p>Apply system updates to the template.</p>
+
+<pre><code>sudo freebsd-update -b /vm/tmpl/11.2 fetch install
+</code></pre></li>
+
+<li><p>Take a snapshot of the template dataset.<br />
+Strictly speaking, a template is a snapshot not a dataset. The snapshot can be cloned or sent/received to generate new datasets for production jails.</p>
+
+<pre><code>sudo zfs snapshot zroot/vm/tmpl/11.2@p3
+</code></pre></li>
+</ol>
+
+<h2 id="creating-jails-from-the-template">Creating Jails from the Template</h2>
+
+<p>Once the template is ready, jails can be created by cloning or sending/receiving its snapshot.<br />
+Usually, I use clone for quick testing while I prefer zfs send/receive for production jails.</p>
+
+<h3 id="by-zfs-clone">By ZFS Clone</h3>
+
+<p>Create four jails h1, h2, h3 and h4 by cloning the 11.2 template&rsquo;s p3 snapshot.</p>
+
+<pre><code>for host in h1 h2 h3 h4; do
+    sudo zfs clone zroot/vm/tmpl/11.2@p3 zroot/vm/$host
+done
+</code></pre>
+
+<h3 id="by-zfs-send-receive">By ZFS Send/Receive</h3>
+
+<p>Create four jails h1, h2, h3 and h4 by sending/receiving the 11.2 template&rsquo;s p3 snapshot.</p>
+
+<pre><code>for host in h1 h2 h3 h4; do
+    sudo sh -c &quot;zfs send zroot/vm/tmpl/11.2@p3 | zfs receive zroot/vm/$host&quot;
+done
+</code></pre>
+
+<h2 id="configuring-jails">Configuring Jails</h2>
+
+<h3 id="system-startup-configuration">System Startup Configuration</h3>
+
+<p>[/etc/rc.conf]</p>
+
+<pre><code>cloned_interfaces=&quot;lo1&quot;
+pf_enable=&quot;YES&quot;
+pflog_enable=&quot;YES&quot;
+jail_enable=&quot;YES&quot;
+jail_list=&quot;h1 h2 h3 h4&quot;
+</code></pre>
+
+<h3 id="system-jail-configuration">System Jail Configuration</h3>
+
+<p>[/etc/jail.conf]</p>
+
+<pre><code>exec.start = &quot;/bin/sh /etc/rc&quot;;
+exec.stop = &quot;/bin/sh /etc/rc.shutdown&quot;;
+exec.clean;
+mount.devfs;
+
+host.hostname = $name;
+path = &quot;/vm/$name&quot;;
+exec.consolelog = &quot;/var/log/jail_${name}_console.log&quot;;
+exec.prestart = &quot;cp /etc/resolv.conf $path/etc&quot;;
+exec.poststop = &quot;rm $path/etc/resolv.conf&quot;;
+
+# nullfs mount
+h1 {
+        ip4.addr = &quot;lo1|127.1.1.1/32&quot;;
+        ip6.addr = &quot;lo1|fd00:1:1:1::1/64&quot;;
+        allow.chflags;
+        allow.raw_sockets;
+        mount.fstab = &quot;/vm/${name}.fstab&quot;;
+}
+
+# WINE (sysvsem)
+h2 {
+        ip4.addr = &quot;lo1|127.1.1.2/32&quot;;
+        ip6.addr = &quot;lo1|fd00:1:1:1::2/64&quot;;
+        allow.chflags;
+        allow.raw_sockets;
+        sysvsem = &quot;new&quot;;
+}
+
+# PostgreSQL (sysvsem, sysvshm)
+h3 {
+        ip4.addr = &quot;lo1|127.1.1.3/32&quot;;
+        ip6.addr = &quot;lo1|fd00:1:1:1::3/64&quot;;
+        allow.chflags;
+        allow.raw_sockets;
+        sysvsem = &quot;new&quot;;
+        sysvshm = &quot;new&quot;;
+}
+
+# Java (fdescfs, procfs)
+h4 {
+        ip4.addr = &quot;lo1|127.1.1.4/32&quot;;
+        ip6.addr = &quot;lo1|fd00:1:1:1::4/64&quot;;
+        allow.chflags;
+        allow.raw_sockets;
+        mount.fdescfs;
+        mount.procfs;
+}
+</code></pre>
+
+<h3 id="per-jail-fstab">Per-Jail fstab</h3>
+
+<p>[/vm/h1.fstab]</p>
+
+<pre><code>/usr/ports /vm/h1/usr/ports nullfs ro 0 0
+</code></pre>
+
+<h3 id="nat-configuration">NAT Configuration</h3>
+
+<p>[/etc/pf.conf]</p>
+
+<pre><code># MACRO DEFINITIONS
+XIF = &quot;em0&quot;
+JAILNET_V4 = &quot;127.1.1.0/24&quot;
+JAILNET_V6 = &quot;fd00:1:1:1::0/64&quot;
+EXT_V6ADDR = &quot;2001:db8::1&quot;
+
+# SET PARAMETERS (skip, scrub etc.)
+
+# NAT
+nat on $XIF inet from $JAILNET_V4 to any -&gt; ($XIF)
+nat on $XIF inet6 from $JAILNET_V6 to any -&gt; $EXT_V6ADDR
+
+# Redirect
+rdr pass log on $XIF inet proto tcp to ($XIF) port 8080 -&gt; 127.1.1.4
+rdr pass log on $XIF inet6 proto tcp to $EXT_V6ADDR port 8080 -&gt; fd00:1:1:1::4
+</code></pre>
+
+<h3 id="hosts-table">Hosts Table</h3>
+
+<p>[/etc/hosts]</p>
+
+<pre><code>127.1.1.1 h1
+127.1.1.2 h2
+127.1.1.3 h3
+127.1.1.4 h4
+fd00:1:1:1::1 h1
+fd00:1:1:1::2 h2
+fd00:1:1:1::3 h3
+fd00:1:1:1::4 h4
+</code></pre>
+
+<h2 id="managing-jails">Managing Jails</h2>
+
+<p>Start all jails.</p>
+
+<pre><code>sudo service jail start
+</code></pre>
+
+<p>Start specific jail(s).</p>
+
+<pre><code>sudo service jail start h1
+</code></pre>
+
+<p>Login to a jail.</p>
+
+<pre><code>sudo jexec h1
+</code></pre>
+
+<p>Run a command on a jail.</p>
+
+<pre><code>sudo jexec h1 ifconfig
+</code></pre>
+
+<p>List running jails.</p>
+
+<pre><code>jls
+jls -v
+</code></pre>
+
+<p>Stop specific jail(s).</p>
+
+<pre><code>sudo service jail stop h1
+</code></pre>
+
+<p>Stop all jails.</p>
+
+<pre><code>sudo service jail stop
+</code></pre>
+
+<p>Manage binary packages on a jail.</p>
+
+<pre><code>sudo pkg -j h1 update
+sudo pkg -j h1 upgrade
+sudp pkg -j h1 install git-lite vim-console
+</code></pre>
+
+<p>Update package repositories on multiple jails using shell&rsquo;s for loop.</p>
+
+<pre><code>for host in $(sysrc -n jail_list); do
+  sudo pkg -j $host update
+done
+</code></pre>
+
+<p>Apply system updates to a jail.</p>
+
+<pre><code>sudo freebsd-update -b /vm/h1 fetch install
+</code></pre>
+
+<p>Upgrade system on a jail.</p>
+
+<pre><code>sudo freebsd-update -b /vm/h1 -r 11.3-RELEASE upgrade
+</code></pre>
+
+<p>When you have already upgraded the host, run the following commands in a jail.</p>
+
+<pre><code>export UNAME_r=$(freebsd-version)
+freebsd-update -r 11.3-RELEASE upgrade
+/usr/sbin/freebsd-update install
+(No reboot required for a jail)
+unset UNAME_r
+/usr/sbin/freebsd-update install
+</code></pre>
+
+<h2 id="vnet-jails">VNET Jails</h2>
+
+<p>Sometimes I feel that jails networking is not always intuitive.</p>
+
+<p>In my current understanding, a standard (non-VNET) jail shares its IP address with the host.<br />
+A jail&rsquo;s address is actually an IP alias (secondary address) on the host which is temporariliy given to the jail.<br />
+If the jail doesn&rsquo;t listen to a specific TCP or UDP port on the address, packets destined to the port/address are processed by the host.<br />
+I think this behavior is confusing because I expect that the host and jails can be viewed as spearate systems.</p>
+
+<p>It&rsquo;s also hard to understand at first that jail&rsquo;s 127.0.0.1 is mapped to an address deligated to the jail, inter-jail communications go through lo0 even if jails&rsquo; addresses are assigned to lo1 and so on.</p>
+
+<p>In this regard, VNET jails look simpler to me.<br />
+So I gave it a try despite the fact that they require custom kernel with VIMAGE feature enabled (I completely got used to using binary updates with GENERIC kernel and almost forgot the time when I always rebuilt kernel to slim it down).</p>
+
+<h3 id="installing-and-updating-freebsd-source">Installing and Updating FreeBSD Source</h3>
+
+<h4 id="from-distribution-tarball">From Distribution Tarball</h4>
+
+<pre><code>cd ~/tmp
+fetch ftp://ftp.freebsd.org/pub/FreeBSD/releases/amd64/11.2-RELEASE/src.txz
+</code></pre>
+
+<p>Update the source.</p>
+
+<pre><code>sudo tar -xJvpf src.txz -C /
+</code></pre>
+
+<h4 id="from-subversion">From Subversion</h4>
+
+<pre><code>sudo svnlite checkout https://svn.freebsd.org/base/releng/11.2 /usr/src
+sudo svnlite update /usr/src
+</code></pre>
+
+<p>Update the source.</p>
+
+<pre><code>sudo svnlite update /usr/src
+</code></pre>
+
+<h3 id="building-vimage-enabled-kernel">Building VIMAGE-enabled Kernel</h3>
+
+<h4 id="the-simplest-way">The Simplest Way</h4>
+
+<p>Build kernel using a configuration file which comes with the FreeBSD source tree.<br />
+This config file contains some netgraph modules handy for VNET jails.</p>
+
+<pre><code>sudo cp /usr/src/share/examples/jails/VIMAGE /usr/src/sys/amd64/conf
+cd /usr/src
+sudo make KERNCONF=VIMAGE kernel
+sudo shutdown -r now
+</code></pre>
+
+<h4 id="minimum-configuration">Minimum Configuration</h4>
+
+<p>To add only VIMAGE to GENERIC, create a kernel configuration file with the following content.
+[/usr/src/sys/amd64/conf/VIMAGE]</p>
+
+<pre><code>include GENERIC
+ident VIMAGE
+options VIMAGE
+</code></pre>
+
+<p>Then build.</p>
+
+<pre><code>cd /usr/src
+sudo make KERNCONF=VIMAGE kernel
+sudo shutdown -r now
+</code></pre>
+
+<h3 id="preparing-helper-script">Preparing Helper Script</h3>
+
+<p>I made a small helper script called vnet, which is based on jng in the FreeBSD source tree.</p>
+
+<pre><code>mkdir ~/src
+cd ~/src
+git clone https://github.com/genneko/freebsd-vimage-jails.git jails
+sudo ln -s ~/src/jails/vnet /usr/sbin/
+</code></pre>
+
+<h3 id="etc-jail-conf-for-vnet-jails">/etc/jail.conf for VNET Jails</h3>
+
+<p>For each VNET jails, add the following content to /etc/jail.conf.<br />
+$net is the name of a host-only virtual ethernet interface (ng_eiface) on the host and could be anything you like.<br />
+$gwv4 is the IP address of the interface while $ipv4 is the IP address of the jail (another ng_eiface).<br />
+$plen is a subnet mask length for the virtual network.<br />
+The jail and the host&rsquo;s virtual interface are connected by a ng_bridge.</p>
+
+<pre><code>v1 {
+        $net = &quot;vi0&quot;;
+        $gwv4 = &quot;172.31.0.1&quot;;
+        $ipv4 = &quot;172.31.0.11&quot;;
+        $plen = 24;
+
+        vnet;
+        vnet.interface = &quot;${net}_$name&quot;;
+        exec.prestart += &quot;vnet add -4 $gwv4/$plen $net ${net}_$name&quot;;
+        exec.start += &quot;ifconfig ${net}_$name $ipv4/$plen&quot;;
+        exec.start += &quot;route add default $gwv4&quot;;
+        exec.poststop += &quot;vnet delete $net ${net}_$name&quot;;
+}
+</code></pre>
+
+<h2 id="references">References</h2>
+
+<ul>
+<li><p>FreeBSD Handbook: Jails<br />
+<a href="https://www.freebsd.org/doc/handbook/jails.html">https://www.freebsd.org/doc/handbook/jails.html</a></p></li>
+
+<li><p>SKYFORGE: An Introduction to Jails and Jail Networking<br />
+<a href="https://www.skyforge.at/posts/an-introduction-to-jails-and-jail-networking/">https://www.skyforge.at/posts/an-introduction-to-jails-and-jail-networking/</a></p></li>
+
+<li><p>Devops Discoveries: FreeBSD Jails the hard way<br />
+<a href="https://clinta.github.io/freebsd-jails-the-hard-way/">https://clinta.github.io/freebsd-jails-the-hard-way/</a></p></li>
+
+<li><p>Devin Teske - Jail Networking, MeetBSD 2016<br />
+<a href="https://www.youtube.com/watch?v=aoW7pWuhT_A">https://www.youtube.com/watch?v=aoW7pWuhT_A</a></p></li>
+</ul>
+
+    </article>
+
+    
+
+
+    <ul class="pager article-pager">
+      <li class="pager-newer pager-noitem">&lt; Newer</li>
+      <li class="pager-older">
+        <a href="https://genneko.github.io/playing-with-bsd/storage/encrypted-temporary-storage/" data-toggle="tooltip" data-placement="top" title="Encrypted Temporary Storage with GELI">Older &gt;</a>
+      </li>
+    </ul>
+  </div>
+
+
+<div class="site-footer">
+  <div class="copyright">&copy; Copyright 2018 genneko</div>
+  <ul class="site-footer-items">
+    <li class="site-footer-item-about"><a href="https://genneko.github.io/about/" title="About">About</a></li>
+  </ul>
+  <div class="powerdby">
+    Powered by <a href="https://gohugo.io/">Hugo</a> and <a href="https://github.com/taikii/whiteplain">Whiteplain</a>
+  </div>
+</div>
+<script src="https://genneko.github.io/js/script.js"></script>
+<script src="https://genneko.github.io/js/custom.js"></script>
+
+
+</body>
+</html>
