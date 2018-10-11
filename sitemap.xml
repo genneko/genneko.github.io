@@ -42,6 +42,12 @@
   </url>
   
   <url>
+    <loc>https://genneko.github.io/tags/administration/</loc>
+    <lastmod>2018-10-07T18:35:49+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>https://genneko.github.io/tags/freebsd/</loc>
     <lastmod>2018-10-07T18:35:49+09:00</lastmod>
     <priority>0</priority>
@@ -73,12 +79,6 @@
   
   <url>
     <loc>https://genneko.github.io/tags/jail/</loc>
-    <lastmod>2018-10-07T18:35:49+09:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://genneko.github.io/tags/learning/</loc>
     <lastmod>2018-10-07T18:35:49+09:00</lastmod>
     <priority>0</priority>
   </url>

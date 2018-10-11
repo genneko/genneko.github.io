@@ -83,9 +83,18 @@ After several rehearsals on a VM, I have finally achieved that goal with the fol
       </ul>
       
 <aside class="toc">
-  
+  <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#references">References</a></li>
+</ul></li>
+</ul>
+</nav>
 </aside>
-      <p>I had been wanting to migrate a FreeBSD system on a GEOM mirror (gmirror) to a ZFS mirror.</p>
+      
+
+<p>I had been wanting to migrate a FreeBSD system on a GEOM mirror (gmirror) to a ZFS mirror.</p>
 
 <p>After several rehearsals on a VM, I have finally achieved that goal with the following steps.</p>
 
@@ -213,6 +222,25 @@ sudo gpart bootcode -b /boot/pmbr -p /boot/gptzfsboot -i 1 da1
 
 <li><p>When resilvering is done, you&rsquo;ve got a brand new ZFS mirror pool!</p></li>
 </ol>
+
+<h2 id="references">References</h2>
+
+<ul>
+<li><p>FreeBSD Handbook: GEOM: Modular Disk Transformation Framework / RAID1 - Mirroring<br />
+<a href="https://www.freebsd.org/doc/en_US.ISO8859-1/books/handbook/geom-mirror.html">https://www.freebsd.org/doc/en_US.ISO8859-1/books/handbook/geom-mirror.html</a></p></li>
+
+<li><p>FreeBSD Handbook: The Z File System (ZFS)<br />
+<a href="https://www.freebsd.org/doc/en_US.ISO8859-1/books/handbook/zfs.html">https://www.freebsd.org/doc/en_US.ISO8859-1/books/handbook/zfs.html</a></p></li>
+
+<li><p>FreeBSD Mastery: Storage Essentials by Michael W. Lucas<br />
+<a href="https://mwl.io/nonfiction/os#fmse">https://mwl.io/nonfiction/os#fmse</a></p></li>
+
+<li><p>FreeBSD Mastery: ZFS by Michael W. Lucas and Allan Jude<br />
+<a href="https://mwl.io/nonfiction/os#fmzfs">https://mwl.io/nonfiction/os#fmzfs</a></p></li>
+
+<li><p>FreeBSD Mastery: Advanced ZFS by Michael W. Lucas and Allan Jude<br />
+<a href="https://mwl.io/nonfiction/os#fmaz">https://mwl.io/nonfiction/os#fmaz</a></p></li>
+</ul>
 
     </article>
 
