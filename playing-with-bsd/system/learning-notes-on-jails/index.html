@@ -249,6 +249,10 @@ done
 
 <h3 id="system-startup-configuration">System Startup Configuration</h3>
 
+<p>Do not forget to create a cloned loopback interface &ldquo;lo1&rdquo; on which jail&rsquo;s addresses are configured.</p>
+
+<p>PF is used for NAT and port forwarding.</p>
+
 <p>[/etc/rc.conf]</p>
 
 <pre><code>cloned_interfaces=&quot;lo1&quot;
@@ -321,23 +325,32 @@ h4 {
 
 <h3 id="nat-configuration">NAT Configuration</h3>
 
+<p>PF configuration should be written in the strict order of categories.</p>
+
+<p>For IPv6 NAT, I explicitly specify a external (global) address instead of the interface name because an IPv6 interface usually has multiple addresses and it seems the interface name could be resolved to its link-local address.</p>
+
 <p>[/etc/pf.conf]</p>
 
-<pre><code># MACRO DEFINITIONS
+<pre><code># MACROS/TABLES
 XIF = &quot;em0&quot;
 JAILNET_V4 = &quot;127.1.1.0/24&quot;
 JAILNET_V6 = &quot;fd00:1:1:1::0/64&quot;
 EXT_V6ADDR = &quot;2001:db8::1&quot;
 
-# SET PARAMETERS (skip, scrub etc.)
+# OPTIONS (set skip, etc.)
+# NORMALIZATION (scrub)
+# QUEUEING
 
-# NAT
+# TRANSLATION
+## NAT
 nat on $XIF inet from $JAILNET_V4 to any -&gt; ($XIF)
 nat on $XIF inet6 from $JAILNET_V6 to any -&gt; $EXT_V6ADDR
 
-# Redirect
+## REDIRECT (Port Forwarding)
 rdr pass log on $XIF inet proto tcp to ($XIF) port 8080 -&gt; 127.1.1.4
 rdr pass log on $XIF inet6 proto tcp to $EXT_V6ADDR port 8080 -&gt; fd00:1:1:1::4
+
+# FILTERING (Pass/Block)
 </code></pre>
 
 <h3 id="hosts-table">Hosts Table</h3>
@@ -380,7 +393,10 @@ fd00:1:1:1::4 h4
 
 <pre><code>jls
 jls -v
+jls -s
 </code></pre>
+
+<p><strong>NOTE:</strong> At first I was confused by <code>ip4=disable</code> output of <code>jls -s</code>. But later I looked at /usr/src/usr.sbin/jls/jls.c and learned that it&rsquo;s correct because ip4&rsquo;s value is &lsquo;disable&rsquo; unless explicitly set otherwise. It&rsquo;s just regarded as &lsquo;new&rsquo; when ip4.addr is set.</p>
 
 <p>Stop specific jail(s).</p>
 
@@ -553,6 +569,9 @@ The jail and the host&rsquo;s virtual interface are connected by a ng_bridge.</p
 
 <li><p>FreeBSD Mastery: Advanced ZFS by Michael W. Lucas and Allan Jude<br />
 <a href="https://mwl.io/nonfiction/os#fmaz">https://mwl.io/nonfiction/os#fmaz</a></p></li>
+
+<li><p>FreeBSD Mastery: Specialty Filesystems by Michael W. Lucas<br />
+<a href="https://mwl.io/nonfiction/os#fmsf">https://mwl.io/nonfiction/os#fmsf</a></p></li>
 </ul>
 
     </article>
