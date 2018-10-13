@@ -116,7 +116,12 @@ This article is a sort of personal notebook where I summarize …">
 <li><a href="#minimum-configuration">Minimum Configuration</a></li>
 </ul></li>
 <li><a href="#preparing-helper-script">Preparing Helper Script</a></li>
-<li><a href="#etc-jail-conf-for-vnet-jails">/etc/jail.conf for VNET Jails</a></li>
+<li><a href="#etc-jail-conf-for-vnet-jails">/etc/jail.conf for VNET Jails</a>
+<ul>
+<li><a href="#bridged-configuration">Bridged Configuration</a></li>
+<li><a href="#routed-configuration">Routed Configuration</a></li>
+</ul></li>
+<li><a href="#enabling-packet-forwarding-on-the-host">Enabling Packet Forwarding on the Host</a></li>
 </ul></li>
 <li><a href="#references">References</a></li>
 </ul></li>
@@ -525,11 +530,94 @@ sudo ln -s ~/src/jails/vnet /usr/sbin/
 
 <h3 id="etc-jail-conf-for-vnet-jails">/etc/jail.conf for VNET Jails</h3>
 
-<p>For each VNET jails, add the following content to /etc/jail.conf.<br />
-$net is the name of a host-only virtual ethernet interface (ng_eiface) on the host and could be anything you like.<br />
-$gwv4 is the IP address of the interface while $ipv4 is the IP address of the jail (another ng_eiface).<br />
+<p>Depending on the network configuration, slightly different configuration should be added to /etc/jail.conf for each VNET jail.</p>
+
+<h4 id="bridged-configuration">Bridged Configuration</h4>
+
+<pre style="line-height: 10pt"><code style="font-size: 9pt">                      |
+                      |
+                 +----o----+
+                 | gateway |
+                 +----o----+
+                      | $gwv4/$plen
+                      |
++--------+------------+------------------+
+         |
+     em0 | (ng_ether)
+  (=$net)|
++--------|-------------------------------+
+|        |                               |
+|        | lower +-------------+         |
+|        +-------+    em0br    |         |
+|        +-------+ (ng_bridge) |         |
+|        | upper +---------+---+         |
+|        |                 |             |
+|        |          em0_b1 | $ipv4/$plen |
+|    em0 |     (ng_eiface) |             |
+|    +---o---+         +---o---+         |
+|    |  Host |         |Jail b1|         |
+|    +-------+         +-------+         |
++----------------------------------------+
+</code></pre>
+
+<p>For a bridge configuration, $net is the name of a physical ethernet interface (ng_ether) on the host.<br />
+$gwv4 is the IP address of a default gateway for the jail and the host while $ipv4 is the IP address of the jail&rsquo;s virtual interface (ng_eiface).<br />
+$plen is a subnet mask length for the bridged network.<br />
+The jail&rsquo;s virtual interface and the host&rsquo;s physical interface are connected by a ng_bridge named &lsquo;${net}br&rsquo;.<br />
+In this configuration, the jail uses the same router (gateway) as the host to go out.</p>
+
+<pre><code>b1 {
+        $net = &quot;em0&quot;;
+        $gwv4 = &quot;192.168.1.1&quot;;
+        $ipv4 = &quot;192.168.1.11&quot;;
+        $plen = 24;
+
+        vnet;
+        vnet.interface = &quot;${net}_$name&quot;;
+        exec.prestart += &quot;vnet add $net ${net}_$name&quot;;
+        exec.start    += &quot;ifconfig ${net}_$name $ipv4/$plen&quot;;
+        exec.start    += &quot;route add default $gwv4&quot;;
+        exec.poststop += &quot;vnet delete $net ${net}_$name&quot;;
+}
+</code></pre>
+
+<h4 id="routed-configuration">Routed Configuration</h4>
+
+<pre style="line-height: 10pt"><code style="font-size: 9pt">                      |
+                      |
+                 +----o----+
+                 | gateway |
+                 +----o----+
+                      |
+                      |
++--------+------------+------------------+
+         |
+Physical |
+     I/F |
++--------|-------------------------------+
+|    +---o---+                           |
+|    |  Host | (Internal gateway)        |
+|    +---o---+                           |
+|    vi0 | $gwv4/$plen                   |
+|(ng_eiface)                             |
+|        |       +-------------+         |
+|        +-------+    vi0br    |         |
+|                | (ng_bridge) |         |
+|                +---------+---+         |
+|                          |             |
+|                   vi0_v1 | $ipv4/$plen |
+|              (ng_eiface) |             |
+|                      +---o---+         |
+|                      |Jail v1|         |
+|                      +-------+         |
++----------------------------------------+
+</code></pre>
+
+<p>For a routed configuration, $net is the name of an internal virtual ethernet interface (ng_eiface) on the host and could be any name you like. This interface is created by the vnet script if it doesn&rsquo;t exist.<br />
+$gwv4 is the IP address of this internal interface while $ipv4 is the IP address of the jail&rsquo;s virtual interface (another ng_eiface).<br />
 $plen is a subnet mask length for the virtual network.<br />
-The jail and the host&rsquo;s virtual interface are connected by a ng_bridge.</p>
+The jail and the host&rsquo;s virtual interface are connected by a ng_bridge named &lsquo;${net}br&rsquo;.<br />
+In this configuration, the jail use the host as a gateway to the outside world.</p>
 
 <pre><code>v1 {
         $net = &quot;vi0&quot;;
@@ -544,6 +632,22 @@ The jail and the host&rsquo;s virtual interface are connected by a ng_bridge.</p
         exec.start += &quot;route add default $gwv4&quot;;
         exec.poststop += &quot;vnet delete $net ${net}_$name&quot;;
 }
+</code></pre>
+
+<h3 id="enabling-packet-forwarding-on-the-host">Enabling Packet Forwarding on the Host</h3>
+
+<p>For a routed configuration, IP packet forwarding should be enabled to allow the jail to go out to the internet.<br />
+IPv4 packet forwarding can be controlled by sysctl variables <code>net.inet.ip.forwarding</code>.<br />
+It can be configured in /etc/sysctl.conf but the following line in /etc/rc.conf looks nicer to me.</p>
+
+<p>[/etc/rc.conf]</p>
+
+<pre><code>gateway_enable=&quot;YES&quot;
+</code></pre>
+
+<p>For IPv6, use the following configuration.</p>
+
+<pre><code>ipv6_gateway_enable=&quot;YES&quot;
 </code></pre>
 
 <h2 id="references">References</h2>
