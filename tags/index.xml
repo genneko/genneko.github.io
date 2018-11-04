@@ -22,9 +22,18 @@
     </item>
     
     <item>
+      <title>Bridge</title>
+      <link>https://genneko.github.io/tags/bridge/</link>
+      <pubDate>Sun, 04 Nov 2018 21:19:01 +0900</pubDate>
+      
+      <guid>https://genneko.github.io/tags/bridge/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>Freebsd</title>
       <link>https://genneko.github.io/tags/freebsd/</link>
-      <pubDate>Sun, 07 Oct 2018 18:35:49 +0900</pubDate>
+      <pubDate>Sun, 04 Nov 2018 21:19:01 +0900</pubDate>
       
       <guid>https://genneko.github.io/tags/freebsd/</guid>
       <description></description>
@@ -78,7 +87,7 @@
     <item>
       <title>Network</title>
       <link>https://genneko.github.io/tags/network/</link>
-      <pubDate>Wed, 29 Aug 2018 15:18:01 +0900</pubDate>
+      <pubDate>Sun, 04 Nov 2018 21:19:01 +0900</pubDate>
       
       <guid>https://genneko.github.io/tags/network/</guid>
       <description></description>
@@ -90,6 +99,15 @@
       <pubDate>Fri, 07 Sep 2018 07:13:08 +0000</pubDate>
       
       <guid>https://genneko.github.io/tags/storage/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Stp</title>
+      <link>https://genneko.github.io/tags/stp/</link>
+      <pubDate>Sun, 04 Nov 2018 21:19:01 +0900</pubDate>
+      
+      <guid>https://genneko.github.io/tags/stp/</guid>
       <description></description>
     </item>
     

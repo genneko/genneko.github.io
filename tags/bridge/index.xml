@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Bridge on genneko</title>
+    <link>https://genneko.github.io/tags/bridge/</link>
+    <description>Recent content in Bridge on genneko</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <copyright>&amp;copy; Copyright 2018 genneko</copyright>
+    <lastBuildDate>Sun, 04 Nov 2018 21:19:01 +0900</lastBuildDate>
+    
+	<atom:link href="https://genneko.github.io/tags/bridge/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Learning Spanning Tree Protocol with FreeBSD Bridges</title>
+      <link>https://genneko.github.io/playing-with-bsd/networking/learning-stp/</link>
+      <pubDate>Sun, 04 Nov 2018 21:19:01 +0900</pubDate>
+      
+      <guid>https://genneko.github.io/playing-with-bsd/networking/learning-stp/</guid>
+      <description>Spanning Tree Protocol is a standard protocol for network bridges (layer-two switches) to autonomously find a logical loop-free topology and provide redundancy to the network.
+Several variants have been developed since its birth, in which the most common standard is Rapid Spanning Tree Protocol (RSTP). Many managed switches implement the protocol and often enable it by default.
+Although it&amp;rsquo;s quite common in the networking world where I&amp;rsquo;m living in its perimeter, it&amp;rsquo;s been something vague and unfamiliar to me for a long time.</description>
+    </item>
+    
+  </channel>
+</rss>
