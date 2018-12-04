@@ -6,14 +6,13 @@
   <title>Route-based VPN with FreeBSD-11.1&#39;s IPsec VTI - genneko</title>
   <meta property="og:title" content="Route-based VPN with FreeBSD-11.1&#39;s IPsec VTI - genneko" />
   <meta name="twitter:title" content="Route-based VPN with FreeBSD-11.1&#39;s IPsec VTI - genneko" />
-  <meta name="description" content="I have managed to setup route-based IPsec VPN with FreeBSD-11.1 RC3, which had introduced ipsec virtual tunnel interface. Here is a record of my experiment just for your information.
+  <meta name="description" content="I have managed to setup route-based IPsec VPN with FreeBSD-11.1 RC3, which had introduced ipsec virtual tunnel interface if_ipsec(4). Here is a record of my experiment just for your information.
 Prerequisite  FreeBSD-11.1-RC3/amd64 Generic kernel No special packages/ports (just added sudo and a few other must-have utilities)  Network configuration NOTE: The following text shows bsd1 configurations only.
- 10.0.0.1 10.0.0.2 192.168.10.0/24 --- [bsd1] ----- /// ----- [bsd2] --- 192.168.20.0/24 172.">
-  <meta property="og:description" content="I have managed to setup route-based IPsec VPN with FreeBSD-11.1 RC3, which had introduced ipsec virtual tunnel interface. Here is a record of my experiment just for your information.
+ 10.0.0.1 10.0.0.2 192.168.10.0/24 --- [bsd1] ----- /// ----- [bsd2] --- 192.">
+  <meta property="og:description" content="I have managed to setup route-based IPsec VPN with FreeBSD-11.1 RC3, which had introduced ipsec virtual tunnel interface if_ipsec(4). Here is a record of my experiment just for your information.
 Prerequisite  FreeBSD-11.1-RC3/amd64 Generic kernel No special packages/ports (just added sudo and a few other must-have utilities)  Network configuration NOTE: The following text shows bsd1 configurations only.
- 10.0.0.1 10.0.0.2 192.168.10.0/24 --- [bsd1] ----- /// ----- [bsd2] --- 192.168.20.0/24 172.">
-  <meta name="twitter:description" content="I have managed to setup route-based IPsec VPN with FreeBSD-11.1 RC3, which had introduced ipsec virtual tunnel interface. Here is a record of my experiment just for your information.
-Prerequisite …">
+ 10.0.0.1 10.0.0.2 192.168.10.0/24 --- [bsd1] ----- /// ----- [bsd2] --- 192.">
+  <meta name="twitter:description" content="I have managed to setup route-based IPsec VPN with FreeBSD-11.1 RC3, which had introduced ipsec virtual tunnel interface if_ipsec(4). Here is a record of my experiment just for your information. …">
   <meta name="author" content="genneko"/>
   <meta property="og:site_name" content="genneko" />
   <meta property="og:url" content="https://genneko.github.io/playing-with-bsd/networking/freebsd-vti-ipsec/" />
@@ -113,7 +112,7 @@ Prerequisite …">
 </aside>
       
 
-<p>I have managed to setup route-based IPsec VPN with FreeBSD-11.1 RC3, which had introduced ipsec virtual tunnel interface.
+<p>I have managed to setup route-based IPsec VPN with FreeBSD-11.1 RC3, which had introduced ipsec virtual tunnel interface if_ipsec(4).
 Here is a record of my experiment just for your information.</p>
 
 <h2 id="prerequisite">Prerequisite</h2>
@@ -238,11 +237,14 @@ strongswan_enable=&quot;YES&quot;
 <li><p>FreeBSD Phabricator: P112 Route based IPsec<br />
 <a href="https://reviews.freebsd.org/P112">https://reviews.freebsd.org/P112</a></p></li>
 
+<li><p>FreeBSD Manual Pages: if_ipsec(4)<br />
+<a href="https://www.freebsd.org/cgi/man.cgi?query=if_ipsec(4)">https://www.freebsd.org/cgi/man.cgi?query=if_ipsec(4)</a></p></li>
+
 <li><p>FreeBSD Manual Pages: ipsec.conf(5)<br />
-<a href="https://www.freebsd.org/cgi/man.cgi?query=ipsec.conf(5">https://www.freebsd.org/cgi/man.cgi?query=ipsec.conf(5</a>)</p></li>
+<a href="https://www.freebsd.org/cgi/man.cgi?query=ipsec.conf(5)">https://www.freebsd.org/cgi/man.cgi?query=ipsec.conf(5)</a></p></li>
 
 <li><p>FreeBSD Manual Pages: strongswan.conf(5)<br />
-<a href="https://www.freebsd.org/cgi/man.cgi?query=strongswan.conf(5">https://www.freebsd.org/cgi/man.cgi?query=strongswan.conf(5</a>)</p></li>
+<a href="https://www.freebsd.org/cgi/man.cgi?query=strongswan.conf(5)">https://www.freebsd.org/cgi/man.cgi?query=strongswan.conf(5)</a></p></li>
 </ul>
 
     </article>

@@ -40,9 +40,9 @@ Unfortunately, native IPv6 service is still unavailable for me.</description>
       <pubDate>Thu, 22 Jun 2017 15:09:50 +0900</pubDate>
       
       <guid>https://genneko.github.io/playing-with-bsd/networking/freebsd-vti-ipsec/</guid>
-      <description>I have managed to setup route-based IPsec VPN with FreeBSD-11.1 RC3, which had introduced ipsec virtual tunnel interface. Here is a record of my experiment just for your information.
+      <description>I have managed to setup route-based IPsec VPN with FreeBSD-11.1 RC3, which had introduced ipsec virtual tunnel interface if_ipsec(4). Here is a record of my experiment just for your information.
 Prerequisite  FreeBSD-11.1-RC3/amd64 Generic kernel No special packages/ports (just added sudo and a few other must-have utilities)  Network configuration NOTE: The following text shows bsd1 configurations only.
- 10.0.0.1 10.0.0.2 192.168.10.0/24 --- [bsd1] ----- /// ----- [bsd2] --- 192.168.20.0/24 172.</description>
+ 10.0.0.1 10.0.0.2 192.168.10.0/24 --- [bsd1] ----- /// ----- [bsd2] --- 192.</description>
     </item>
     
   </channel>

@@ -280,9 +280,9 @@ sudo kldload zfs sudo sysctl vfs.zfs.min_auto_ashift=12  Remove one (da0) of the
           </li>
         </ul>
         <div class="article-content">
-          I have managed to setup route-based IPsec VPN with FreeBSD-11.1 RC3, which had introduced ipsec virtual tunnel interface. Here is a record of my experiment just for your information.
+          I have managed to setup route-based IPsec VPN with FreeBSD-11.1 RC3, which had introduced ipsec virtual tunnel interface if_ipsec(4). Here is a record of my experiment just for your information.
 Prerequisite  FreeBSD-11.1-RC3/amd64 Generic kernel No special packages/ports (just added sudo and a few other must-have utilities)  Network configuration NOTE: The following text shows bsd1 configurations only.
- 10.0.0.1 10.0.0.2 192.168.10.0/24 --- [bsd1] ----- /// ----- [bsd2] --- 192.168.20.0/24 172.
+ 10.0.0.1 10.0.0.2 192.168.10.0/24 --- [bsd1] ----- /// ----- [bsd2] --- 192.
         </div>
         <div class="article-readmore"><a href="https://genneko.github.io/playing-with-bsd/networking/freebsd-vti-ipsec/">Read more...</a></div>
         <div class="article-floatclear"></div>
