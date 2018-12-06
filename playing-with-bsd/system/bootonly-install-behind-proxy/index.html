@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <title>Using FreeBSD&#39;s Bootonly Installer Behind a Proxy - genneko</title>
+  <meta property="og:title" content="Using FreeBSD&#39;s Bootonly Installer Behind a Proxy - genneko" />
+  <meta name="twitter:title" content="Using FreeBSD&#39;s Bootonly Installer Behind a Proxy - genneko" />
+  <meta name="description" content="I&rsquo;ve been so busy for the last month that I almost forgot about FreeBSD 12.0 which I had been looking forward to. Now it&rsquo;s just around the corner!
+Although it&rsquo;s quite late, I tried to install 12.0-RC3 on a host behind a HTTP proxy and found that using a bootonly installer in this environment was a bit tricky. The following are the steps I took.
+ Boot the host with a bootonly installer.">
+  <meta property="og:description" content="I&rsquo;ve been so busy for the last month that I almost forgot about FreeBSD 12.0 which I had been looking forward to. Now it&rsquo;s just around the corner!
+Although it&rsquo;s quite late, I tried to install 12.0-RC3 on a host behind a HTTP proxy and found that using a bootonly installer in this environment was a bit tricky. The following are the steps I took.
+ Boot the host with a bootonly installer.">
+  <meta name="twitter:description" content="I&rsquo;ve been so busy for the last month that I almost forgot about FreeBSD 12.0 which I had been looking forward to. Now it&rsquo;s just around the corner!
+Although it&rsquo;s quite late, I tried …">
+  <meta name="author" content="genneko"/>
+  <meta property="og:site_name" content="genneko" />
+  <meta property="og:url" content="https://genneko.github.io/playing-with-bsd/system/bootonly-install-behind-proxy/" />
+  <meta property="og:type" content="article" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="generator" content="Hugo 0.48" />
+
+  <link rel="stylesheet" href="https://genneko.github.io/css/style.css" media="all" />
+  <link rel="stylesheet" href="https://genneko.github.io/css/syntax.css" media="all" />
+  <link rel="stylesheet" href="https://genneko.github.io/css/custom.css" media="all" />
+
+  <script src="https://genneko.github.io/js/script.js"></script>
+  <script src="https://genneko.github.io/js/custom.js"></script>
+  <script defer src="https://genneko.github.io/js/fontawesome.js"></script>
+</head>
+
+<body>
+
+<header class="site-header">
+  <nav class="site-navi">
+    <img class="site-icon" src="https://genneko.github.io/images/genneko-icon.png">
+    <h1 class="site-title"><a href="https://genneko.github.io/">genneko</a></h1>
+    <ul class="site-navi-items">
+      <li class="site-navi-item-playing-with-bsd"><a href="https://genneko.github.io/playing-with-bsd/" title="Playing with BSD">Playing with BSD</a></li>
+      <li class="site-navi-item-tags"><a href="https://genneko.github.io/tags/" title="Tags">Tags</a></li>
+      <li class="site-navi-item-archives"><a href="https://genneko.github.io/archives/" title="Archives">Archives</a></li>
+      <li class="site-navi-item-about"><a href="https://genneko.github.io/about/" title="About">About</a></li>
+    </ul>
+  </nav>
+</header>
+<hr class="site-header-bottom">
+
+
+  <div class="main" role="main">
+    <article class="article">
+      
+      
+      <h1 class="article-title">Using FreeBSD&#39;s Bootonly Installer Behind a Proxy</h1>
+      
+      <hr class="article-title-bottom">
+      <ul class="article-meta">
+        <li class="article-meta-date"><time>2018-12-06</time></li>
+        <li class="article-meta-tags">
+          <a href="https://genneko.github.io/tags/freebsd/">
+            <i class="fas fa-tag"></i>
+            freebsd
+          </a>&nbsp;
+        </li>
+        <li class="article-meta-tags">
+          <a href="https://genneko.github.io/tags/installation/">
+            <i class="fas fa-tag"></i>
+            installation
+          </a>&nbsp;
+        </li>
+      </ul>
+      
+<aside class="toc">
+  
+</aside>
+      <p>I&rsquo;ve been so busy for the last month that I almost forgot about FreeBSD 12.0 which I had been looking forward to. Now it&rsquo;s just around the corner!<br />
+Although it&rsquo;s quite late, I tried to install 12.0-RC3 on a host behind a HTTP proxy and found that using a bootonly installer in this environment was a bit tricky. The following are the steps I took.</p>
+
+<ol>
+<li><p>Boot the host with a bootonly installer.</p></li>
+
+<li><p>Go into Shell at the Welcome dialog.</p></li>
+
+<li><p>Select an appropriate keymap for my keyboard.</p>
+
+<pre><code>kbdcontrol -l jp
+</code></pre></li>
+
+<li><p>Set the http_proxy environment variable to let installer fetch distribution sets (tarballs) via proxy.</p>
+
+<pre><code>export http_proxy=proxyhost:3128
+</code></pre></li>
+
+<li><p>Run the standard installer program &lsquo;bsdinstall&rsquo; and proceed to disk partitioning screen.</p>
+
+<pre><code>bsdinstall
+</code></pre></li>
+
+<li><p>Just before hitting OK at the &ldquo;Last chance!&rdquo; confirmation dialog, press [Alt] + [F4] to open a console and set up IP and DNS configurations.
+If a DHCP server is available, the easiest way is to run the following command.</p>
+
+<pre><code>dhclient em0
+</code></pre>
+
+<p>If not, manually configure IP address with ifconfig and add nameserver lines to /tmp/bsdinstall_etc/resolv.conf (symlinked to /etc/resolv.conf).
+It&rsquo;s might be something like:</p>
+
+<pre><code>ifconfig em0 inet 10.0.2.15/24
+route add default 10.0.2.2
+echo nameserver 192.168.10.1 &gt; /tmp/bsdinstall_etc/resolv.conf
+</code></pre></li>
+
+<li><p>Go back to the installer screen with [Alt] + [F1] and go on.</p></li>
+
+<li><p>Before exiting the installer, I usually ran the following commands in chrooted shell to rearrange ZFS dataset to use true /home instead of /usr/home symlinked to /home.</p>
+
+<pre><code>zfs rename zroot/usr/home zroot/home
+zfs set mountpoint=/home zroot/home
+rm /home
+</code></pre></li>
+</ol>
+
+    </article>
+
+    
+
+
+    <ul class="pager article-pager">
+      <li class="pager-newer pager-noitem">&lt; Newer</li>
+      <li class="pager-older">
+        <a href="https://genneko.github.io/playing-with-bsd/networking/learning-stp/" data-toggle="tooltip" data-placement="top" title="Learning Spanning Tree Protocol with FreeBSD Bridges">Older &gt;</a>
+      </li>
+    </ul>
+  </div>
+
+
+<div class="site-footer">
+  <div class="copyright">&copy; Copyright 2018 genneko</div>
+  <ul class="site-footer-items">
+    <li class="site-footer-item-about"><a href="https://genneko.github.io/about/" title="About">About</a></li>
+  </ul>
+  <div class="powerdby">
+    Powered by <a href="https://gohugo.io/">Hugo</a> and <a href="https://github.com/taikii/whiteplain">Whiteplain</a>
+  </div>
+</div>
+
+
+</body>
+</html>
