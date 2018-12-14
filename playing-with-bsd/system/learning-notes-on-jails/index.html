@@ -177,14 +177,14 @@ fetch ftp:/ftp.freebsd.org/pub/FreeBSD/releases/amd64/11.2-RELEASE/base.txz
 <li><p>Copy timezone configuration from the host to the template.<br />
 Usually /etc/resolv.conf is also copied from the host, but after some experiments I decided to copy it by using /etc/jail.conf&rsquo;s exec.prestart and delete it by exec.poststop.</p>
 
-<pre><code>sudo cp /etc/localtime etc/
+<pre><code>sudo cp /etc/localtime /vm/tmpl/11.2/etc/
 </code></pre></li>
 
 <li><p>Write a minimum /etc/rc.conf for the template.<br />
 Here I disable cron in jails but it might be better to leave it enabled and fine-tune its configurations.<br />
 I need more research on this.</p>
 
-<pre><code>sudo vi etc/rc.conf
+<pre><code>sudo vi /vm/tmpl/11.2/etc/rc.conf
 </code></pre>
 
 <pre><code>cron_enable=&quot;NO&quot;
@@ -198,7 +198,7 @@ syslogd_flags=&quot;-ss&quot;
 <li><p>Edit system crontab in the template to disable adjkern.<br />
 Obviously this is not necessary because I disabled cron in the previous step but I do this as a precaution anyway.</p>
 
-<pre><code>sudo vi etc/crontab
+<pre><code>sudo vi /vm/tmpl/11.2/etc/crontab
 </code></pre>
 
 <pre><code>#1,31 0-5 * * * root adjkerntz -a
@@ -210,7 +210,7 @@ Also create /etc/make.conf to use the directories for building ports in jails.</
 
 <pre><code>sudo mkdir /vm/tmpl/11.2/usr/ports
 sudo mkdir -p /vm/tmpl/11.2/var/ports/{distfiles,packages}
-sudo vi etc/make.conf
+sudo vi /vm/tmpl/11.2/etc/make.conf
 </code></pre>
 
 <pre><code>WRKDIRPREFIX = /var/ports
@@ -455,14 +455,18 @@ unsetenv UNAME_r
 <p>Sometimes I feel that jails networking is not always intuitive.</p>
 
 <p>In my current understanding, a standard (non-VNET) jail shares its IP address with the host.<br />
-A jail&rsquo;s address is actually an IP alias (secondary address) on the host which is temporariliy given to the jail.<br />
 If the jail doesn&rsquo;t listen to a specific TCP or UDP port on the address, packets destined to the port/address are processed by the host.<br />
+A jail&rsquo;s address is usually an IP alias (secondary address) on the host but it&rsquo;s not limited to that. Actually a jail can use the host&rsquo;s primary IP address unless the host and the jail doesn&rsquo;t use the same ports.<br />
 I think this behavior is confusing because I expect that the host and jails can be viewed as spearate systems.</p>
 
 <p>It&rsquo;s also hard to understand at first that jail&rsquo;s 127.0.0.1 is mapped to an address deligated to the jail, inter-jail communications go through lo0 even if jails&rsquo; addresses are assigned to lo1 and so on.</p>
 
 <p>In this regard, VNET jails look simpler to me.<br />
 So I gave it a try despite the fact that they require custom kernel with VIMAGE feature enabled (I completely got used to using binary updates with GENERIC kernel and almost forgot the time when I always rebuilt kernel to slim it down).</p>
+
+<p><em>GOOD NEWS! (2018-12-14)<br />
+VIMAGE is enabled by default on FreeBSD 12.0.<br />
+If you are using the version, you don&rsquo;t have to recompile your kernel.</em></p>
 
 <h3 id="installing-and-updating-freebsd-source">Installing and Updating FreeBSD Source</h3>
 
