@@ -239,8 +239,8 @@ Usually, I use clone for quick testing while I prefer zfs send/receive for produ
 
 <p>Create four jails h1, h2, h3 and h4 by cloning the 11.2 template&rsquo;s p3 snapshot.</p>
 
-<pre><code>for host in h1 h2 h3 h4; do
-    sudo zfs clone zroot/vm/tmpl/11.2@p3 zroot/vm/$host
+<pre><code>for jail in h1 h2 h3 h4; do
+    sudo zfs clone zroot/vm/tmpl/11.2@p3 zroot/vm/$jail
 done
 </code></pre>
 
@@ -248,8 +248,8 @@ done
 
 <p>Create four jails h1, h2, h3 and h4 by sending/receiving the 11.2 template&rsquo;s p3 snapshot.</p>
 
-<pre><code>for host in h1 h2 h3 h4; do
-    sudo sh -c &quot;zfs send zroot/vm/tmpl/11.2@p3 | zfs receive zroot/vm/$host&quot;
+<pre><code>for jail in h1 h2 h3 h4; do
+    sudo sh -c &quot;zfs send zroot/vm/tmpl/11.2@p3 | zfs receive zroot/vm/$jail&quot;
 done
 </code></pre>
 
@@ -425,8 +425,8 @@ sudp pkg -j h1 install git-lite vim-console
 
 <p>Update package repositories on multiple jails using shell&rsquo;s for loop.</p>
 
-<pre><code>for host in $(jls name); do
-  sudo pkg -j $host update
+<pre><code>for jail in $(jls name); do
+  sudo pkg -j $jail update
 done
 </code></pre>
 
@@ -507,7 +507,7 @@ sudo shutdown -r now
 
 <h4 id="minimum-configuration">Minimum Configuration</h4>
 
-<p>To add only VIMAGE to GENERIC, create a kernel configuration file with the following content.
+<p>To add only VIMAGE to GENERIC, create a kernel configuration file with the following content.<br />
 [/usr/src/sys/amd64/conf/VIMAGE]</p>
 
 <pre><code>include GENERIC
