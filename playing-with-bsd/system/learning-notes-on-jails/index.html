@@ -124,7 +124,10 @@ This article is a sort of personal notebook where I summarize …">
 <ul>
 <li><a href="#bridged-configuration">Bridged Configuration</a></li>
 <li><a href="#routed-configuration">Routed Configuration</a></li>
-<li><a href="#separate-network-configuration">Separate Network Configuration</a></li>
+<li><a href="#separate-network-configuration">Separate Network Configuration</a>
+<ul>
+<li><a href="#pkg-without-network-connection">pkg without Network Connection</a></li>
+</ul></li>
 </ul></li>
 </ul></li>
 <li><a href="#references">References</a></li>
@@ -331,14 +334,14 @@ h4 {
 
 <h3 id="per-jail-fstab">Per-Jail fstab</h3>
 
-<p>If you want some directories on the host to be visible in jails, create a fstab containing nullfs mount entries for each jail and specify it in /etc/jail.conf&rsquo;s <strong>mount.fstab</strong> parameter.</p>
+<p>If you want some directories on the host to be visible in jails, create a fstab containing nullfs mount entries for each jail and specify it in /etc/jail.conf&rsquo;s <code>mount.fstab</code> parameter.</p>
 
 <p>[/vm/h1.fstab]</p>
 
 <pre><code>/usr/ports /vm/h1/usr/ports nullfs ro 0 0
 </code></pre>
 
-<p>Or you can also use <strong>mount</strong> parameter to specify a single line of fstab entry directly in /etc/jail.conf.</p>
+<p>Or you can also use <code>mount</code> parameter to specify a single line of fstab entry directly in /etc/jail.conf.</p>
 
 <p>[/etc/jail.conf]</p>
 
@@ -710,7 +713,7 @@ ipv6_gateway_enable=&quot;YES&quot;
                                  Site 2
 </code></pre>
 
-<p>To use tcpdump on the central router (r1), define the following devfs ruleset which is specified by <strong>devfs_ruleset</strong> parameter in /etc/jail.conf.</p>
+<p>To use tcpdump on the central router (r1), define the following devfs ruleset which is specified by <code>devfs_ruleset</code> parameter in /etc/jail.conf.</p>
 
 <p>[/etc/devfs.rules]</p>
 
@@ -832,6 +835,8 @@ vpnh2 {
         exec.poststop += &quot;vnet delete $net ${net}_$name&quot;;
 }
 </code></pre>
+
+<h5 id="pkg-without-network-connection">pkg without Network Connection</h5>
 
 <p>Because the jails in this configuration cannot access outside network, <code>pkg install</code> cannot be used. Instead you can use <code>pkg add</code> to install the package files downloaded with <code>pkg fetch</code>.</p>
 
