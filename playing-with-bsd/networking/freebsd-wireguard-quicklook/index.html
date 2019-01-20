@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-  <title>WireGuard on FreeBSD Quick Look: Site-to-Site VPN - genneko</title>
-  <meta property="og:title" content="WireGuard on FreeBSD Quick Look: Site-to-Site VPN - genneko" />
-  <meta name="twitter:title" content="WireGuard on FreeBSD Quick Look: Site-to-Site VPN - genneko" />
+  <title>WireGuard on FreeBSD Quick Look: Testing VPN in Jail Network - genneko</title>
+  <meta property="og:title" content="WireGuard on FreeBSD Quick Look: Testing VPN in Jail Network - genneko" />
+  <meta name="twitter:title" content="WireGuard on FreeBSD Quick Look: Testing VPN in Jail Network - genneko" />
   <meta name="description" content="WireGuard is a new VPN application which focuses on simplicity thus security and speed. Although it was initially developed as a Linux kernel feature, now it has a userspace implementation in Go and binary packages are available for FreeBSD.
 I used this weekend to have a quick look at it on FreeBSD 12.0.
 This time I focused on site-to-site VPN setup. Maybe I will try remote-access VPN configuration in the near future.">
@@ -50,7 +50,7 @@ This time I focused on site-to-site VPN setup. Maybe I will try remote-access VP
     <article class="article">
       
       
-      <h1 class="article-title">WireGuard on FreeBSD Quick Look: Site-to-Site VPN</h1>
+      <h1 class="article-title">WireGuard on FreeBSD Quick Look: Testing VPN in Jail Network</h1>
       
       <hr class="article-title-bottom">
       <ul class="article-meta">
@@ -525,14 +525,16 @@ ifconfig: SIOCIFDESTROY: Invalid argument
 ifconfig tun0 destroy
 </code></pre>
 
-<p>wireguard-go initially creates a tun interface then renames it to the one specified on command-line. I could avoid this cannot-destroy problem by using tunX (e.g. tun1) for WireGuard interface name, but specifying tun0 failed with the following message. This seems to be fixed by adding a simple check to wireguard-go&rsquo;s CreateTUN() function in tun/tun_freebsd.go.</p>
+<p>wireguard-go initially creates a tun interface then renames it to the one specified on command-line. I could workaround this can&rsquo;t-destroy problem by using tunX (e.g. tun1) as a WireGuard interface name from the beginning, but specifying tun0 failed with the following message.</p>
 
 <pre><code>ERROR: (tun0) 2019/01/20 05:51:29 Failed to create TUN device: failed to rename tun0 to tun0: file exists
 </code></pre>
 
-<p>For the fact that wg0 cannot be destroyed in jails, I&rsquo;m not sure what is the root cause of this. But I noticed some weirdness in tun interface&rsquo;s unit number assignment.</p>
+<p>I think this can be fixed by adding a simple check to wireguard-go&rsquo;s CreateTUN() function in tun/tun_freebsd.go.</p>
 
-<p>It seems that when I create tun0 on a jail, I cannot create tun0 on other jails nor the host.</p>
+<p>For the fact that wg0 cannot be destroyed in jails, I&rsquo;m not sure what the root cause is. But I noticed some weirdness in tun interface&rsquo;s unit number assignment.</p>
+
+<p>When I created tun0 on one jail, I couldn&rsquo;t create tun0 on other jails nor the host.</p>
 
 <pre><code>vpnr1# ifconfig tun create
 tun0
@@ -550,12 +552,12 @@ host# ifconfig tun create
 tun2
 </code></pre>
 
-<p>Does it mean that if_tun&rsquo;s unit number is assigned across all jails and host?<br />
-As far as I know, other interface types such as lo and gif seems to have separate unit number namespace for each jail.</p>
+<p>I wonder if it means that if_tun&rsquo;s unit number is assigned sequentially across all jails and host?<br />
+As far as I know, other interface types such as lo and gif seems to have separate unit number namespace for each jail thus I can create those types of interfaces with the same name on multiple jails and host.</p>
 
 <h3 id="rc-d-script-leaves-two-processes-after-shutdown">rc.d script leaves two processes after shutdown</h3>
 
-<p>This is not jail-specific.</p>
+<p>This is not specific to jails.</p>
 
 <p>When using /usr/local/etc/rc.d/wireguard rc.d script, two processes are left after running <code>service wireguard stop</code>. They looks like processes representing monitor_daemon() in wg-quick script.</p>
 
