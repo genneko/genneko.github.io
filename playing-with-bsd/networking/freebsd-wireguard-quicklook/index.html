@@ -6,12 +6,12 @@
   <title>WireGuard on FreeBSD Quick Look: Site-to-Site VPN - genneko</title>
   <meta property="og:title" content="WireGuard on FreeBSD Quick Look: Site-to-Site VPN - genneko" />
   <meta name="twitter:title" content="WireGuard on FreeBSD Quick Look: Site-to-Site VPN - genneko" />
-  <meta name="description" content="WireGuard is a new VPN application which focuses on simplicity thus security and speed. Although it was initially developed as a Linux kernel feature, now it has a userspace implementation in Go and binary packages are available for FreeBSD&rsquo;s pkgng.
+  <meta name="description" content="WireGuard is a new VPN application which focuses on simplicity thus security and speed. Although it was initially developed as a Linux kernel feature, now it has a userspace implementation in Go and binary packages are available for FreeBSD.
 I used this weekend to have a quick look at it on FreeBSD 12.0.
-This time I focused on site-to-site VPN setup. Maybe I will try remote-access VPN with something like Android app.">
-  <meta property="og:description" content="WireGuard is a new VPN application which focuses on simplicity thus security and speed. Although it was initially developed as a Linux kernel feature, now it has a userspace implementation in Go and binary packages are available for FreeBSD&rsquo;s pkgng.
+This time I focused on site-to-site VPN setup. Maybe I will try remote-access VPN configuration in the near future.">
+  <meta property="og:description" content="WireGuard is a new VPN application which focuses on simplicity thus security and speed. Although it was initially developed as a Linux kernel feature, now it has a userspace implementation in Go and binary packages are available for FreeBSD.
 I used this weekend to have a quick look at it on FreeBSD 12.0.
-This time I focused on site-to-site VPN setup. Maybe I will try remote-access VPN with something like Android app.">
+This time I focused on site-to-site VPN setup. Maybe I will try remote-access VPN configuration in the near future.">
   <meta name="twitter:description" content="WireGuard is a new VPN application which focuses on simplicity thus security and speed. Although it was initially developed as a Linux kernel feature, now it has a userspace implementation in Go and …">
   <meta name="author" content="genneko"/>
   <meta property="og:site_name" content="genneko" />
@@ -111,10 +111,10 @@ This time I focused on site-to-site VPN setup. Maybe I will try remote-access VP
 </aside>
       
 
-<p><a href="https://www.wireguard.com">WireGuard</a> is a new VPN application which focuses on simplicity thus security and speed. Although it was initially developed as a Linux kernel feature, now it has a userspace implementation in Go and binary packages are available for FreeBSD&rsquo;s pkgng.</p>
+<p><a href="https://www.wireguard.com">WireGuard</a> is a new VPN application which focuses on simplicity thus security and speed. Although it was initially developed as a Linux kernel feature, now it has a userspace implementation in Go and binary packages are available for FreeBSD.</p>
 
 <p>I used this weekend to have a quick look at it on FreeBSD 12.0.<br />
-This time I focused on site-to-site VPN setup. Maybe I will try remote-access VPN with something like Android app.</p>
+This time I focused on site-to-site VPN setup. Maybe I will try remote-access VPN configuration in the near future.</p>
 
 <h2 id="prerequisite">Prerequisite</h2>
 
@@ -164,14 +164,14 @@ This time I focused on site-to-site VPN setup. Maybe I will try remote-access VP
 
 <p>In this configuration,  jail r1 acts as a central router which crudely emulates a public network and is to be used as a monitoring post running tcpdump, while jail vpnr1 and vpnr2 are routers on private sites and remaining two (vpnh1 and vpnh2) are hosts on the private sites.</p>
 
-<p>I ran WireGuard on vpnr1 and vpnr2 to built a VPN tunnel between site1 and site2.</p>
+<p>I planned to run WireGuard on vpnr1 and vpnr2 and build a VPN tunnel between site1 and site2.</p>
 
 <p>For details on jails configuration, please refer to <a href="https://genneko.github.io/playing-with-bsd/system/learning-notes-on-jails/#separate-network-configuration">another post</a>.<br />
 The following sections assume that all five jails are up and running.</p>
 
 <h2 id="install-wireguard">Install WireGuard</h2>
 
-<p>Because the jails in the above configuration cannot access outside network, <code>pkg install</code> cannot be used to install WireGuard. Instead I used <code>pkg add</code> to install the package files downloaded with <code>pkg fetch</code>.</p>
+<p>Because the jails in the above configuration cannot access network outside of the host system, <code>pkg install</code> cannot be used to install WireGuard on them. Instead I used <code>pkg add</code> to install the package files downloaded with <code>pkg fetch</code>.</p>
 
 <ol>
 <li><p>Download package files on the host.<br />
@@ -182,7 +182,7 @@ Downloaded files are stored in the host&rsquo;s /var/cache/pkg.</p>
 </code></pre></li>
 
 <li><p>Make the downloaded package files available to jails.<br />
-Although you can simply copy the files to jails&rsquo; filesystem, nullfs mount /var/cache/pkg looks much easier.<br />
+Although you can simply copy the files to jails&rsquo; filesystem, nullfs mount /var/cache/pkg on jails looks much easier.<br />
 The following line in /etc/jail.conf achieves this.<br />
 When you start jails, the host&rsquo;s /var/cache/pkg is mounted on each jail&rsquo;s /mnt directory.<br />
 [/etc/jail.conf]</p>
@@ -192,7 +192,8 @@ mount = &quot;/var/cache/pkg /vm/${name}/mnt nullfs ro 0 0&quot;;
 ...
 </code></pre></li>
 
-<li><p>Install the package on jails from the host.</p>
+<li><p>Install the package on jail vpnr1 and vpnr2 from the host.<br />
+The filepath on the command line is the one viewed from jails not the host.</p>
 
 <pre><code>for jail in vpnr1 vpnr2; do
     sudo pkg -j $jail add /mnt/wireguard-0.0.20181218.txz
@@ -256,8 +257,8 @@ AllowedIPs specifies IP address ranges which is allowed to pass through this Wir
 Endpoint is an external IP address/UDP port of the remote system which is used to establish VPN connection.</p></li>
 
 <li><p>Create WireGuard interfaces.
-To create WireGuard interface on FreeBSD, you need to run wireguard-go program.<br />
-Then you can assign IP address on the interfaces, add routes to remote network through the interfaces and have the interface read the WireGuard configuration file.<br />
+To create WireGuard interface on FreeBSD, you need to run userspace wireguard-go program.<br />
+Once an interface was created, you can assign IP address on the interface, add routes to remote network through the interface and apply WireGuard configuration to the interface.<br />
 [vpnr1]</p>
 
 <pre><code>wireguard-go wg0
@@ -276,12 +277,17 @@ route add 192.168.222.1/32 -interface wg0
 route add 192.168.1.0/24 -interface wg0
 wg setconf wg0 ~/wg/wg0.conf
 ifconfig wg0 down up
-</code></pre></li>
+</code></pre>
+
+<p><strong>NOTE</strong><br />
+In my environment, wg0 interface didn&rsquo;t work without <code>ifconfig wg0 down</code> before <code>ifconfig wg0 up</code>.<br />
+By &ldquo;didn&rsquo;t work&rdquo;, I mean that UDP sockets were not created.</p></li>
 
 <li><p>Confirm configurations.<br />
-[vpnr1] netstat -rnfinet</p>
+[vpnr1]</p>
 
-<pre><code>Routing tables
+<pre><code>netstat -rnfinet
+Routing tables
     
 Internet:
 Destination        Gateway            Flags     Netif Expire
@@ -296,9 +302,10 @@ default            172.31.1.1         UGS    vi1_vpnr
 192.168.222.2/32   wg0                US          wg0
 </code></pre>
 
-<p>[vpnr1] ifconfig wg0</p>
+<p>[vpnr1]</p>
 
-<pre><code>wg0: flags=8051&lt;UP,POINTOPOINT,RUNNING,MULTICAST&gt; metric 0 mtu 1420
+<pre><code>ifconfig wg0
+wg0: flags=8051&lt;UP,POINTOPOINT,RUNNING,MULTICAST&gt; metric 0 mtu 1420
         options=80000&lt;LINKSTATE&gt;
         inet 192.168.222.1 --&gt; 192.168.222.1 netmask 0xffffff00
         inet6 fe80::5c71:f2c9:7123:67ad%wg0 prefixlen 64 scopeid 0x4
@@ -307,9 +314,10 @@ default            172.31.1.1         UGS    vi1_vpnr
         Opened by PID 6703
 </code></pre>
 
-<p>[vpnr1] wg show</p>
+<p>[vpnr1]</p>
 
-<pre><code>interface: wg0
+<pre><code>wg show
+interface: wg0
   public key: uoYkPm6lHnxF5T31lD5LB3OGM8/a4eKyUEYcJm5SXXQ=
   private key: (hidden)
   listening port: 51820
@@ -322,44 +330,44 @@ peer: l/bRgqGEAzNtVq9JI3GyYnhFgCRXLNpakPxemH3mrA8=
 
 <h2 id="test-connectivity-and-encryption">Test Connectivity and Encryption</h2>
 
-<p>Once the configuration was done, I tested site-to-site connectivity and packet encryption by running ping between routers and hosts.<br />
-I was also monitorng packets on the intermediate router (r1) and site2 router (vpnr2) with tcpdump.</p>
+<p>Once the configuration was done, I tested site-to-site connectivity by running ping between routers and hosts.<br />
+I was also monitoring packets on the intermediate router (r1) and site2 router (vpnr2) with tcpdump in order to see if the packets are encrypted.</p>
 
 <h3 id="packets-outside-of-the-tunnel">Packets outside of the Tunnel</h3>
 
-<p>Ping packets from the external address of the router on site 1 (vpnr1) to the router on site 2 (vpnr2) were expected to be unencrypted.</p>
+<p>Ping packets from the external address of the router on site 1 (vpnr1: 172.31.1.11) to the router on site 2 (vpnr2: 172.31.2.11) were expected to be unencrypted.</p>
 
 <p>[vpnr1]</p>
 
-<pre><code>ping -c1 -p 504c41494e 172.31.2.1
+<pre><code>ping -c1 -p 504c41494e 172.31.2.11
 PATTERN: 0x504c41494e
-PING 172.31.2.1 (172.31.2.1): 56 data bytes
-64 bytes from 172.31.2.1: icmp_seq=0 ttl=64 time=0.147 ms
+PING 172.31.2.11 (172.31.2.11): 56 data bytes
+64 bytes from 172.31.2.11: icmp_seq=0 ttl=64 time=0.147 ms
 ...
 </code></pre>
 
 <p>[r1]</p>
 
 <pre><code>tcpdump -vln -X -i vi1_r1
-01:49:52.140541 IP (tos 0x0, ttl 64, id 833, offset 0, flags [none], proto ICMP (1), length 84)
-    172.31.1.11 &gt; 172.31.2.1: ICMP echo request, id 47899, seq 0, length 64
-        0x0000:  4500 0054 0341 0000 4001 1c1e ac1f 010b  E..T.A..@.......
-        0x0010:  ac1f 0201 0800 e607 bb1b 0000 5c43 d3c0  ............\C..
-        0x0020:  0002 24d9 504c 4149 4e50 4c41 494e 504c  ..$.PLAINPLAINPL
+09:34:20.976217 IP (tos 0x0, ttl 64, id 8502, offset 0, flags [none], proto ICMP (1), length 84)
+    172.31.1.11 &gt; 172.31.2.11: ICMP echo request, id 39437, seq 0, length 64
+        0x0000:  4500 0054 2136 0000 4001 fe1e ac1f 010b  E..T!6..@.......
+        0x0010:  ac1f 020b 0800 d9e7 9a0d 0000 5c44 409c  ............\D@.
+        0x0020:  000e e51e 504c 4149 4e50 4c41 494e 504c  ....PLAINPLAINPL
         0x0030:  4149 4e50 4c41 494e 504c 4149 4e50 4c41  AINPLAINPLAINPLA
         0x0040:  494e 504c 4149 4e50 4c41 494e 504c 4149  INPLAINPLAINPLAI
         0x0050:  4e50 4c41                                NPLA
-01:49:52.140639 IP (tos 0x0, ttl 64, id 20280, offset 0, flags [none], proto ICMP (1), length 84)
-    172.31.2.1 &gt; 172.31.1.11: ICMP echo reply, id 47899, seq 0, length 64
-        0x0000:  4500 0054 4f38 0000 4001 d026 ac1f 0201  E..TO8..@..&amp;....
-        0x0010:  ac1f 010b 0000 ee07 bb1b 0000 5c43 d3c0  ............\C..
-        0x0020:  0002 24d9 504c 4149 4e50 4c41 494e 504c  ..$.PLAINPLAINPL
+09:34:20.976276 IP (tos 0x0, ttl 63, id 50381, offset 0, flags [none], proto ICMP (1), length 84)
+    172.31.2.11 &gt; 172.31.1.11: ICMP echo reply, id 39437, seq 0, length 64
+        0x0000:  4500 0054 c4cd 0000 3f01 5b87 ac1f 020b  E..T....?.[.....
+        0x0010:  ac1f 010b 0000 e1e7 9a0d 0000 5c44 409c  ............\D@.
+        0x0020:  000e e51e 504c 4149 4e50 4c41 494e 504c  ....PLAINPLAINPL
         0x0030:  4149 4e50 4c41 494e 504c 4149 4e50 4c41  AINPLAINPLAINPLA
         0x0040:  494e 504c 4149 4e50 4c41 494e 504c 4149  INPLAINPLAINPLAI
         0x0050:  4e50 4c41                                NPLA
 </code></pre>
 
-<p>You can see the embedded pattern &lsquo;PLAIN&rsquo;.</p>
+<p>You can see the embedded pattern &lsquo;PLAIN&rsquo; so they are not encrypted.</p>
 
 <h3 id="packets-in-the-tunnel">Packets in the Tunnel</h3>
 
@@ -456,10 +464,10 @@ tcpdump -vln -X -i vri2_vpnr2
 
 <h2 id="configure-wireguard-service-with-rc-d">Configure WireGuard Service with rc.d</h2>
 
-<p>Now I confirmed that WireGuard can be used on FreeBSD systems.<br />
-But to use it in the real world, I thought I had to script the procedures for automatic startup/shutdown of the tunnel.</p>
+<p>Now I know how to configure WireGuard on FreeBSD systems.<br />
+But to use it in the real world, I had to script the procedures in some way for automatic startup/shutdown of the tunnel.</p>
 
-<p>Then I realized that there&rsquo;s already a script /usr/local/etc/rc.d/wireguard which came with the wireguard package.</p>
+<p>Then I realized that there&rsquo;s already an rc.d script /usr/local/etc/rc.d/wireguard which came with the wireguard package.</p>
 
 <p>The script uses wg-quick bash script to setup/shutdown tunnels. Its configuration is simple as follows. I only added Address parameter which specifies the IP address set on the WireGuard interface.</p>
 
