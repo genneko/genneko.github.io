@@ -33,7 +33,7 @@
     <item>
       <title>Freebsd</title>
       <link>https://genneko.github.io/tags/freebsd/</link>
-      <pubDate>Thu, 06 Dec 2018 21:58:00 +0900</pubDate>
+      <pubDate>Sun, 20 Jan 2019 15:47:34 +0900</pubDate>
       
       <guid>https://genneko.github.io/tags/freebsd/</guid>
       <description></description>
@@ -96,7 +96,7 @@
     <item>
       <title>Network</title>
       <link>https://genneko.github.io/tags/network/</link>
-      <pubDate>Sun, 04 Nov 2018 21:19:01 +0900</pubDate>
+      <pubDate>Sun, 20 Jan 2019 15:47:34 +0900</pubDate>
       
       <guid>https://genneko.github.io/tags/network/</guid>
       <description></description>
@@ -132,9 +132,18 @@
     <item>
       <title>Vpn</title>
       <link>https://genneko.github.io/tags/vpn/</link>
-      <pubDate>Thu, 22 Jun 2017 15:09:50 +0900</pubDate>
+      <pubDate>Sun, 20 Jan 2019 15:47:34 +0900</pubDate>
       
       <guid>https://genneko.github.io/tags/vpn/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Wireguard</title>
+      <link>https://genneko.github.io/tags/wireguard/</link>
+      <pubDate>Sun, 20 Jan 2019 15:47:34 +0900</pubDate>
+      
+      <guid>https://genneko.github.io/tags/wireguard/</guid>
       <description></description>
     </item>
     

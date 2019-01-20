@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://genneko.github.io/playing-with-bsd/networking/freebsd-wireguard-quicklook/</loc>
+    <lastmod>2019-01-20T15:47:34+09:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://genneko.github.io/playing-with-bsd/system/bootonly-install-behind-proxy/</loc>
     <lastmod>2018-12-06T21:58:00+09:00</lastmod>
   </url>
@@ -65,7 +70,7 @@
   
   <url>
     <loc>https://genneko.github.io/tags/freebsd/</loc>
-    <lastmod>2018-12-06T21:58:00+09:00</lastmod>
+    <lastmod>2019-01-20T15:47:34+09:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -107,7 +112,7 @@
   
   <url>
     <loc>https://genneko.github.io/tags/network/</loc>
-    <lastmod>2018-11-04T21:19:01+09:00</lastmod>
+    <lastmod>2019-01-20T15:47:34+09:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -137,7 +142,13 @@
   
   <url>
     <loc>https://genneko.github.io/tags/vpn/</loc>
-    <lastmod>2017-06-22T15:09:50+09:00</lastmod>
+    <lastmod>2019-01-20T15:47:34+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://genneko.github.io/tags/wireguard/</loc>
+    <lastmod>2019-01-20T15:47:34+09:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -149,7 +160,7 @@
   
   <url>
     <loc>https://genneko.github.io/</loc>
-    <lastmod>2018-12-06T21:58:00+09:00</lastmod>
+    <lastmod>2019-01-20T15:47:34+09:00</lastmod>
     <priority>0</priority>
   </url>
   

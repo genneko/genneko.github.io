@@ -7,10 +7,21 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>&amp;copy; Copyright 2018 genneko</copyright>
-    <lastBuildDate>Sun, 04 Nov 2018 21:19:01 +0900</lastBuildDate>
+    <lastBuildDate>Sun, 20 Jan 2019 15:47:34 +0900</lastBuildDate>
     
 	<atom:link href="https://genneko.github.io/tags/network/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>WireGuard on FreeBSD Quick Look: Site-to-Site VPN</title>
+      <link>https://genneko.github.io/playing-with-bsd/networking/freebsd-wireguard-quicklook/</link>
+      <pubDate>Sun, 20 Jan 2019 15:47:34 +0900</pubDate>
+      
+      <guid>https://genneko.github.io/playing-with-bsd/networking/freebsd-wireguard-quicklook/</guid>
+      <description>WireGuard is a new VPN application which focuses on simplicity thus security and speed. Although it was initially developed as a Linux kernel feature, now it has a userspace implementation in Go and binary packages are available for FreeBSD&amp;rsquo;s pkgng.
+I used this weekend to have a quick look at it on FreeBSD 12.0.
+This time I focused on site-to-site VPN setup. Maybe I will try remote-access VPN with something like Android app.</description>
+    </item>
     
     <item>
       <title>Learning Spanning Tree Protocol with FreeBSD Bridges</title>
