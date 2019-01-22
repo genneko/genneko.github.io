@@ -7,10 +7,23 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>&amp;copy; Copyright 2018 genneko</copyright>
-    <lastBuildDate>Sun, 20 Jan 2019 15:47:34 +0900</lastBuildDate>
+    <lastBuildDate>Wed, 23 Jan 2019 01:22:00 +0900</lastBuildDate>
     
 	<atom:link href="https://genneko.github.io/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>WireGuard on FreeBSD Quick Look Part 2: Android Remote Access</title>
+      <link>https://genneko.github.io/playing-with-bsd/networking/freebsd-wireguard-android/</link>
+      <pubDate>Wed, 23 Jan 2019 01:22:00 +0900</pubDate>
+      
+      <guid>https://genneko.github.io/playing-with-bsd/networking/freebsd-wireguard-android/</guid>
+      <description>After playing briefly with WireGuard (See previous post) on FreeBSD VNET Jails, today I tried to test it on a FreeBSD host and an Android device which are connected to the Internet.
+Network Configuration  FreeBSD - WireGuard Server.
+I setup a FreeBSD 11.2 droplet (VPS) on DigitalOcean for this experiment. Using wireguard and wireguard-go packages.
+ Android - WireGuard Client.
+Android 8.0 Phone with WireGuard App (Beta) and ConnectBot installed.</description>
+    </item>
     
     <item>
       <title>WireGuard on FreeBSD Quick Look: Testing VPN in Jail Network</title>
