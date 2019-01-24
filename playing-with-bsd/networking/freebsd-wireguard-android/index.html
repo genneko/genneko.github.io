@@ -6,20 +6,14 @@
   <title>WireGuard on FreeBSD Quick Look Part 2: Android Remote Access - genneko</title>
   <meta property="og:title" content="WireGuard on FreeBSD Quick Look Part 2: Android Remote Access - genneko" />
   <meta name="twitter:title" content="WireGuard on FreeBSD Quick Look Part 2: Android Remote Access - …" />
-  <meta name="description" content="After playing briefly with WireGuard (See previous post) on FreeBSD VNET Jails, today I tried to test it between a FreeBSD host and an Android device over the Internet.
-Network Configuration  FreeBSD - WireGuard Server.
-I setup a FreeBSD 11.2 droplet (VPS) on DigitalOcean for this experiment. Using wireguard and wireguard-go packages.
- Android - WireGuard Client.
-Android 8.0 Phone with WireGuard App (Beta) and ConnectBot installed.
-Roaming between home WiFi and 4G network.">
-  <meta property="og:description" content="After playing briefly with WireGuard (See previous post) on FreeBSD VNET Jails, today I tried to test it between a FreeBSD host and an Android device over the Internet.
-Network Configuration  FreeBSD - WireGuard Server.
-I setup a FreeBSD 11.2 droplet (VPS) on DigitalOcean for this experiment. Using wireguard and wireguard-go packages.
- Android - WireGuard Client.
-Android 8.0 Phone with WireGuard App (Beta) and ConnectBot installed.
-Roaming between home WiFi and 4G network.">
-  <meta name="twitter:description" content="After playing briefly with WireGuard (See previous post) on FreeBSD VNET Jails, today I tried to test it between a FreeBSD host and an Android device over the Internet.
-Network Configuration  FreeBSD …">
+  <meta name="description" content="After playing briefly with WireGuard (See previous post) on FreeBSD VNET Jails, today I performed a quick test between a FreeBSD host and an Android device over the Internet.
+NOTE: WireGuard is still in early stage of development. Android app is clearly marked with beta and Go-implementation (wireguard-go) has no official release yet. This article just shows you what I did to take a look at it.
+Network Configuration  FreeBSD - WireGuard Server.">
+  <meta property="og:description" content="After playing briefly with WireGuard (See previous post) on FreeBSD VNET Jails, today I performed a quick test between a FreeBSD host and an Android device over the Internet.
+NOTE: WireGuard is still in early stage of development. Android app is clearly marked with beta and Go-implementation (wireguard-go) has no official release yet. This article just shows you what I did to take a look at it.
+Network Configuration  FreeBSD - WireGuard Server.">
+  <meta name="twitter:description" content="After playing briefly with WireGuard (See previous post) on FreeBSD VNET Jails, today I performed a quick test between a FreeBSD host and an Android device over the Internet.
+NOTE: WireGuard is still …">
   <meta name="author" content="genneko"/>
   <meta property="og:site_name" content="genneko" />
   <meta property="og:url" content="https://genneko.github.io/playing-with-bsd/networking/freebsd-wireguard-android/" />
@@ -125,7 +119,9 @@ Network Configuration  FreeBSD …">
 </aside>
       
 
-<p>After playing briefly with WireGuard (See <a href="https://genneko.github.io/playing-with-bsd/networking/freebsd-wireguard-quicklook">previous post</a>) on FreeBSD VNET Jails, today I tried to test it between a FreeBSD host and an Android device over the Internet.</p>
+<p>After playing briefly with WireGuard (See <a href="https://genneko.github.io/playing-with-bsd/networking/freebsd-wireguard-quicklook">previous post</a>) on FreeBSD VNET Jails, today I performed a quick test between a FreeBSD host and an Android device over the Internet.</p>
+
+<p><em>NOTE: WireGuard is still in early stage of development. Android app is clearly marked with beta and Go-implementation (wireguard-go) has no official release yet. This article just shows you what I did to take a look at it.</em></p>
 
 <h2 id="network-configuration">Network Configuration</h2>
 
@@ -400,7 +396,8 @@ peer: DFrE6f3TM1mVhFE8WLCgcEjCJHwfcj2T6xUt/Rzk6VY=
   transfer: 8.12 KiB received, 12.85 KiB sent
 </code></pre>
 
-<p>Okay. Now I deleted the VPN connection on the Android phone and destroyed the droplet.</p>
+<p>Excellent!<br />
+Now I deleted the VPN connection and removed the configuration on the Android phone and destroyed the droplet.</p>
 
 <h2 id="references">References</h2>
 

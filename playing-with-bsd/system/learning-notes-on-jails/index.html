@@ -126,6 +126,7 @@ This article is a sort of personal notebook where I summarize …">
 <li><a href="#routed-configuration">Routed Configuration</a></li>
 <li><a href="#separate-network-configuration">Separate Network Configuration</a>
 <ul>
+<li><a href="#see-network-configuration">See Network Configuration</a></li>
 <li><a href="#pkg-without-network-connection">pkg without Network Connection</a></li>
 </ul></li>
 </ul></li>
@@ -845,6 +846,25 @@ vpnh2 {
         exec.start += &quot;route add default $gwv4&quot;;
         exec.poststop += &quot;vnet delete $net ${net}_$name&quot;;
 }
+</code></pre>
+
+<h5 id="see-network-configuration">See Network Configuration</h5>
+
+<p>The helper script can list networks (roughly equals to ng_bridges), jails, interfaces (ng_eiface) and their addresses.</p>
+
+<pre><code>$ sudo vnet list -r
+vi1
+  r1 vi1_r1 172.31.1.1/24
+  vpnr1 vi1_vpnr1 172.31.1.11/24
+vi2
+  r1 vi2_r1 172.31.2.1/24
+  vpnr2 vi2_vpnr2 172.31.2.11/24
+vri1
+  vpnh1 vri1_vpnh1 192.168.1.11/24
+  vpnr1 vri1_vpnr1 192.168.1.1/24
+vri2
+  vpnh2 vri2_vpnh2 192.168.2.11/24
+  vpnr2 vri2_vpnr2 192.168.2.1/24
 </code></pre>
 
 <h5 id="pkg-without-network-connection">pkg without Network Connection</h5>
