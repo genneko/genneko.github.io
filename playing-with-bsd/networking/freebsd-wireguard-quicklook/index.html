@@ -573,8 +573,8 @@ nat on $XIF inet from $PRIVATENET to any -&gt; ($XIF)
 
 <pre><code>service wireguard stop
 sysrc wireguard_enable=&quot;NO&quot;
-sudo sysrc pf_enable=&quot;YES&quot;
-sudo service pf start
+sysrc pf_enable=&quot;YES&quot;
+service pf start
 </code></pre></li>
 
 <li><p>Configure WireGuard on vpnh2.<br />
