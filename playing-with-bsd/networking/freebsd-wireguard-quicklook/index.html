@@ -796,6 +796,10 @@ Because of this, <code>service wireguard stop</code> in a jail gets stuck when i
 ifconfig: SIOCIFDESTROY: Invalid argument
 </code></pre>
 
+<p><em>2019-02-13:<br />
+I reported this issue on FreeBSD Bugzilla. It&rsquo;s the first bug report to any OSS in my life! To be honest, it was a bit scary for a non-developer like me to submit a report about high-quality software like FreeBSD. But anyway it is now in the database.</em>
+<a href="https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=235704">https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=235704</a></p>
+
 <p>I found that renaming the interface from wgX to tunX lets you destroy it but this operation sometimes caused reboot on my system.</p>
 
 <pre><code>ifconfig wg0 name tun0
