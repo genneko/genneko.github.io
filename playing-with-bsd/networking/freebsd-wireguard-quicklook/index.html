@@ -844,8 +844,14 @@ As far as I know, other interface types such as lo and gif seems to have separat
 
 <p><em>2019-04-23:<br />
 Workaround was implemented in WireGuard mainstream and FreeBSD ports of wireguard and wireguard-go were also updated.<br />
-Occasional hang of &ldquo;wg-quick down&rdquo; was also worked around.</em><br />
+Occasional hang of &ldquo;wg-quick down&rdquo; was also worked around.<br />
+I tested the workarounds and didn&rsquo;t see any panic nor process hang during 50000 restarts.</em><br />
 <a href="https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=233955">https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=233955</a></p>
+
+<p><em>2019-04-24:<br />
+Kernel fixes also came in! One is already committed to head and the other is being reviewed.</em></p>
+
+<p>There are reports that shutting down WireGuard tunnel interface causes a kernel panic. I also noticed that &ldquo;wg-quick down&rdquo; process occasionally hangs when it waits for the interface to be removed. Those issues seem to be in the kernel and WireGuard only hits them.</p>
 
 <h3 id="rc-d-script-leaves-two-processes-after-shutdown">rc.d script leaves two processes after shutdown</h3>
 
