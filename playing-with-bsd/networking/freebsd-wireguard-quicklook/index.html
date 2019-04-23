@@ -56,7 +56,7 @@ This time I focused on site-to-site VPN setup. Maybe I will try remote-access VP
       <ul class="article-meta">
         <li class="article-meta-date"><time>2019-01-20</time>
         
-        <span class="updated">Update: 2019-01-26</span>
+        <span class="updated">Update: 2019-04-23</span>
         
         </li>
         <li class="article-meta-tags">
@@ -110,7 +110,8 @@ This time I focused on site-to-site VPN setup. Maybe I will try remote-access VP
 </ul></li>
 <li><a href="#caveats">Caveats</a>
 <ul>
-<li><a href="#on-vnet-jails-wgx-cannot-be-destroyed">On VNET Jails, wgX cannot be destroyed</a></li>
+<li><a href="#on-vnet-jails-wgx-cannot-be-destroyed-fixed">On VNET Jails, wgX cannot be destroyed (Fixed)</a></li>
+<li><a href="#kernel-panics-on-shutdown-worked-around">Kernel panics on shutdown (Worked Around)</a></li>
 <li><a href="#rc-d-script-leaves-two-processes-after-shutdown">rc.d script leaves two processes after shutdown</a></li>
 </ul></li>
 <li><a href="#references">References</a></li>
@@ -785,7 +786,14 @@ Source of WireGuard packets were changed back to 172.31.2.11 but ping continued 
 
 <h2 id="caveats">Caveats</h2>
 
-<h3 id="on-vnet-jails-wgx-cannot-be-destroyed">On VNET Jails, wgX cannot be destroyed</h3>
+<h3 id="on-vnet-jails-wgx-cannot-be-destroyed-fixed">On VNET Jails, wgX cannot be destroyed (Fixed)</h3>
+
+<p><em>2019-02-13:<br />
+I reported this issue on FreeBSD Bugzilla. It&rsquo;s the first bug report to any OSS in my life! To be honest, it was a bit scary for a non-developer like me to submit a report about high-quality software like FreeBSD. But anyway it is now in the database.</em>
+<a href="https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=235704">https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=235704</a></p>
+
+<p><em>2019-04-23:<br />
+This issue was fixed in March and MFC to 12-STABLE and 11-STABLE.</em></p>
 
 <p>This is true for both manual and rc.d setup but not the case in non-Jail environment.<br />
 Because of this, <code>service wireguard stop</code> in a jail gets stuck when it waits for the interface to be destroyed.</p>
@@ -795,10 +803,6 @@ Because of this, <code>service wireguard stop</code> in a jail gets stuck when i
 <pre><code>ifconfig wg0 destroy
 ifconfig: SIOCIFDESTROY: Invalid argument
 </code></pre>
-
-<p><em>2019-02-13:<br />
-I reported this issue on FreeBSD Bugzilla. It&rsquo;s the first bug report to any OSS in my life! To be honest, it was a bit scary for a non-developer like me to submit a report about high-quality software like FreeBSD. But anyway it is now in the database.</em>
-<a href="https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=235704">https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=235704</a></p>
 
 <p>I found that renaming the interface from wgX to tunX lets you destroy it but this operation sometimes caused reboot on my system.</p>
 
@@ -835,6 +839,13 @@ tun2
 
 <p>I wonder if it means that if_tun&rsquo;s unit number is assigned sequentially across all jails and host?<br />
 As far as I know, other interface types such as lo and gif seems to have separate unit number namespace for each jail thus I can create those types of interfaces with the same name on multiple jails and host.</p>
+
+<h3 id="kernel-panics-on-shutdown-worked-around">Kernel panics on shutdown (Worked Around)</h3>
+
+<p><em>2019-04-23:<br />
+Workaround was implemented in WireGuard mainstream and FreeBSD ports of wireguard and wireguard-go were also updated.<br />
+Occasional hang of &ldquo;wg-quick down&rdquo; was also worked around.</em><br />
+<a href="https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=233955">https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=233955</a></p>
 
 <h3 id="rc-d-script-leaves-two-processes-after-shutdown">rc.d script leaves two processes after shutdown</h3>
 
