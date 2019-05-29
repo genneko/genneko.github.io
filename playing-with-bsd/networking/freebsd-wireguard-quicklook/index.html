@@ -56,7 +56,7 @@ This time I focused on site-to-site VPN setup. Maybe I will try remote-access VP
       <ul class="article-meta">
         <li class="article-meta-date"><time>2019-01-20</time>
         
-        <span class="updated">Update: 2019-04-24</span>
+        <span class="updated">Update: 2019-05-29</span>
         
         </li>
         <li class="article-meta-tags">
@@ -111,7 +111,7 @@ This time I focused on site-to-site VPN setup. Maybe I will try remote-access VP
 <li><a href="#caveats">Caveats</a>
 <ul>
 <li><a href="#on-vnet-jails-wgx-cannot-be-destroyed-fixed">On VNET Jails, wgX cannot be destroyed (Fixed)</a></li>
-<li><a href="#kernel-panics-on-shutdown-worked-around">Kernel panics on shutdown (Worked Around)</a></li>
+<li><a href="#kernel-panics-on-shutdown-seems-to-be-fixed-on-11-3-beta">Kernel panics on shutdown (Seems to be fixed on 11.3 BETA)</a></li>
 <li><a href="#rc-d-script-leaves-two-processes-after-shutdown">rc.d script leaves two processes after shutdown</a></li>
 </ul></li>
 <li><a href="#references">References</a></li>
@@ -840,7 +840,7 @@ tun2
 <p>I wonder if it means that if_tun&rsquo;s unit number is assigned sequentially across all jails and host?<br />
 As far as I know, other interface types such as lo and gif seems to have separate unit number namespace for each jail thus I can create those types of interfaces with the same name on multiple jails and host.</p>
 
-<h3 id="kernel-panics-on-shutdown-worked-around">Kernel panics on shutdown (Worked Around)</h3>
+<h3 id="kernel-panics-on-shutdown-seems-to-be-fixed-on-11-3-beta">Kernel panics on shutdown (Seems to be fixed on 11.3 BETA)</h3>
 
 <p><em>2019-04-23:<br />
 Workaround was implemented in WireGuard mainstream and FreeBSD ports of wireguard and wireguard-go were also updated.<br />
@@ -850,6 +850,9 @@ I tested the workarounds and didn&rsquo;t see any panic nor process hang during 
 
 <p><em>2019-04-24:<br />
 Kernel fixes also came in! One is already committed to head and the other is being reviewed.</em></p>
+
+<p><em>2019-05-29:<br />
+It appears that the issue has been resolved on FreeBSD 11.3-BETA1 which incorporated recent kernel fixes. It&rsquo;s great to be able to run wireguard on upcoming RELEASE version.</em></p>
 
 <p>There are reports that shutting down WireGuard tunnel interface causes a kernel panic. I also noticed that &ldquo;wg-quick down&rdquo; process occasionally hangs when it waits for the interface to be removed. Those issues seem to be in the kernel and WireGuard only hits them.</p>
 
