@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <title>Using Joplin Terminal Application and Web Clipper on FreeBSD - genneko</title>
+  <meta property="og:title" content="Using Joplin Terminal Application and Web Clipper on FreeBSD - genneko" />
+  <meta name="twitter:title" content="Using Joplin Terminal Application and Web Clipper on FreeBSD - genneko" />
+  <meta name="description" content="I&rsquo;ve been using Evernote since April 2011.
+Although there were times the app got disappointing updates or the service was unexpectedly interrupted (or more often expectedly interrupted by regular maintenance), it had been a great app/service and hopefully it is and it will be.
+Looking at the sorted note list on its web application, I found my first note had a date of 2011-04-24 and it was about Android browser&rsquo;s local file handling.">
+  <meta property="og:description" content="I&rsquo;ve been using Evernote since April 2011.
+Although there were times the app got disappointing updates or the service was unexpectedly interrupted (or more often expectedly interrupted by regular maintenance), it had been a great app/service and hopefully it is and it will be.
+Looking at the sorted note list on its web application, I found my first note had a date of 2011-04-24 and it was about Android browser&rsquo;s local file handling.">
+  <meta name="twitter:description" content="I&rsquo;ve been using Evernote since April 2011.
+Although there were times the app got disappointing updates or the service was unexpectedly interrupted (or more often expectedly interrupted by …">
+  <meta name="author" content="genneko"/>
+  <meta property="og:site_name" content="genneko" />
+  <meta property="og:url" content="https://genneko.github.io/playing-with-bsd/application/joplin-on-freebsd/" />
+  <meta property="og:type" content="article" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="generator" content="Hugo 0.48" />
+
+  <link rel="stylesheet" href="https://genneko.github.io/css/style.css" media="all" />
+  <link rel="stylesheet" href="https://genneko.github.io/css/syntax.css" media="all" />
+  <link rel="stylesheet" href="https://genneko.github.io/css/custom.css" media="all" />
+
+  <script src="https://genneko.github.io/js/script.js"></script>
+  <script src="https://genneko.github.io/js/custom.js"></script>
+  <script defer src="https://genneko.github.io/js/fontawesome.js"></script>
+</head>
+
+<body>
+
+<header class="site-header">
+  <nav class="site-navi">
+    <img class="site-icon" src="https://genneko.github.io/images/genneko-icon.png">
+    <h1 class="site-title"><a href="https://genneko.github.io/">genneko</a></h1>
+    <ul class="site-navi-items">
+      <li class="site-navi-item-playing-with-bsd"><a href="https://genneko.github.io/playing-with-bsd/" title="Playing with BSD">Playing with BSD</a></li>
+      <li class="site-navi-item-tags"><a href="https://genneko.github.io/tags/" title="Tags">Tags</a></li>
+      <li class="site-navi-item-archives"><a href="https://genneko.github.io/archives/" title="Archives">Archives</a></li>
+      <li class="site-navi-item-about"><a href="https://genneko.github.io/about/" title="About">About</a></li>
+    </ul>
+  </nav>
+</header>
+<hr class="site-header-bottom">
+
+
+  <div class="main" role="main">
+    <article class="article">
+      
+      
+      <h1 class="article-title">Using Joplin Terminal Application and Web Clipper on FreeBSD</h1>
+      
+      <hr class="article-title-bottom">
+      <ul class="article-meta">
+        <li class="article-meta-date"><time>2019-06-21</time>
+        
+        </li>
+        <li class="article-meta-tags">
+          <a href="https://genneko.github.io/tags/application/">
+            <i class="fas fa-tag"></i>
+            application
+          </a>&nbsp;
+        </li>
+        <li class="article-meta-tags">
+          <a href="https://genneko.github.io/tags/freebsd/">
+            <i class="fas fa-tag"></i>
+            freebsd
+          </a>&nbsp;
+        </li>
+        <li class="article-meta-tags">
+          <a href="https://genneko.github.io/tags/installation/">
+            <i class="fas fa-tag"></i>
+            installation
+          </a>&nbsp;
+        </li>
+        <li class="article-meta-tags">
+          <a href="https://genneko.github.io/tags/nodejs/">
+            <i class="fas fa-tag"></i>
+            nodejs
+          </a>&nbsp;
+        </li>
+      </ul>
+      
+<aside class="toc">
+  <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#which-types-of-applications-to-use">Which Types of Applications to Use?</a></li>
+<li><a href="#install-terminal-application-on-freebsd">Install Terminal Application on FreeBSD</a>
+<ul>
+<li><a href="#some-notes">Some Notes</a></li>
+<li><a href="#install-the-app-using-npm">Install the App using npm</a></li>
+<li><a href="#build-the-app-from-source">Build the App from Source</a></li>
+</ul></li>
+<li><a href="#web-clipper">Web Clipper</a>
+<ul>
+<li><a href="#build-the-terminal-app-with-headless-support">Build the Terminal App with Headless Support</a></li>
+</ul></li>
+<li><a href="#joplin-web">Joplin Web</a></li>
+<li><a href="#rest-api-and-a-handy-perl-module">REST API and a Handy Perl Module</a></li>
+<li><a href="#references">References</a></li>
+<li><a href="#revision-history">Revision History</a></li>
+</ul></li>
+</ul>
+</nav>
+</aside>
+      
+
+<p>I&rsquo;ve been using Evernote since April 2011.<br />
+Although there were times the app got disappointing updates or the service was unexpectedly interrupted (or more often expectedly interrupted by regular maintenance), it had been a great app/service and hopefully it is and it will be.</p>
+
+<p>Looking at the sorted note list on its web application, I found my first note had a date of 2011-04-24 and it was about Android browser&rsquo;s local file handling. That was exactly when I bought my first smartphone and played with Android 2.x on it, I remember.</p>
+
+<p>Since then, the number of notes has grown up to around 20000 and without doubt, it had been one of the most frequently used applications along with web browsers, email clients and UNIX tools such as shells, ssh, rsync and vim &hellip; until last week.</p>
+
+<p>There might be something wrong with the recent update of Android app. It suddenly became draggingly slow and began draining battery all the time. My phone got unusually hot, so I had no other choice than to uninstall it and start looking for alternatives.</p>
+
+<p>To be clear, the app for Windows and Web continue to work fine.<br />
+But as my daily usecase of Evernote is as follows along with the fact that &ldquo;Evernote for Web&rdquo; cannot be used on Android browsers, I effectively lost access to my notes on mobile environemnts. That&rsquo;s a really huge problem.</p>
+
+<ul>
+<li><p>On PCs</p>
+
+<ul>
+<li>using &ldquo;Evernote for Web&rdquo; to view/add/edit (usually long) notes and clip web pages<br />
+I only use &ldquo;Evernote for Windows&rdquo; for sync and export notes to the local drive.</li>
+</ul></li>
+
+<li><p>On mobile devices</p>
+
+<ul>
+<li>using &ldquo;Evernote for Android&rdquo; to view and occasionally add/edit (usually short) notes and clip web pages</li>
+</ul></li>
+</ul>
+
+<p>That is where <a href="https://joplinapp.org">Joplin</a> comes in.<br />
+It&rsquo;s an open source note-taking application which supports multiple platforms and it has been drawing my interest for a while (according to my note I first heard about it on December 2017).</p>
+
+<p>While an update is still not available for Evernote Android app, I decided to try out Joplin on Android, Windows, Linux &hellip; and FreeBSD, my favorite operating system.</p>
+
+<p>As this blog title has &lsquo;BSD&rsquo;, I will focus on installing Joplin on FreeBSD environments in thie article.<br />
+I&rsquo;m not going to explain how to configure hosts, apps and a sync target (WebDAV server in my case) here.<br />
+They may or may not be in another article.</p>
+
+<h2 id="which-types-of-applications-to-use">Which Types of Applications to Use?</h2>
+
+<p>According to the <a href="https://joplinapp.org#installation">Joplin website</a>, three types of applications are available and each one supports the following platforms.</p>
+
+<ul>
+<li>Desktop (Electron) Application - runs on Windows, MacOS and Linux.</li>
+<li>Mobile (React Native) Application - runs on Android and iOS.</li>
+<li>Terminal (Node.js) Application - runs on Windows, MacOS and Linux<br />
+(Actually, FreeBSD was added while I&rsquo;m writing this article!)<br /></li>
+</ul>
+
+<p>At first glance, none of them seem to support FreeBSD.<br />
+Building the Electron-based desktop app on FreeBSD looks very hard to me, though I recently heard about the progress of Electron on FreeBSD.<br />
+On the other hand, the terminal app seems to have at least minimal support for FreeBSD as the <a href="https://github.com/laurent22/joplin/issues/867">issue #867</a> indicates, so I decided to start with the terminal app.</p>
+
+<p>There are also the following add-on and third-party tools.</p>
+
+<ul>
+<li><a href="https://github.com/laurent22/joplin/blob/master/readme/clipper.md">Web Clipper Browser Extension</a> - for Chrome and Firefox. use the desktop app&rsquo;s Web Clipper API service</li>
+<li><a href="https://github.com/foxmask/joplin-web">joplin-web</a> - Python-based web frontend. use the desktop app&rsquo;s Web Clipper API service</li>
+<li><a href="https://github.com/sciurius/perl-Joplin-API">perl-Joplin-API</a> - Perl module to access Web Clipper API</li>
+</ul>
+
+<p>Basically all of them require the desktop app running on the same host because they interact with the API service provided by the desktop app.<br />
+But it seems possible to use the terminal app instead if it&rsquo;s build with experimental support code. So I will try them later, too.</p>
+
+<h2 id="install-terminal-application-on-freebsd">Install Terminal Application on FreeBSD</h2>
+
+<p>Okay, let&rsquo;s install the terminal app on FreeBSD.</p>
+
+<p>There&rsquo;s two ways to install the app.<br />
+One is to install it with npm (Node Package Manager) and the other is to build it from its source code.</p>
+
+<p>For each method, I describe the steps taken to install and run the terminal app on FreeBSD 11.2, 11.3-BETA3 and 12.0 (amd64 architecture).</p>
+
+<h3 id="some-notes">Some Notes</h3>
+
+<ul>
+<li><p>Here I assume that &lsquo;sudo&rsquo; is used to perform privileged operations and basic packages such as bash, rsync, python, curl and gnupg are already installed. If not, they can be installed by running something like <code>pkg install bash rsync python curl gnupg</code>.</p></li>
+
+<li><p>If errors like &lsquo;python: not found&rsquo; occur during an installation process even if python2.7 or python3.6 is installed, installing &lsquo;python&rsquo; package may fix it.</p></li>
+
+<li><p>While I mainly use node8 and npm-node8 packages, I confirmed that node10 and npm-node10 packages also work.</p></li>
+
+<li><p>Some shell scripts (e.g. build.sh) that come with Joplin source code have a hard-coded path /bin/bash on SheBang line, but FreeBSD&rsquo;s bash is installed in /usr/local/bin. So I run them like <code>bash ./build.sh</code>.</p></li>
+</ul>
+
+<h3 id="install-the-app-using-npm">Install the App using npm</h3>
+
+<p>This is the easiest way to install and run the plain Joplin terminal application.</p>
+
+<p>Basically, I just have to follow the instructions in &ldquo;Terminal application&rdquo; / &ldquo;Linux or Windows (via WSL)&rdquo; section on the <a href="https://joplinapp.org/#terminal-application">Joplin website</a>.</p>
+
+<ol>
+<li><p>Install dependencies.<br />
+pkgconf and vips are required for installing node-gyp.</p>
+
+<pre><code>sudo pkg install node8 npm-node8 pkgconf vips
+sudo npm install -g node-gyp
+</code></pre></li>
+
+<li><p>Install joplin terminal application.</p>
+
+<pre><code>NPM_CONFIG_PREFIX=~/.joplin-bin npm install -g joplin
+sudo ln -s ~/.joplin-bin/bin/joplin /usr/local/bin/joplin
+</code></pre></li>
+
+<li><p>Start the terminal app by running the following command.</p>
+
+<pre><code>joplin
+</code></pre></li>
+
+<li><p>Yeah. I got it working!<br />
+<img src="https://genneko.github.io/images/joplin-on-freebsd/joplin-terminal-app.png" alt="Joplin Terminal App" /><br />
+Now synchronization and other options can be setup with the built-in :config command (it&rsquo;s like vi&rsquo;s colon commands).<br />
+For example, use the following commands on the terminal app to setup synchronization to a WebDAV folder.</p>
+
+<pre><code>:config sync.target 6
+:config sync.6.path https://davserver.example.com/some/dav/folder
+:config sync.6.username dav_username
+:config sync.6.password dav_password
+</code></pre>
+
+<p>What&rsquo;s great about the terminal app is that those commands can be also run on a shell prompt like:</p>
+
+<pre><code>joplin config sync.target 6
+joplin config sync.6.path https://davserver.example.com/some/dav/folder
+joplin config sync.6.username dav_username
+joplin config sync.6.password dav_password
+</code></pre>
+
+<p>For more information, please refer to <a href="https://joplinapp.org/terminal/">Terminal Application Documentation</a>.</p>
+
+<p>Just one more thing. <code>:exit</code> is the command to quit the app.<br />
+I remember the days I struggled to exit UNIX editors such as vi, emacs, joe and so on :)</p></li>
+</ol>
+
+<h3 id="build-the-app-from-source">Build the App from Source</h3>
+
+<p>If you want to modify or use experimental branch of the terminal application, this is the way to go.</p>
+
+<p>Basically, you can follow the steps described in <a href="https://github.com/laurent22/joplin/blob/master/BUILD.md#linux-and-windows-wsl-dependencies">&ldquo;Linux and Windows (WSL) dependencies&rdquo;</a>, <a href="https://github.com/laurent22/joplin/blob/master/BUILD.md#building-the-tools">&ldquo;Building the tools&rdquo;</a> and <a href="https://github.com/laurent22/joplin/blob/master/BUILD.md#building-the-terminal-application">&ldquo;Building the Terminal application&rdquo;</a> sections on the <a href="https://github.com/laurent22/joplin/blob/master/BUILD.md">Build instruction page</a>.</p>
+
+<ol>
+<li><p>Install dependencies.<br />
+pkgconf and vips are required for installing node-gyp.<br />
+Yarn is also required to build the app.</p>
+
+<pre><code>sudo pkg install node8 npm-node8 pkgconf vips
+sudo npm install -g node-gyp
+cd ~/tmp/or/somewhre
+fetch https://yarnpkg.com/install.sh
+less install.sh
+sh ./install.sh
+</code></pre></li>
+
+<li><p>Get (clone) the source from GitHub.</p>
+
+<pre><code>git clone https://github.com/laurent22/joplin.git
+</code></pre></li>
+
+<li><p>Build the tools.</p>
+
+<pre><code>cd joplin/Tools
+npm install
+</code></pre></li>
+
+<li><p>Build the terminal application (aka CLI client).</p>
+
+<pre><code>cd ../CliClient
+npm install
+bash ./build.sh
+rsync --delete -aP ../ReactNativeClient/locales/ build/locales/
+sudo ln -s $(pwd)/build/main.js /usr/local/bin/joplin
+</code></pre></li>
+
+<li><p>Start the terminal app by running the following command.</p>
+
+<pre><code>joplin
+</code></pre>
+
+<p>Please refer to <a href="https://joplinapp.org/terminal/">Terminal Application Documentation</a> for more information.</p></li>
+</ol>
+
+<h2 id="web-clipper">Web Clipper</h2>
+
+<p><a href="https://github.com/laurent22/joplin/blob/master/readme/clipper.md">Joplin Web Clipper</a> is a web browser extension to clip web pages, just like Evernote Web Clipper.</p>
+
+<p>It&rsquo;s easy to install it on supported browsers, i.e. Chrome and Firefox. Just search &ldquo;Joplin Web Clipper&rdquo; on Chrome Web Store or Firefox&rsquo;s Add-ons Manager page and add it to the browser.</p>
+
+<p>Whenever you want to clip(save) a web page you are currently visiting, just click &ldquo;J&rdquo; icon, select how/what/where to clip and click &ldquo;Confirm&rdquo;.</p>
+
+<p>But on FreeBSD you may get an error like &ldquo;Could not find clipper service&rdquo;.</p>
+
+<p>As I mentioned earlier, Web Clipper API service must be running on the same host as the browser. But the service can be only provided by the desktop application, which I cannot build on FreeBSD (yet). So what can I do?</p>
+
+<p>Fortunately, there was already a discussion on <a href="https://discourse.joplinapp.org/t/web-clipper-api-for-cli/725/11">Joplin Forum</a> about implementing API service on the terminal app and there is also an experimental <a href="https://github.com/laurent22/joplin/tree/headless-server">&lsquo;headless-server&rsquo; branch</a> in the repository.</p>
+
+<p>That information made me try to build the terminal app with API server functionality.</p>
+
+<h3 id="build-the-terminal-app-with-headless-support">Build the Terminal App with Headless Support</h3>
+
+<p>This is really a quick and dirty solution just for me and I will never recommend it to anyone else.</p>
+
+<p>But anyway, I wanted to use Web Clipper on FreeBSD (and I also want to use Joplin behind a HTTP proxy) so I forked Joplin repo on GitHub and created a personal branch &lsquo;headless_proxy&rsquo; from master, where I merged upstream&rsquo;s headless-server and proxy_test branches with some dirty modifications to avoid a few issues I encountered.</p>
+
+<p>Installation steps are exactly the same as <a href="#build-the-app-from-source">Build the Terminal App from Source</a> except the github repository to clone and the branch to use.</p>
+
+<p>So please refer to <a href="#build-the-app-from-source">the section</a> and replace the step 2 with the following command lines.</p>
+
+<pre><code>git clone https://github.com/genneko/joplin.git
+cd joplin
+git checkout -b headless-proxy origin/headless_proxy
+</code></pre>
+
+<p>This custom terminal app can be run the same as the original one.</p>
+
+<p>To start Web Clipper API service, type the following command in the terminal app.</p>
+
+<pre><code>:server start
+</code></pre>
+
+<p>To stop the service, run the following command in the app or exit the app.</p>
+
+<pre><code>:server stop
+</code></pre>
+
+<p>The service can be also run without UI by running the following command on shell prompt.</p>
+
+<pre><code>joplin server start
+</code></pre>
+
+<p>Now I can use Web Clipper extension on FreeBSD!
+<img src="https://genneko.github.io/images/joplin-on-freebsd/webclipper-on-freebsd.png" alt="Web Clipper runs on FreeBSD" /></p>
+
+<h2 id="joplin-web">Joplin Web</h2>
+
+<p>Because I&rsquo;ve been mainly using Evernote on its Web application, it is really nice to have a web UI for Joplin too.</p>
+
+<p>Once again fortunately, there&rsquo;s a nice third-party web frontend <a href="https://github.com/foxmask/joplin-web">Joplin Web</a> on GitHub. Although it looks like a WIP/experimental project, I gave it a try.</p>
+
+<ol>
+<li><p>Install python36 and py36-sqlite3 packages.</p>
+
+<pre><code>sudo pkg install py36-sqlite3
+</code></pre></li>
+
+<li><p>Install Joplin Web by following the instructions on its <a href="https://github.com/foxmask/joplin-web">webpage</a>.</p>
+
+<pre><code>cd
+python3.6 -m venv .joplin-web
+cd .joplin-web/
+source bin/activate
+git clone https://github.com/foxmask/joplin-web
+cd joplin-web/
+pip install -r requirements.txt
+</code></pre></li>
+
+<li><p>Edit a config file.</p>
+
+<pre><code>cp joplin_web/env.sample joplin_web/.env
+vi joplin_web/.env
+</code></pre>
+
+<p>[joplin_web/.env]</p>
+
+<pre><code>...
+JOPLIN_PATH='/home/genneko/.config/joplin/'
+JOPLIN_PROFILE_PATH='/home/genneko/.config/joplin/'
+JOPLIN_TOKEN='XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'
+API_USE_JOPLIN_WEBCLIPPER=True
+</code></pre>
+
+<p>I&rsquo;m not 100% sure but the terminal app seems to store its database in $HOME/.config/joplin while the desktop app puts it in $HOME/.config/joplin-desktop.</p>
+
+<p>JOPLIN_TOKEN is a kind of API key. I had been wondering where to get this for the terminal app for a while, then I found it in the app&rsquo;s database file.
+It looks like its value can be retrieved by running the following query.</p>
+
+<pre><code>sqlite3 ~/.config/joplin/database.sqlite &quot;select value from settings where key = 'api.token'&quot;
+</code></pre></li>
+
+<li><p>Prepare a database for Joplin Web.<br />
+This creates joplin_web.sqlite3 file in the current directory.</p>
+
+<pre><code>python manage.py migrate
+</code></pre></li>
+
+<li><p>Run the Joplin Web and point web browser to localhost:8001.</p>
+
+<pre><code>python manage.py runserver 8001
+</code></pre></li>
+
+<li><p>I can see and edit the Joplin notes on the web browser.<br />
+Its behavior is somewhat unstable because it&rsquo;s apparently work in progress. But it&rsquo;s definitely a great step toward the fully feathered web application!
+<img src="https://genneko.github.io/images/joplin-on-freebsd/joplin-web.png" alt="Joplin Web" /></p></li>
+</ol>
+
+<h2 id="rest-api-and-a-handy-perl-module">REST API and a Handy Perl Module</h2>
+
+<p>Joplin Web Clipper Service provides a clean and well-documented <a href="https://joplinapp.org/api/">REST API</a>.</p>
+
+<p>For example, you can get a list of notebooks by using the following command line.<br />
+(<a href="https://stedolan.github.io/jq/">jq</a> is a powerful command-line JSON processor and can be installed from package)</p>
+
+<pre><code>curl -s http://localhost:41184/folders | jq
+[
+  {
+    &quot;id&quot;: &quot;395a8d2573aa46849e67d06d69b9b692&quot;,
+    &quot;parent_id&quot;: &quot;&quot;,
+    &quot;title&quot;: &quot;NewBook&quot;,
+    &quot;type_&quot;: 2
+  },
+  {
+    &quot;id&quot;: &quot;69a54d3a9b3541d291c75d429e707e02&quot;,
+    &quot;parent_id&quot;: &quot;&quot;,
+    &quot;title&quot;: &quot;Welcome! (CLI)&quot;,
+    &quot;type_&quot;: 2
+  }
+]
+</code></pre>
+
+<p>I first thought that I could possibly write yet another CLI client in /bin/sh but then I found that there&rsquo;s a <a href="https://github.com/sciurius/perl-Joplin-API">very handy perl module</a> to access the API.</p>
+
+<p>Here are the steps I took to install and get a feel of it.</p>
+
+<ol>
+<li><p>Install dependencies.</p>
+
+<pre><code>sudo pkg install p5-JSON p5-libwww
+</code></pre></li>
+
+<li><p>Get (clone) the source from GitHub.</p>
+
+<pre><code>git clone https://github.com/sciurius/perl-Joplin-API.git
+</code></pre></li>
+
+<li><p>Build and install the module to ~/local/lib/perl5/site_perl.</p>
+
+<pre><code>cd perl-Joplin-API
+mkdir ~/local
+perl Makefile.PL PREFIX=~/local
+make
+make install
+</code></pre></li>
+
+<li><p>Try to run the similar operation with perl. Great!<br />
+This makes me dream of writing a small web frontend with Mojolicious or some kind of automation scripts.</p>
+
+<pre><code>cat | perl -Mlib=$HOME/local/lib/perl5/site_perl -MJoplin
+$j = Joplin-&gt;connect(server=&gt;&quot;http://localhost:41184&quot;, apikey=&gt;&quot;&quot;);
+$books = $j-&gt;find_folders();
+for my $book (@$books){
+    printf(&quot;%s: %s\n&quot;, @$book{'title', 'id'});
+}
+^D
+NewBook: 395a8d2573aa46849e67d06d69b9b692
+Welcome! (CLI): 69a54d3a9b3541d291c75d429e707e02
+</code></pre></li>
+</ol>
+
+<h2 id="references">References</h2>
+
+<ul>
+<li><p>Joplin<br />
+<a href="https://joplinapp.org/">https://joplinapp.org/</a></p></li>
+
+<li><p>GitHub: laurent22/joplin<br />
+<a href="https://github.com/laurent22/joplin">https://github.com/laurent22/joplin</a></p></li>
+
+<li><p>GitHub: foxmask/joplin-web<br />
+<a href="https://github.com/foxmask/joplin-web">https://github.com/foxmask/joplin-web</a></p></li>
+
+<li><p>GitHub: sciurius/perl-Joplin-API<br />
+<a href="https://github.com/sciurius/perl-Joplin-API">https://github.com/sciurius/perl-Joplin-API</a></p></li>
+</ul>
+
+<h2 id="revision-history">Revision History</h2>
+
+<ul>
+<li>2019-06-21: Created</li>
+</ul>
+
+    </article>
+
+    
+
+
+    <ul class="pager article-pager">
+      <li class="pager-newer pager-noitem">&lt; Newer</li>
+      <li class="pager-older">
+        <a href="https://genneko.github.io/playing-with-bsd/networking/freebsd-wireguard-android/" data-toggle="tooltip" data-placement="top" title="WireGuard on FreeBSD Quick Look Part 2: Android Remote Access">Older &gt;</a>
+      </li>
+    </ul>
+  </div>
+
+
+<div class="site-footer">
+  <div class="copyright">&copy; Copyright 2018 - 2019 genneko</div>
+  <ul class="site-footer-items">
+    <li class="site-footer-item-about"><a href="https://genneko.github.io/about/" title="About">About</a></li>
+  </ul>
+  <div class="powerdby">
+    Powered by <a href="https://gohugo.io/">Hugo</a> and <a href="https://github.com/taikii/whiteplain">Whiteplain</a>
+  </div>
+</div>
+
+
+</body>
+</html>

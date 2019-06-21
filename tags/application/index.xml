@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Installation on genneko</title>
-    <link>https://genneko.github.io/tags/installation/</link>
-    <description>Recent content in Installation on genneko</description>
+    <title>Application on genneko</title>
+    <link>https://genneko.github.io/tags/application/</link>
+    <description>Recent content in Application on genneko</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>&amp;copy; Copyright 2018 - 2019 genneko</copyright>
     <lastBuildDate>Fri, 21 Jun 2019 23:20:00 +0900</lastBuildDate>
     
-	<atom:link href="https://genneko.github.io/tags/installation/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://genneko.github.io/tags/application/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
@@ -21,17 +21,6 @@
       <description>I&amp;rsquo;ve been using Evernote since April 2011.
 Although there were times the app got disappointing updates or the service was unexpectedly interrupted (or more often expectedly interrupted by regular maintenance), it had been a great app/service and hopefully it is and it will be.
 Looking at the sorted note list on its web application, I found my first note had a date of 2011-04-24 and it was about Android browser&amp;rsquo;s local file handling.</description>
-    </item>
-    
-    <item>
-      <title>Using FreeBSD&#39;s Bootonly Installer Behind a Proxy</title>
-      <link>https://genneko.github.io/playing-with-bsd/system/bootonly-install-behind-proxy/</link>
-      <pubDate>Thu, 06 Dec 2018 21:58:00 +0900</pubDate>
-      
-      <guid>https://genneko.github.io/playing-with-bsd/system/bootonly-install-behind-proxy/</guid>
-      <description>I&amp;rsquo;ve been so busy for the last month that I almost forgot about FreeBSD 12.0 which I had been looking forward to. Now it&amp;rsquo;s just around the corner!
-Although it&amp;rsquo;s quite late, I tried to install 12.0-RC3 on a host behind a HTTP proxy and found that using a bootonly installer in this environment was a bit tricky. The following are the steps I took.
- Boot the host with a bootonly installer.</description>
     </item>
     
   </channel>

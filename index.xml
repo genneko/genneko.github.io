@@ -7,10 +7,21 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>&amp;copy; Copyright 2018 - 2019 genneko</copyright>
-    <lastBuildDate>Wed, 23 Jan 2019 01:22:00 +0900</lastBuildDate>
+    <lastBuildDate>Fri, 21 Jun 2019 23:20:00 +0900</lastBuildDate>
     
 	<atom:link href="https://genneko.github.io/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Using Joplin Terminal Application and Web Clipper on FreeBSD</title>
+      <link>https://genneko.github.io/playing-with-bsd/application/joplin-on-freebsd/</link>
+      <pubDate>Fri, 21 Jun 2019 23:20:00 +0900</pubDate>
+      
+      <guid>https://genneko.github.io/playing-with-bsd/application/joplin-on-freebsd/</guid>
+      <description>I&amp;rsquo;ve been using Evernote since April 2011.
+Although there were times the app got disappointing updates or the service was unexpectedly interrupted (or more often expectedly interrupted by regular maintenance), it had been a great app/service and hopefully it is and it will be.
+Looking at the sorted note list on its web application, I found my first note had a date of 2011-04-24 and it was about Android browser&amp;rsquo;s local file handling.</description>
+    </item>
     
     <item>
       <title>WireGuard on FreeBSD Quick Look Part 2: Android Remote Access</title>
