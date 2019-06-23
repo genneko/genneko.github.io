@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-  <title>Using Joplin Terminal Application and Web Clipper on FreeBSD - genneko</title>
-  <meta property="og:title" content="Using Joplin Terminal Application and Web Clipper on FreeBSD - genneko" />
-  <meta name="twitter:title" content="Using Joplin Terminal Application and Web Clipper on FreeBSD - genneko" />
+  <title>Using Joplin (Terminal and Desktop) and Web Clipper on FreeBSD - genneko</title>
+  <meta property="og:title" content="Using Joplin (Terminal and Desktop) and Web Clipper on FreeBSD - genneko" />
+  <meta name="twitter:title" content="Using Joplin (Terminal and Desktop) and Web Clipper on FreeBSD - …" />
   <meta name="description" content="I&rsquo;ve been using Evernote since April 2011.
 Although there were times the app got disappointing updates or the service was unexpectedly interrupted (or more often expectedly interrupted by regular maintenance), it had been a great app/service and hopefully it is and it will be.
 Looking at the sorted note list on its web application, I found my first note had a date of 2011-04-24 and it was about Android browser&rsquo;s local file handling.">
@@ -51,11 +51,13 @@ Although there were times the app got disappointing updates or the service was u
     <article class="article">
       
       
-      <h1 class="article-title">Using Joplin Terminal Application and Web Clipper on FreeBSD</h1>
+      <h1 class="article-title">Using Joplin (Terminal and Desktop) and Web Clipper on FreeBSD</h1>
       
       <hr class="article-title-bottom">
       <ul class="article-meta">
         <li class="article-meta-date"><time>2019-06-21</time>
+        
+        <span class="updated">Update: 2019-06-23</span>
         
         </li>
         <li class="article-meta-tags">
@@ -100,6 +102,7 @@ Although there were times the app got disappointing updates or the service was u
 <ul>
 <li><a href="#build-the-terminal-app-with-headless-support">Build the Terminal App with Headless Support</a></li>
 </ul></li>
+<li><a href="#desktop-application">Desktop Application</a></li>
 <li><a href="#joplin-web">Joplin Web</a></li>
 <li><a href="#rest-api-and-a-handy-perl-module">REST API and a Handy Perl Module</a></li>
 <li><a href="#references">References</a></li>
@@ -158,8 +161,11 @@ They may or may not be in another article.</p>
 </ul>
 
 <p>At first glance, none of them seem to support FreeBSD.<br />
-Building the Electron-based desktop app on FreeBSD looks very hard to me, though I recently heard about the progress of Electron on FreeBSD.<br />
-On the other hand, the terminal app seems to have at least minimal support for FreeBSD as the <a href="https://github.com/laurent22/joplin/issues/867">issue #867</a> indicates, so I decided to start with the terminal app.</p>
+Building the Electron-based desktop app on FreeBSD looks very hard to me, though I recently heard about the progress of Electron on FreeBSD.</p>
+
+<p><em>2019-06-23: I added a <a href="#desktop-application">new section</a> on running the desktop app on FreeBSD!</em></p>
+
+<p>On the other hand, the terminal app seems to have at least minimal support for FreeBSD as the <a href="https://github.com/laurent22/joplin/issues/867">issue #867</a> indicates, so I decided to start with the terminal app.</p>
 
 <p>There are also the following add-on and third-party tools.</p>
 
@@ -252,19 +258,16 @@ I remember the days I struggled to exit UNIX editors such as vi, emacs, joe and 
 <ol>
 <li><p>Install dependencies.<br />
 pkgconf and vips are required for installing node-gyp.<br />
-Yarn is also required to build the app.</p>
+Joplin website says that Yarn is also required but it doesn&rsquo;t seem to apply to the terminal app.</p>
 
 <pre><code>sudo pkg install node8 npm-node8 pkgconf vips
 sudo npm install -g node-gyp
-cd ~/tmp/or/somewhre
-fetch https://yarnpkg.com/install.sh
-less install.sh
-sh ./install.sh
 </code></pre></li>
 
 <li><p>Get (clone) the source from GitHub.</p>
 
-<pre><code>git clone https://github.com/laurent22/joplin.git
+<pre><code>cd ~/tmp/or/somewhere
+git clone https://github.com/laurent22/joplin.git
 </code></pre></li>
 
 <li><p>Build the tools.</p>
@@ -340,6 +343,73 @@ git checkout -b headless_proxy origin/headless_proxy
 
 <p>Now I can use Web Clipper extension on FreeBSD!
 <img src="https://genneko.github.io/images/joplin-on-freebsd/webclipper-on-freebsd.png" alt="Web Clipper runs on FreeBSD" /></p>
+
+<h2 id="desktop-application">Desktop Application</h2>
+
+<p>After successfully building the terminal app, I realized that Electron was added to FreeBSD ports tree as devel/electron4 last month. So finally, I tried to run the Electron-based desktop application on FreeBSD with it.</p>
+
+<p>Because I&rsquo;m not familiar with Electron at all, the following steps are just what I did to run the app and they might not be the right way. But I wrote them as a record anyway.</p>
+
+<ol>
+<li><p>Configure pkg to use the latest package set.</p>
+
+<p>This change is required because the default &ldquo;quarterly&rdquo; set didn&rsquo;t have devel/electron4 yet.<br />
+It was achieved by creating an overriding repository configuration file FreeBSD.conf in /usr/local/etc/pkg/repo and recreating the repository catalog as follows.</p>
+
+<pre><code>sudo mkdir -p /usr/local/etc/pkg/repo
+echo 'FreeBSD: { url: &quot;pkg+http://pkg.FreeBSD.org/${ABI}/latest&quot; }' &gt; /usr/local/etc/pkg/repo/FreeBSD.conf
+sudo pkg update -f
+</code></pre>
+
+<p><em>I first tried to build devel/electron4 from port, but unfortunately my FreeBSD VM seemed to crash with the host (I was not there when the crash happened. I only saw the host OS had been restarted) at the late stage of hours of build process. So I decided to go with pre-built package in the latest package set.</em></p></li>
+
+<li><p>Install electron4 package and its dependencies.</p>
+
+<pre><code>sudo pkg install electron4
+</code></pre></li>
+
+<li><p>Install Joplin&rsquo;s dependencies.<br />
+pkgconf and vips are required for installing node-gyp.</p>
+
+<pre><code>sudo pkg install node8 npm-node8 pkgconf vips
+sudo npm install -g node-gyp
+</code></pre></li>
+
+<li><p>Get (clone) the source from GitHub.</p>
+
+<pre><code>cd ~/tmp/or/somewhere
+git clone https://github.com/laurent22/joplin.git
+</code></pre></li>
+
+<li><p>Build the tools.</p>
+
+<pre><code>cd joplin/Tools
+npm install
+</code></pre></li>
+
+<li><p>Before building the Electron app, I had to make small modifications to at least two files.<br />
+They might be wrong ways but anyway here&rsquo;s <a href="https://gist.githubusercontent.com/genneko/fbd6420404caf5d518563bb056cf46ed/raw/75183ecdea088152fc2bb0dfceb8a6096dc5a427/patch-joplin-electron-freebsd.txt">a patch</a> to apply as follows.</p>
+
+<pre><code>cd ..
+patch &lt; ~/tmp/patch-joplin-electron-freebsd.txt
+</code></pre></li>
+
+<li><p>Build the Electron app by mostly following the <a href="https://github.com/laurent22/joplin/blob/master/BUILD.md#building-the-electron-application">build instruction</a>.<br />
+I omitted a packaging part.</p>
+
+<pre><code>cd ElectronClient/app
+rsync --delete -a ../../ReactNativeClient/lib/ lib/
+npm install
+</code></pre></li>
+
+<li><p>Run the desktop app.</p>
+
+<pre><code>electron .
+</code></pre></li>
+
+<li><p>Yay! Many thanks to folks around the devel/electron4 port!
+<img src="https://genneko.github.io/images/joplin-on-freebsd/joplin-desktop-app.png" alt="Electron Desktop App on FreeBSD" /></p></li>
+</ol>
 
 <h2 id="joplin-web">Joplin Web</h2>
 
@@ -480,12 +550,19 @@ Welcome! (CLI): 69a54d3a9b3541d291c75d429e707e02
 
 <li><p>GitHub: sciurius/perl-Joplin-API<br />
 <a href="https://github.com/sciurius/perl-Joplin-API">https://github.com/sciurius/perl-Joplin-API</a></p></li>
+
+<li><p>FreeBSD Forum: Electron for FreeBSD
+<a href="https://forums.freebsd.org/threads/electron-for-freebsd.64103/">https://forums.freebsd.org/threads/electron-for-freebsd.64103/</a></p></li>
+
+<li><p>FreshPorts: devel/electron4
+<a href="https://www.freshports.org/devel/electron4/">https://www.freshports.org/devel/electron4/</a></p></li>
 </ul>
 
 <h2 id="revision-history">Revision History</h2>
 
 <ul>
 <li>2019-06-21: Created</li>
+<li>2019-06-23: Added &ldquo;Desktop Application&rdquo; and changed the article title</li>
 </ul>
 
     </article>
