@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://genneko.github.io/playing-with-bsd/storage/mounting-from-zfs-failed/</loc>
+    <lastmod>2019-07-18T19:08:00+09:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://genneko.github.io/playing-with-bsd/application/joplin-on-freebsd/</loc>
     <lastmod>2019-06-23T16:55:00+09:00</lastmod>
   </url>
@@ -92,7 +97,7 @@
   
   <url>
     <loc>https://genneko.github.io/tags/freebsd/</loc>
-    <lastmod>2019-06-23T16:55:00+09:00</lastmod>
+    <lastmod>2019-07-18T19:08:00+09:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -146,7 +151,7 @@
   
   <url>
     <loc>https://genneko.github.io/tags/storage/</loc>
-    <lastmod>2018-09-07T07:13:08+00:00</lastmod>
+    <lastmod>2019-07-18T19:08:00+09:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -159,6 +164,18 @@
   <url>
     <loc>https://genneko.github.io/tags/</loc>
     <lastmod>2019-05-05T18:00:00+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://genneko.github.io/tags/ufs/</loc>
+    <lastmod>2019-07-18T19:08:00+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://genneko.github.io/tags/usb/</loc>
+    <lastmod>2019-07-18T19:08:00+09:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -182,13 +199,13 @@
   
   <url>
     <loc>https://genneko.github.io/tags/zfs/</loc>
-    <lastmod>2018-09-07T07:13:08+00:00</lastmod>
+    <lastmod>2019-07-18T19:08:00+09:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://genneko.github.io/</loc>
-    <lastmod>2019-06-23T16:55:00+09:00</lastmod>
+    <lastmod>2019-07-18T19:08:00+09:00</lastmod>
     <priority>0</priority>
   </url>
   

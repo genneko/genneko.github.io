@@ -47,6 +47,54 @@
   <div class="main" role="main">
     <section class="list taxonomy-list">
       <article class="article">
+        <a href="https://genneko.github.io/playing-with-bsd/storage/mounting-from-zfs-failed/" class="article-titles">
+          <h2 class="article-title">Mounting ZFS Root failed when an external USB drive is connected</h2>
+          
+        </a>
+        <ul class="article-meta">
+          <li class="article-meta-date"><time>2019-07-18</time>
+          
+          </li>
+          <li class="article-meta-tags">
+            <a href="https://genneko.github.io/tags/freebsd/">
+              <i class="fas fa-tag"></i>
+              freebsd
+            </a>&nbsp;
+          </li>
+          <li class="article-meta-tags">
+            <a href="https://genneko.github.io/tags/storage/">
+              <i class="fas fa-tag"></i>
+              storage
+            </a>&nbsp;
+          </li>
+          <li class="article-meta-tags">
+            <a href="https://genneko.github.io/tags/ufs/">
+              <i class="fas fa-tag"></i>
+              ufs
+            </a>&nbsp;
+          </li>
+          <li class="article-meta-tags">
+            <a href="https://genneko.github.io/tags/usb/">
+              <i class="fas fa-tag"></i>
+              usb
+            </a>&nbsp;
+          </li>
+          <li class="article-meta-tags">
+            <a href="https://genneko.github.io/tags/zfs/">
+              <i class="fas fa-tag"></i>
+              zfs
+            </a>&nbsp;
+          </li>
+        </ul>
+        <div class="article-content">
+          Last week, one of my FreeBSD 11.2 servers failed to boot with the following error after freebsd-update.
+Mounting from zfs:zroot/ROOT/default failed with error 6; retrying for 3 more seconds  It was the first time I encountered this type of error.
+After struggling for some hours, I was able to boot the server by disconnecting an external USB harddrive, which I had prepared as a secondary backup storage. But since then, I had been wondering what the root cause was.
+        </div>
+        <div class="article-readmore"><a href="https://genneko.github.io/playing-with-bsd/storage/mounting-from-zfs-failed/">Read more...</a></div>
+        <div class="article-floatclear"></div>
+      </article>
+      <article class="article">
         <a href="https://genneko.github.io/playing-with-bsd/application/joplin-on-freebsd/" class="article-titles">
           <h2 class="article-title">Using Joplin (Terminal and Desktop) and Web Clipper on FreeBSD</h2>
           
@@ -425,50 +473,51 @@ sudo kldload zfs sudo sysctl vfs.zfs.min_auto_ashift=12  Remove one (da0) of the
         <div class="article-readmore"><a href="https://genneko.github.io/playing-with-bsd/storage/gmirror-to-zfs/">Read more...</a></div>
         <div class="article-floatclear"></div>
       </article>
-      <article class="article">
-        <a href="https://genneko.github.io/playing-with-bsd/networking/freebsd-vti-ipsec/" class="article-titles">
-          <h2 class="article-title">Route-based VPN with FreeBSD-11.1&#39;s IPsec VTI</h2>
-          
-        </a>
-        <ul class="article-meta">
-          <li class="article-meta-date"><time>2017-06-22</time>
-          
-          </li>
-          <li class="article-meta-tags">
-            <a href="https://genneko.github.io/tags/freebsd/">
-              <i class="fas fa-tag"></i>
-              freebsd
-            </a>&nbsp;
-          </li>
-          <li class="article-meta-tags">
-            <a href="https://genneko.github.io/tags/ipsec/">
-              <i class="fas fa-tag"></i>
-              ipsec
-            </a>&nbsp;
-          </li>
-          <li class="article-meta-tags">
-            <a href="https://genneko.github.io/tags/network/">
-              <i class="fas fa-tag"></i>
-              network
-            </a>&nbsp;
-          </li>
-          <li class="article-meta-tags">
-            <a href="https://genneko.github.io/tags/vpn/">
-              <i class="fas fa-tag"></i>
-              vpn
-            </a>&nbsp;
-          </li>
-        </ul>
-        <div class="article-content">
-          I have managed to setup route-based IPsec VPN with FreeBSD-11.1 RC3, which had introduced ipsec virtual tunnel interface if_ipsec(4). Here is a record of my experiment just for your information.
-Prerequisite  FreeBSD-11.1-RC3/amd64 Generic kernel No special packages/ports (just added sudo and a few other must-have utilities)  Network configuration NOTE: The following text shows bsd1 configurations only.
- 10.0.0.1 10.0.0.2 192.168.10.0/24 --- [bsd1] ----- /// ----- [bsd2] --- 192.
-        </div>
-        <div class="article-readmore"><a href="https://genneko.github.io/playing-with-bsd/networking/freebsd-vti-ipsec/">Read more...</a></div>
-        <div class="article-floatclear"></div>
-      </article>
     </section>
     
+
+<ul class="pagination">
+    
+    <li class="page-item">
+        <a href="https://genneko.github.io/tags/freebsd/" class="page-link" aria-label="First"><span aria-hidden="true">&laquo;&laquo;</span></a>
+    </li>
+    
+    <li class="page-item disabled">
+    <a href="" class="page-link" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
+    </li>
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    <li class="page-item active"><a class="page-link" href="https://genneko.github.io/tags/freebsd/">1</a></li>
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    <li class="page-item"><a class="page-link" href="https://genneko.github.io/tags/freebsd/page/2/">2</a></li>
+    
+    
+    <li class="page-item">
+    <a href="https://genneko.github.io/tags/freebsd/page/2/" class="page-link" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
+    </li>
+    
+    <li class="page-item">
+        <a href="https://genneko.github.io/tags/freebsd/page/2/" class="page-link" aria-label="Last"><span aria-hidden="true">&raquo;&raquo;</span></a>
+    </li>
+    
+</ul>
 
   </div>
 

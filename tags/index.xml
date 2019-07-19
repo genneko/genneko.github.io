@@ -51,7 +51,7 @@
     <item>
       <title>Freebsd</title>
       <link>https://genneko.github.io/tags/freebsd/</link>
-      <pubDate>Fri, 21 Jun 2019 23:20:00 +0900</pubDate>
+      <pubDate>Thu, 18 Jul 2019 19:08:00 +0900</pubDate>
       
       <guid>https://genneko.github.io/tags/freebsd/</guid>
       <description></description>
@@ -132,7 +132,7 @@
     <item>
       <title>Storage</title>
       <link>https://genneko.github.io/tags/storage/</link>
-      <pubDate>Fri, 07 Sep 2018 07:13:08 +0000</pubDate>
+      <pubDate>Thu, 18 Jul 2019 19:08:00 +0900</pubDate>
       
       <guid>https://genneko.github.io/tags/storage/</guid>
       <description></description>
@@ -144,6 +144,24 @@
       <pubDate>Sun, 04 Nov 2018 21:19:01 +0900</pubDate>
       
       <guid>https://genneko.github.io/tags/stp/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Ufs</title>
+      <link>https://genneko.github.io/tags/ufs/</link>
+      <pubDate>Thu, 18 Jul 2019 19:08:00 +0900</pubDate>
+      
+      <guid>https://genneko.github.io/tags/ufs/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Usb</title>
+      <link>https://genneko.github.io/tags/usb/</link>
+      <pubDate>Thu, 18 Jul 2019 19:08:00 +0900</pubDate>
+      
+      <guid>https://genneko.github.io/tags/usb/</guid>
       <description></description>
     </item>
     
@@ -177,7 +195,7 @@
     <item>
       <title>Zfs</title>
       <link>https://genneko.github.io/tags/zfs/</link>
-      <pubDate>Fri, 07 Sep 2018 07:13:08 +0000</pubDate>
+      <pubDate>Thu, 18 Jul 2019 19:08:00 +0900</pubDate>
       
       <guid>https://genneko.github.io/tags/zfs/</guid>
       <description></description>
