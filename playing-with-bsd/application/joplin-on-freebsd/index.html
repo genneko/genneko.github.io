@@ -19,7 +19,7 @@ Although there were times the app got disappointing updates or the service was u
   <meta property="og:url" content="https://genneko.github.io/playing-with-bsd/application/joplin-on-freebsd/" />
   <meta property="og:type" content="article" />
   <meta name="twitter:card" content="summary" />
-  <meta name="generator" content="Hugo 0.48" />
+  <meta name="generator" content="Hugo 0.55.6" />
 
   <link rel="stylesheet" href="https://genneko.github.io/css/style.css" media="all" />
   <link rel="stylesheet" href="https://genneko.github.io/css/syntax.css" media="all" />
@@ -57,7 +57,7 @@ Although there were times the app got disappointing updates or the service was u
       <ul class="article-meta">
         <li class="article-meta-date"><time>2019-06-21</time>
         
-        <span class="updated">Update: 2019-06-23</span>
+        <span class="updated">Update: 2019-07-28</span>
         
         </li>
         <li class="article-meta-tags">
@@ -354,10 +354,10 @@ git checkout -b headless_proxy origin/headless_proxy
 <li><p>Configure pkg to use the latest package set.</p>
 
 <p>This change is required because the default &ldquo;quarterly&rdquo; set didn&rsquo;t have devel/electron4 yet.<br />
-It was achieved by creating an overriding repository configuration file FreeBSD.conf in /usr/local/etc/pkg/repo and recreating the repository catalog as follows.</p>
+It was achieved by creating an overriding repository configuration file FreeBSD.conf in /usr/local/etc/pkg/repos and recreating the repository catalog as follows.</p>
 
-<pre><code>sudo mkdir -p /usr/local/etc/pkg/repo
-echo 'FreeBSD: { url: &quot;pkg+http://pkg.FreeBSD.org/${ABI}/latest&quot; }' &gt; /usr/local/etc/pkg/repo/FreeBSD.conf
+<pre><code>sudo mkdir -p /usr/local/etc/pkg/repos
+echo 'FreeBSD: { url: &quot;pkg+http://pkg.FreeBSD.org/${ABI}/latest&quot; }' &gt; /usr/local/etc/pkg/repos/FreeBSD.conf
 sudo pkg update -f
 </code></pre>
 
@@ -563,6 +563,7 @@ Welcome! (CLI): 69a54d3a9b3541d291c75d429e707e02
 <ul>
 <li>2019-06-21: Created</li>
 <li>2019-06-23: Added &ldquo;Desktop Application&rdquo; and changed the article title</li>
+<li>2019-07-28: Corrected wrong paths for custom pkg config file</li>
 </ul>
 
     </article>

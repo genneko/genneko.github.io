@@ -18,7 +18,7 @@ This time I focused on site-to-site VPN setup. Maybe I will try remote-access VP
   <meta property="og:url" content="https://genneko.github.io/playing-with-bsd/networking/freebsd-wireguard-quicklook/" />
   <meta property="og:type" content="article" />
   <meta name="twitter:card" content="summary" />
-  <meta name="generator" content="Hugo 0.48" />
+  <meta name="generator" content="Hugo 0.55.6" />
 
   <link rel="stylesheet" href="https://genneko.github.io/css/style.css" media="all" />
   <link rel="stylesheet" href="https://genneko.github.io/css/syntax.css" media="all" />
@@ -251,18 +251,20 @@ ListenPort = 51820
 PublicKey = l/bRgqGEAzNtVq9JI3GyYnhFgCRXLNpakPxemH3mrA8=
 AllowedIPs = 192.168.222.2/32, 192.168.2.0/24
 Endpoint = 172.31.2.11:51820
-</code></pre>
+</code></pre></li>
+</ol>
 
-<p>[vpnr2:~/wg/wg0.conf]</p>
+<p>[vpnr2:~/wg/wg0.conf]
+    ```
+    [Interface]
+    PrivateKey = 8DlDYe7fBA/vCahHGEBj+6DXs111eFiAIGEnDoKtckA=
+    ListenPort = 51820</p>
 
-<pre><code>[Interface]
-PrivateKey = 8DlDYe7fBA/vCahHGEBj+6DXs111eFiAIGEnDoKtckA=
-ListenPort = 51820
-    
-[Peer]
+<pre><code>[Peer]
 PublicKey = uoYkPm6lHnxF5T31lD5LB3OGM8/a4eKyUEYcJm5SXXQ=
 AllowedIPs = 192.168.222.1/32, 192.168.1.0/24
 Endpoint = 172.31.1.11:51820
+```
 </code></pre>
 
 <p>Interface section defines a local WireGuard interface.<br />
@@ -271,8 +273,9 @@ ListenPort is a UDP port number on which the local system listens on.<br />
 Peer section defines a remote WireGuard nodes.<br />
 PublicKey is a public key string for a remote system. It is stored in ~/wg/public on the remote system.<br />
 AllowedIPs specifies IP address ranges which is allowed to pass through this WireGuard tunnel.<br />
-Endpoint is an external IP address/UDP port of the remote system which is used to establish VPN connection.</p></li>
+Endpoint is an external IP address/UDP port of the remote system which is used to establish VPN connection.</p>
 
+<ol>
 <li><p>Create WireGuard interfaces.
 To create WireGuard interface on FreeBSD, you need to run userspace wireguard-go program.<br />
 Once an interface was created, you can assign IP address on the interface, add routes to remote network through the interface and apply WireGuard configuration to the interface.<br />
@@ -317,33 +320,33 @@ default            172.31.1.1         UGS    vi1_vpnr
 192.168.2.0/24     wg0                US          wg0
 192.168.222.1      link#4             UH          wg0
 192.168.222.2/32   wg0                US          wg0
-</code></pre>
-
-<p>[vpnr1]</p>
-
-<pre><code>ifconfig wg0
-wg0: flags=8051&lt;UP,POINTOPOINT,RUNNING,MULTICAST&gt; metric 0 mtu 1420
-        options=80000&lt;LINKSTATE&gt;
-        inet 192.168.222.1 --&gt; 192.168.222.1 netmask 0xffffff00
-        inet6 fe80::5c71:f2c9:7123:67ad%wg0 prefixlen 64 scopeid 0x4
-        groups: tun
-        nd6 options=21&lt;PERFORMNUD,AUTO_LINKLOCAL&gt;
-        Opened by PID 6703
-</code></pre>
-
-<p>[vpnr1]</p>
-
-<pre><code>wg show
-interface: wg0
-  public key: uoYkPm6lHnxF5T31lD5LB3OGM8/a4eKyUEYcJm5SXXQ=
-  private key: (hidden)
-  listening port: 51820
-    
-peer: l/bRgqGEAzNtVq9JI3GyYnhFgCRXLNpakPxemH3mrA8=
-  endpoint: 172.31.2.11:51820
-  allowed ips: 192.168.2.0/24, 192.168.222.2/32
 </code></pre></li>
 </ol>
+
+<p>[vpnr1]
+    <code>
+    ifconfig wg0
+    wg0: flags=8051&lt;UP,POINTOPOINT,RUNNING,MULTICAST&gt; metric 0 mtu 1420
+            options=80000&lt;LINKSTATE&gt;
+            inet 192.168.222.1 --&gt; 192.168.222.1 netmask 0xffffff00
+            inet6 fe80::5c71:f2c9:7123:67ad%wg0 prefixlen 64 scopeid 0x4
+            groups: tun
+            nd6 options=21&lt;PERFORMNUD,AUTO_LINKLOCAL&gt;
+            Opened by PID 6703
+</code>
+[vpnr1]
+    ```
+    wg show
+    interface: wg0
+      public key: uoYkPm6lHnxF5T31lD5LB3OGM8/a4eKyUEYcJm5SXXQ=
+      private key: (hidden)
+      listening port: 51820</p>
+
+<pre><code>peer: l/bRgqGEAzNtVq9JI3GyYnhFgCRXLNpakPxemH3mrA8=
+  endpoint: 172.31.2.11:51820
+  allowed ips: 192.168.2.0/24, 192.168.222.2/32
+```
+</code></pre>
 
 <h3 id="test-connectivity-and-encryption">Test Connectivity and Encryption</h3>
 
@@ -597,15 +600,17 @@ PrivateKey = content of &lt;private&gt;
 PublicKey = uoYkPm6lHnxF5T31lD5LB3OGM8/a4eKyUEYcJm5SXXQ=
 AllowedIPs = 192.168.222.1/32, 192.168.1.0/24
 Endpoint = 172.31.1.11:51820
-</code></pre>
+</code></pre></li>
+</ol>
 
 <p>[vpnh2]</p>
 
 <pre><code>sysrc wireguard_enable=&quot;YES&quot;
 sysrc wireguard_interfaces=&quot;wg0&quot;
 service wireguard start
-</code></pre></li>
+</code></pre>
 
+<ol>
 <li><p>Reconfigure vpnr1 to accept connection from vpnh2 instead of vpnr2.<br />
 [vpnr1:/usr/local/etc/wireguard/wg0.conf]</p>
 
@@ -617,14 +622,14 @@ ListenPort = 51820
 [Peer]
 PublicKey = content of vpnh2's &lt;public&gt;
 AllowedIPs = 192.168.222.211/32
-</code></pre>
+</code></pre></li>
+</ol>
 
 <p>[vpnr1]</p>
 
 <pre><code>service wireguard stop
 service wireguard start
-</code></pre></li>
-</ol>
+</code></pre>
 
 <h3 id="test-and-monitor">Test and Monitor</h3>
 
