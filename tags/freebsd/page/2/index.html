@@ -47,6 +47,49 @@
   <div class="main" role="main">
     <section class="list taxonomy-list">
       <article class="article">
+        <a href="https://genneko.github.io/playing-with-bsd/storage/gmirror-to-zfs/" class="article-titles">
+          <h2 class="article-title">Migrating a live system from GEOM mirror to ZFS mirror</h2>
+          
+        </a>
+        <ul class="article-meta">
+          <li class="article-meta-date"><time>2018-04-17</time>
+          
+          </li>
+          <li class="article-meta-tags">
+            <a href="https://genneko.github.io/tags/freebsd/">
+              <i class="fas fa-tag"></i>
+              freebsd
+            </a>&nbsp;
+          </li>
+          <li class="article-meta-tags">
+            <a href="https://genneko.github.io/tags/geom/">
+              <i class="fas fa-tag"></i>
+              geom
+            </a>&nbsp;
+          </li>
+          <li class="article-meta-tags">
+            <a href="https://genneko.github.io/tags/storage/">
+              <i class="fas fa-tag"></i>
+              storage
+            </a>&nbsp;
+          </li>
+          <li class="article-meta-tags">
+            <a href="https://genneko.github.io/tags/zfs/">
+              <i class="fas fa-tag"></i>
+              zfs
+            </a>&nbsp;
+          </li>
+        </ul>
+        <div class="article-content">
+          I had been wanting to migrate a FreeBSD system on a GEOM mirror (gmirror) to a ZFS mirror.
+After several rehearsals on a VM, I have finally achieved that goal with the following steps.
+ Load ZFS-releated kernel modules and set a tunable to use 4K sector drives.
+sudo kldload zfs sudo sysctl vfs.zfs.min_auto_ashift=12  Remove one (da0) of the two disks (da0, da1) which make up the gmirror (gm0).
+        </div>
+        <div class="article-readmore"><a href="https://genneko.github.io/playing-with-bsd/storage/gmirror-to-zfs/">Read more...</a></div>
+        <div class="article-floatclear"></div>
+      </article>
+      <article class="article">
         <a href="https://genneko.github.io/playing-with-bsd/networking/freebsd-vti-ipsec/" class="article-titles">
           <h2 class="article-title">Route-based VPN with FreeBSD-11.1&#39;s IPsec VTI</h2>
           

@@ -7,10 +7,21 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>&amp;copy; Copyright 2018 - 2019 genneko</copyright>
-    <lastBuildDate>Thu, 18 Jul 2019 19:08:00 +0900</lastBuildDate>
+    <lastBuildDate>Sat, 10 Aug 2019 18:00:00 +0900</lastBuildDate>
     
 	<atom:link href="https://genneko.github.io/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Growing a ZFS Mirror Pool</title>
+      <link>https://genneko.github.io/playing-with-bsd/storage/growing-a-zfs-mirror/</link>
+      <pubDate>Sat, 10 Aug 2019 18:00:00 +0900</pubDate>
+      
+      <guid>https://genneko.github.io/playing-with-bsd/storage/growing-a-zfs-mirror/</guid>
+      <description>I have a tiny home server for my family. It&amp;rsquo;s based on Atom N2800 CPU and runs FreeBSD 11.2 with a two-disk ZFS mirror.
+Originally it had two 500GB disks, but now it has a 500GB and a 1TB ones because one of them was replaced due to a failure.
+As the Handbook says, the available space of a mirror pool is limited by the size of the smallest disk.</description>
+    </item>
     
     <item>
       <title>Mounting ZFS Root failed when an external USB drive is connected</title>

@@ -47,6 +47,42 @@
   <div class="main" role="main">
     <section class="list taxonomy-list">
       <article class="article">
+        <a href="https://genneko.github.io/playing-with-bsd/storage/growing-a-zfs-mirror/" class="article-titles">
+          <h2 class="article-title">Growing a ZFS Mirror Pool</h2>
+          
+        </a>
+        <ul class="article-meta">
+          <li class="article-meta-date"><time>2019-08-10</time>
+          
+          </li>
+          <li class="article-meta-tags">
+            <a href="https://genneko.github.io/tags/freebsd/">
+              <i class="fas fa-tag"></i>
+              freebsd
+            </a>&nbsp;
+          </li>
+          <li class="article-meta-tags">
+            <a href="https://genneko.github.io/tags/storage/">
+              <i class="fas fa-tag"></i>
+              storage
+            </a>&nbsp;
+          </li>
+          <li class="article-meta-tags">
+            <a href="https://genneko.github.io/tags/zfs/">
+              <i class="fas fa-tag"></i>
+              zfs
+            </a>&nbsp;
+          </li>
+        </ul>
+        <div class="article-content">
+          I have a tiny home server for my family. It&rsquo;s based on Atom N2800 CPU and runs FreeBSD 11.2 with a two-disk ZFS mirror.
+Originally it had two 500GB disks, but now it has a 500GB and a 1TB ones because one of them was replaced due to a failure.
+As the Handbook says, the available space of a mirror pool is limited by the size of the smallest disk.
+        </div>
+        <div class="article-readmore"><a href="https://genneko.github.io/playing-with-bsd/storage/growing-a-zfs-mirror/">Read more...</a></div>
+        <div class="article-floatclear"></div>
+      </article>
+      <article class="article">
         <a href="https://genneko.github.io/playing-with-bsd/storage/mounting-from-zfs-failed/" class="article-titles">
           <h2 class="article-title">Mounting ZFS Root failed when an external USB drive is connected</h2>
           
@@ -428,49 +464,6 @@ After a decade and a half, I decided to reconnect my home network to the IPv6 In
 Unfortunately, native IPv6 service is still unavailable for me.
         </div>
         <div class="article-readmore"><a href="https://genneko.github.io/playing-with-bsd/networking/freebsd-tunnelv6-he/">Read more...</a></div>
-        <div class="article-floatclear"></div>
-      </article>
-      <article class="article">
-        <a href="https://genneko.github.io/playing-with-bsd/storage/gmirror-to-zfs/" class="article-titles">
-          <h2 class="article-title">Migrating a live system from GEOM mirror to ZFS mirror</h2>
-          
-        </a>
-        <ul class="article-meta">
-          <li class="article-meta-date"><time>2018-04-17</time>
-          
-          </li>
-          <li class="article-meta-tags">
-            <a href="https://genneko.github.io/tags/freebsd/">
-              <i class="fas fa-tag"></i>
-              freebsd
-            </a>&nbsp;
-          </li>
-          <li class="article-meta-tags">
-            <a href="https://genneko.github.io/tags/geom/">
-              <i class="fas fa-tag"></i>
-              geom
-            </a>&nbsp;
-          </li>
-          <li class="article-meta-tags">
-            <a href="https://genneko.github.io/tags/storage/">
-              <i class="fas fa-tag"></i>
-              storage
-            </a>&nbsp;
-          </li>
-          <li class="article-meta-tags">
-            <a href="https://genneko.github.io/tags/zfs/">
-              <i class="fas fa-tag"></i>
-              zfs
-            </a>&nbsp;
-          </li>
-        </ul>
-        <div class="article-content">
-          I had been wanting to migrate a FreeBSD system on a GEOM mirror (gmirror) to a ZFS mirror.
-After several rehearsals on a VM, I have finally achieved that goal with the following steps.
- Load ZFS-releated kernel modules and set a tunable to use 4K sector drives.
-sudo kldload zfs sudo sysctl vfs.zfs.min_auto_ashift=12  Remove one (da0) of the two disks (da0, da1) which make up the gmirror (gm0).
-        </div>
-        <div class="article-readmore"><a href="https://genneko.github.io/playing-with-bsd/storage/gmirror-to-zfs/">Read more...</a></div>
         <div class="article-floatclear"></div>
       </article>
     </section>
