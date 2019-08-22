@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <title>ThinkPad T480 is my new main laptop which runs FreeBSD - genneko</title>
+  <meta property="og:title" content="ThinkPad T480 is my new main laptop which runs FreeBSD - genneko" />
+  <meta name="twitter:title" content="ThinkPad T480 is my new main laptop which runs FreeBSD - genneko" />
+  <meta name="description" content="I&rsquo;ve been using FreeBSD as my primary server OS for quite a long time.
+But, for unknown reasons, I have never seriously used it on client workstations.
+Maybe it&rsquo;s partly because I&rsquo;m a CUI-oriented person who loves doing things on text terminals as much as possible.
+Actually, I have been pretty happy with any client OS as long as I could use a decent terminal on it, so that I could SSH into FreeBSD servers where I spent a lot of time doing jobs which didn&rsquo;t require graphical interface.">
+  <meta property="og:description" content="I&rsquo;ve been using FreeBSD as my primary server OS for quite a long time.
+But, for unknown reasons, I have never seriously used it on client workstations.
+Maybe it&rsquo;s partly because I&rsquo;m a CUI-oriented person who loves doing things on text terminals as much as possible.
+Actually, I have been pretty happy with any client OS as long as I could use a decent terminal on it, so that I could SSH into FreeBSD servers where I spent a lot of time doing jobs which didn&rsquo;t require graphical interface.">
+  <meta name="twitter:description" content="I&rsquo;ve been using FreeBSD as my primary server OS for quite a long time.
+But, for unknown reasons, I have never seriously used it on client workstations.
+Maybe it&rsquo;s partly because I&rsquo;m …">
+  <meta name="author" content="genneko"/>
+  <meta property="og:site_name" content="genneko" />
+  <meta property="og:url" content="https://genneko.github.io/playing-with-bsd/hardware/freebsd-on-thinkpad-t480/" />
+  <meta property="og:type" content="article" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="generator" content="Hugo 0.55.6" />
+
+  <link rel="stylesheet" href="https://genneko.github.io/css/style.css" media="all" />
+  <link rel="stylesheet" href="https://genneko.github.io/css/syntax.css" media="all" />
+  <link rel="stylesheet" href="https://genneko.github.io/css/custom.css" media="all" />
+
+  <script src="https://genneko.github.io/js/script.js"></script>
+  <script src="https://genneko.github.io/js/custom.js"></script>
+  <script defer src="https://genneko.github.io/js/fontawesome.js"></script>
+</head>
+
+<body>
+
+<header class="site-header">
+  <nav class="site-navi">
+    <img class="site-icon" src="https://genneko.github.io/images/genneko-icon.png">
+    <h1 class="site-title"><a href="https://genneko.github.io/">genneko</a></h1>
+    <ul class="site-navi-items">
+      <li class="site-navi-item-playing-with-bsd"><a href="https://genneko.github.io/playing-with-bsd/" title="Playing with BSD">Playing with BSD</a></li>
+      <li class="site-navi-item-tags"><a href="https://genneko.github.io/tags/" title="Tags">Tags</a></li>
+      <li class="site-navi-item-archives"><a href="https://genneko.github.io/archives/" title="Archives">Archives</a></li>
+      <li class="site-navi-item-about"><a href="https://genneko.github.io/about/" title="About">About</a></li>
+    </ul>
+  </nav>
+</header>
+<hr class="site-header-bottom">
+
+
+  <div class="main" role="main">
+    <article class="article">
+      
+      
+      <h1 class="article-title">ThinkPad T480 is my new main laptop which runs FreeBSD</h1>
+      
+      <hr class="article-title-bottom">
+      <ul class="article-meta">
+        <li class="article-meta-date"><time>2019-08-22</time>
+        
+        </li>
+        <li class="article-meta-tags">
+          <a href="https://genneko.github.io/tags/desktop/">
+            <i class="fas fa-tag"></i>
+            desktop
+          </a>&nbsp;
+        </li>
+        <li class="article-meta-tags">
+          <a href="https://genneko.github.io/tags/freebsd/">
+            <i class="fas fa-tag"></i>
+            freebsd
+          </a>&nbsp;
+        </li>
+        <li class="article-meta-tags">
+          <a href="https://genneko.github.io/tags/installation/">
+            <i class="fas fa-tag"></i>
+            installation
+          </a>&nbsp;
+        </li>
+        <li class="article-meta-tags">
+          <a href="https://genneko.github.io/tags/laptop/">
+            <i class="fas fa-tag"></i>
+            laptop
+          </a>&nbsp;
+        </li>
+        <li class="article-meta-tags">
+          <a href="https://genneko.github.io/tags/xorg/">
+            <i class="fas fa-tag"></i>
+            xorg
+          </a>&nbsp;
+        </li>
+      </ul>
+      
+<aside class="toc">
+  <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#laptop-specs">Laptop Specs</a></li>
+<li><a href="#what-works-and-what-does-not">What works and what does not</a></li>
+<li><a href="#initial-setup">Initial Setup</a>
+<ul>
+<li><a href="#disable-secure-boot-tpm-and-bluetooth">Disable Secure Boot, TPM and Bluetooth</a></li>
+<li><a href="#which-version-to-install">Which Version to Install?</a></li>
+<li><a href="#os-installation">OS Installation</a></li>
+<li><a href="#basic-configurations-after-the-first-boot">Basic Configurations After the First Boot</a></li>
+<li><a href="#setting-up-grahpical-desktop-environment">Setting up Grahpical Desktop Environment</a></li>
+</ul></li>
+<li><a href="#personal-notes-on-further-setup">Personal Notes on Further Setup</a>
+<ul>
+<li><a href="#touchpad-and-trackpoint">Touchpad and TrackPoint</a></li>
+<li><a href="#screen-brightness">Screen Brightness</a></li>
+<li><a href="#beep-on-logout">Beep on Logout</a></li>
+<li><a href="#epson-ink-jet-printer-ep-802a">EPSON Ink-Jet Printer EP-802A</a></li>
+<li><a href="#audacity">Audacity</a></li>
+<li><a href="#joplin">Joplin</a></li>
+<li><a href="#onedrive">OneDrive</a></li>
+<li><a href="#wine">WINE</a></li>
+<li><a href="#bhyve">Bhyve</a></li>
+</ul></li>
+<li><a href="#references">References</a></li>
+<li><a href="#revision-history">Revision History</a></li>
+</ul></li>
+</ul>
+</nav>
+</aside>
+      
+
+<p>I&rsquo;ve been using FreeBSD as my primary server OS for quite a long time.<br />
+But, for unknown reasons, I have never seriously used it on client workstations.</p>
+
+<p>Maybe it&rsquo;s partly because I&rsquo;m a CUI-oriented person who loves doing things on text terminals as much as possible.</p>
+
+<p>Actually, I have been pretty happy with any client OS as long as I could use a decent terminal on it, so that I could SSH into FreeBSD servers where I spent a lot of time doing jobs which didn&rsquo;t require graphical interface.</p>
+
+<p>However, it&rsquo;s also true that I have been wishing for a FreeBSD desktop which allows me to do everything from web browsing to text editing on a single machine.</p>
+
+<p>So I started a research on FreeBSD laptops in the midst of this year&rsquo;s longer-than-usual rainy season. After gathering information on the web, I tried various GUI setup on VMs and then I bought a new laptop, Lenovo ThinkPad T480.</p>
+
+<p>Experimenting for a while on the T480, finally I&rsquo;ve got a fully working FreeBSD laptop for daily use, just after the rainy season was over!</p>
+
+<p>Because it has proven to be a really great machine for running FreeBSD, I write this article to share something with anyone who looks for a similar experience.</p>
+
+<p><img src="https://genneko.github.io/images/freebsd-on-thinkpad-t480/T480_FreeBSD_And_Cat.jpg" alt="T480 FreeBSD Workstation" /></p>
+
+<h2 id="laptop-specs">Laptop Specs</h2>
+
+<p>Generally speaking, I love small machines with low power consumption. But this time, my goal is replacing my main desktop (running Windows) with a new laptop, so I invested on performance much more than usual.</p>
+
+<ul>
+<li>CPU: Core i7-8550U 1.8GHz (Boosted to 4.0GHz) (4 cores/8 threads, TDP 15W)</li>
+<li>RAM: 32GB (16GBx2) DDR4 2400MHz SODIMM</li>
+<li>Storage: SAMSUNG 860 EVO 1.0TB SATA SSD<br />
+(originally the laptop came with a SEAGATE STL1000LM035 1.0TB (5400rpm) SATA)</li>
+<li>VGA: Integrated Intel UHD Graphics 620</li>
+<li>Ethernet: Intel Ethernet Connection I219-V (Onboard 1000BASE-T)</li>
+<li>WiFi: Intel Dual Band Wireless-AC 8265 (2x2 AC) + BT 4.1</li>
+<li>No Fingerprint and Smartcard readers</li>
+</ul>
+
+<h2 id="what-works-and-what-does-not">What works and what does not</h2>
+
+<p>With FreeBSD 12.0-RELEASE + Xorg + XFCE4, I can get the following stuff working on T480.</p>
+
+<ul>
+<li>Ethernet and WiFi work, although WiFi is a bit slow (only up to 802.11a?) compared to 802.11n/802.11ac capable OSes.</li>
+<li>Xorg works fine in full resolution (1920x1080) with i915kms.ko.</li>
+<li>Suspend/resume works almost fine as the same level as Windows (they sometimes get weird anyway).</li>
+<li>Sound output works on both speaker and headphones.</li>
+<li>Microphone seems to work on Audacity and Google Hangouts.</li>
+<li>Mute button works. Volume buttons do not work but you can adjust volume with UI.</li>
+<li>LCD Brightness buttons work.</li>
+<li>SD card reader seems to work. DOS-formatted SD card can be mounted and read as usual filesystems.</li>
+<li>Some Windows programs can be run on WINE.</li>
+<li>Windows 10 can be run on bhyve.</li>
+</ul>
+
+<p>I haven&rsquo;t able to make those things work so far.</p>
+
+<ul>
+<li>Webcam works on pwcview with webcamd and cuse.ko but isn&rsquo;t detected by Google Hangouts on Firefox/Chromium.</li>
+<li>Failover between Ethernet and WiFi in the following example (Example 31.3. Failover Mode Between Ethernet and Wireless Interfaces).<br />
+<a href="https://www.freebsd.org/doc/handbook/network-aggregation.html">https://www.freebsd.org/doc/handbook/network-aggregation.html</a></li>
+</ul>
+
+<p>I haven&rsquo;t tested the following items.</p>
+
+<ul>
+<li>Bluetooth (disabled in BIOS to avoid hang on reboot)</li>
+</ul>
+
+<h2 id="initial-setup">Initial Setup</h2>
+
+<h3 id="disable-secure-boot-tpm-and-bluetooth">Disable Secure Boot, TPM and Bluetooth</h3>
+
+<p>To boot T480 from FreeBSD installation media, I had to enter the BIOS menu and disable Secure Boot and TPM.<br />
+It is also required to disable Bluetooth to avoid hangup on system reboot.<br />
+<a href="https://wiki.freebsd.org/Laptops/Thinkpad_X270">https://wiki.freebsd.org/Laptops/Thinkpad_X270</a></p>
+
+<p>To enter the setup menu on startup, press Enter at the Lenovo logo screen.
+A loud beep can be suppressed by turn Mute button on.<br />
+<a href="https://forums.lenovo.com/t5/ThinkPad-11e-Windows-13-E-and/Loud-Beep-entering-bios-selecting-bootdevice-annoyance/td-p/2041295">https://forums.lenovo.com/t5/ThinkPad-11e-Windows-13-E-and/Loud-Beep-entering-bios-selecting-bootdevice-annoyance/td-p/2041295</a></p>
+
+<p>To enter the BIOS setup from the menu, press F1.<br />
+Change the following settings and press F10 to save and exit.</p>
+
+<ul>
+<li>Security &gt; Secure Boot
+
+<ul>
+<li>Secure Boot: Enabled -&gt; Disabled</li>
+</ul></li>
+<li>Security &gt; Security Chip
+
+<ul>
+<li>Security Chip: Enabled -&gt; Disabled</li>
+</ul></li>
+<li>Security &gt; I/O Port Access
+
+<ul>
+<li>Bluetooth: Enabled -&gt; Disabled</li>
+</ul></li>
+</ul>
+
+<p>It looks like the memstick installer supports UEFI boot so I left &ldquo;Startup&rdquo; page&rsquo;s &ldquo;UEFI/Legacy Boot&rdquo; and &ldquo;CSM Support&rdquo; untouched (&ldquo;UEFI Only&rdquo; and &ldquo;NO&rdquo; respectively).</p>
+
+<h3 id="which-version-to-install">Which Version to Install?</h3>
+
+<p>At first, I selected the following FreeBSD versions as candidates.</p>
+
+<ul>
+<li>FreeBSD 12.0-RELEASE</li>
+<li>FreeBSD 12-STABLE</li>
+<li>FreeBSD 11.3-RELEASE</li>
+</ul>
+
+<p>With experts&rsquo; advices on Twitter and experiments on actual machine with installation media and RAM disk (Maybe on another post), I chose 12.0-RELEASE to start with. Now it turns out to be the right choice based on the right advices.</p>
+
+<h3 id="os-installation">OS Installation</h3>
+
+<p>There&rsquo;s almost nothing special about installation. But here&rsquo;s a few things to note.</p>
+
+<ul>
+<li><p>To boot from a USB stick (memstick.img), press Enter &gt; F12 to enter the Boot Menu and select the USB HDD to boot.</p></li>
+
+<li><p>For distribution sets, I selected &lsquo;kernel-dbg&rsquo; and &lsquo;lib32&rsquo; in addition to implicit &lsquo;base&rsquo; and &lsquo;kernel&rsquo; (lib32 for WINE).</p></li>
+
+<li><p>For filesystem, of course I chose ZFS. Specify &ldquo;GPT (UEFI)&rdquo; for partitioning scheme. I created a 4g swap partition mostly for crash dump space.</p></li>
+
+<li><p>I setup WiFi interface iwm0.</p></li>
+
+<li><p>For system services, I enable moused, ntpd, powerd and disable sshd.</p></li>
+
+<li><p>I put my user account in secondary groups wheel, operator and video.</p></li>
+
+<li><p>Before exiting the installer, I manually renamed a ZFS dataset for home directories as usual.</p>
+
+<pre><code>rm /home
+zfs rename zroot/usr/home zroot/home
+zfs set mountpoint=/home zroot/home
+exit
+</code></pre></li>
+</ul>
+
+<h3 id="basic-configurations-after-the-first-boot">Basic Configurations After the First Boot</h3>
+
+<p>After the first boot, I logged in and performed the following usual configurations.</p>
+
+<ul>
+<li><p>Update the OS.</p>
+
+<pre><code>su
+freebsd-update fetch install
+shutdown -r now
+</code></pre></li>
+
+<li><p>Install basic packages.
+I usually install non-X or lite versions if available but this time I selected full versions.</p>
+
+<pre><code>su
+pkg update
+pkg install git vim tmux bash sudo rsync perl5 ja-nkf zfs-stats portmaster gnupg1
+</code></pre></li>
+
+<li><p>Configure sudoers.</p>
+
+<pre><code>visudo
+</code></pre></li>
+
+<li><p>Configure user preferences such as dotfiles.</p></li>
+</ul>
+
+<h3 id="setting-up-grahpical-desktop-environment">Setting up Grahpical Desktop Environment</h3>
+
+<p>I&rsquo;m completely new to the graphical desktop world. So it&rsquo;s inevitable for me to learn things one by one through a lot of trial and error.</p>
+
+<p>Anyway, I use the following components to build my desktop.</p>
+
+<ul>
+<li>Xorg - Display Server</li>
+<li>SLiM - Login Manager</li>
+<li>Xfce - Desktop Environment</li>
+</ul>
+
+<p>Plus, here is the list of graphical applications for my daily use.</p>
+
+<ul>
+<li>Xfce4-Terminal - Terminal Emulator</li>
+<li>Firefox, Chromium - Web Browser</li>
+<li>Thunderbird - Email Client</li>
+<li>Joplin - Note Taking Application (Evernote Alternative)</li>
+<li>Rhythmbox - Jukebox</li>
+<li>VLC media player - Media Player</li>
+<li>GIMP - Image Editor</li>
+<li>Audacity - Audio Editor</li>
+<li>HandBrake - Video Transcoder</li>
+<li>Picasa3 (Windows Application) - Picture Organizer which runs on WINE.</li>
+</ul>
+
+<p>Setup process was as follows.</p>
+
+<ul>
+<li><p>Install Graphics Driver and reboot the system.</p>
+
+<pre><code>sudo pkg install drm-kmod
+sudo sysrc kld_list=&quot;/boot/modules/i915kms.ko&quot;
+shutdown -r now
+</code></pre></li>
+
+<li><p>Install Xorg and releated packages.</p>
+
+<pre><code>sudo pkg install xorg xfce xfce4-goodies slim slim-themes
+</code></pre></li>
+
+<li><p>Install local language stuff</p>
+
+<pre><code>sudo pkg install japanese/font-std japanese/font-vlgothic japanese/font-takao ja-fcitx-mozc ja-fcitx-skk zh-fcitx-configtool
+</code></pre></li>
+
+<li><p>Create ~/.xinitrc.<br />
+There are a lot of language configurations. Please ignore them if you do not need them.</p>
+
+<pre><code>#!/bin/sh
+#
+# ~/.xinitrc for Xfce4
+#
+## Locale
+export LC_ALL=ja_JP.UTF-8
+export LANGUAGE=ja_JP.UTF-8
+export LANG=ja_JP.UTF-8
+
+## Input Method - fcitx-mozc
+export GTK_IM_MODULE=fcitx
+export QT_IM_MODULE=fcitx
+export XMODIFIERS='@im=fcitx'
+
+## Start Input Method
+/usr/local/bin/mozc start
+fcitx -r -d
+
+## Disable Beep
+xset -b
+
+## Start Xfce4
+exec startxfce4
+</code></pre></li>
+
+<li><p>Configure and start services. This brings up a graphical login manager.</p>
+
+<pre><code>sudo sysrc dbus_enable=YES
+sudo sysrc hald_enable=YES
+sudo sysrc polkitd_enable=YES
+sudo sysrc avahi_daemon_enable=YES
+sudo sysrc avahi_dnsconfd_enable=YES
+sudo sysrc slim_enable=YES
+sudo service dbus start
+sudo service hald start
+sudo service avahi-daemon start
+sudo service avahi-dnsconfd start
+sudo service slim start
+</code></pre></li>
+
+<li><p>Install applications.</p>
+
+<pre><code>sudo pkg install firefox thunderbird chromium ...
+</code></pre></li>
+</ul>
+
+<h2 id="personal-notes-on-further-setup">Personal Notes on Further Setup</h2>
+
+<h3 id="touchpad-and-trackpoint">Touchpad and TrackPoint</h3>
+
+<p><a href="https://ben-rowan.github.io/post/disable_lenovo_trackpad/">https://ben-rowan.github.io/post/disable_lenovo_trackpad/</a></p>
+
+<ul>
+<li><p>As I use a wireless mouse (Logicool&rsquo;s Unifying one) most of the time, I disabled touchpad and enabled &ldquo;Virtual Scrolling&rdquo; with the TrackPoing and the middle button instead.<br />
+[/boot/loader.conf]</p>
+
+<pre><code>hw.psm.synaptics_support=&quot;1&quot;
+</code></pre>
+
+<p>[/etc/sysctl.conf]</p>
+
+<pre><code>hw.psm.synaptics.min_pressure=220
+</code></pre>
+
+<p>[/etc/rc.conf]</p>
+
+<pre><code>moused_flags=&quot;-V&quot;
+</code></pre></li>
+</ul>
+
+<h3 id="screen-brightness">Screen Brightness</h3>
+
+<ul>
+<li><p>XFCE4 Power Manager&rsquo;s Brightness Control sometimes shows weird behavior. When I switch the power between AC and battery, screen brightness initially changes as configured but gets back to the previous level when I move mouse cursor.<br />
+After struggling for a while, I found the following configurations with the XFCE4&rsquo;s brightness adjustment disabled allow me to automatically adjust brightness upon change of the power source (AC or battery).<br />
+[/boot/loader.conf]</p>
+
+<pre><code>acpi_video_load=&quot;YES&quot;
+</code></pre>
+
+<p>[/etc/sysctl.conf]</p>
+
+<pre><code>hw.acpi.video.lcd0.economy=30
+hw.acpi.video.lcd0.fullpower=60
+</code></pre></li>
+</ul>
+
+<h3 id="beep-on-logout">Beep on Logout</h3>
+
+<ul>
+<li><p>When unmute, opening the logout dialog makes a loud beep. I added the following line to ~/.xinitrc to avoid it.</p>
+
+<pre><code>xset -b
+</code></pre></li>
+</ul>
+
+<h3 id="epson-ink-jet-printer-ep-802a">EPSON Ink-Jet Printer EP-802A</h3>
+
+<ul>
+<li><p>Install and configure CUPS as follows. Then point your web browser to localhost:631 and configure the printer.</p>
+
+<pre><code>sudo pkg install gutenprint
+sudo sysrc cupsd_enable=YES
+sudo service cupsd start
+</code></pre></li>
+
+<li><p>xfce4-print package doesn&rsquo;t seem to support CUPS (only supports LPD).</p></li>
+</ul>
+
+<h3 id="audacity">Audacity</h3>
+
+<ul>
+<li>To export MP3, install lame from ports.<br />
+Audacity itself can be installed via binary package.</li>
+</ul>
+
+<h3 id="joplin">Joplin</h3>
+
+<p><a href="https://joplinapp.org/">https://joplinapp.org/</a></p>
+
+<ul>
+<li>See <a href="https://genneko.github.io/playing-with-bsd/application/joplin-on-freebsd">this article</a>.</li>
+</ul>
+
+<h3 id="onedrive">OneDrive</h3>
+
+<p><a href="https://skilion.github.io/onedrive/">https://skilion.github.io/onedrive/</a></p>
+
+<ul>
+<li><p>On the previous main PC (Windows 10), I used OneDrive to import photos taken and uploaded by smartphones.
+OneDrive Free Client allows me to achieve this on FreeBSD machine.</p>
+
+<pre><code>sudo pkg install onedrive
+
+onedrive
+# Open the URL shown and sign in with your Microsoft account.  
+# When you see a blank page after granting access to &quot;OneDrive Free Client&quot;, enter the blank page's URL on the command-line prompt.
+
+# Test it now.
+# ~/OneDrive is the default sync_dir.
+onedrive --download-only --dry-run --synchronize
+
+# Real Run.
+onedrive --download-only --synchronize
+</code></pre></li>
+</ul>
+
+<h3 id="wine">WINE</h3>
+
+<p><a href="https://wiki.winehq.org/FreeBSD">https://wiki.winehq.org/FreeBSD</a><br />
+<a href="https://wiki.freebsd.org/i386-Wine">https://wiki.freebsd.org/i386-Wine</a><br />
+<a href="https://forums.freebsd.org/threads/wine-wow64-and-winetricks-at-x64-wine.62634/">https://forums.freebsd.org/threads/wine-wow64-and-winetricks-at-x64-wine.62634/</a></p>
+
+<ul>
+<li><p>Install i386-wine-* (this time I chose &lsquo;devel&rsquo;).</p>
+
+<pre><code>sudo pkg install i386-wine-devel wine-gecko-devel wine-mono-devel winetricks
+</code></pre></li>
+
+<li><p>I can run IrfanView, Picasa3 and Yamaha&rsquo;s Mid Radio Player.</p></li>
+</ul>
+
+<h3 id="bhyve">Bhyve</h3>
+
+<p>Maybe in another post.</p>
+
+<h2 id="references">References</h2>
+
+<ul>
+<li><p>FreeBSD wiki: Laptops running FreeBSD<br />
+<a href="https://wiki.freebsd.org/Laptops">https://wiki.freebsd.org/Laptops</a></p></li>
+
+<li><p>FreeBSD wiki: Thinkpad T480<br />
+<a href="https://wiki.freebsd.org/Laptops/Thinkpad_T480">https://wiki.freebsd.org/Laptops/Thinkpad_T480</a></p></li>
+
+<li><p>Running FreeBSD on the Lenovo T470s ThinkPad<br />
+<a href="https://blog.grem.de/pages/t470s.html">https://blog.grem.de/pages/t470s.html</a></p></li>
+
+<li><p>FreeBSD on a Laptop (12-Current on T530)<br />
+<a href="https://www.c0ffee.net/blog/freebsd-on-a-laptop/">https://www.c0ffee.net/blog/freebsd-on-a-laptop/</a></p></li>
+
+<li><p>The Power to Serve – FreeBSD Power Management<br />
+<a href="https://vermaden.wordpress.com/2018/11/28/the-power-to-serve-freebsd-power-management/">https://vermaden.wordpress.com/2018/11/28/the-power-to-serve-freebsd-power-management/</a></p></li>
+
+<li><p>FreeBSD Desktop<br />
+<a href="https://vermaden.wordpress.com/freebsd-desktop/">https://vermaden.wordpress.com/freebsd-desktop/</a></p></li>
+
+<li><p>Getting Started With drm-kmod<br />
+<a href="https://freebsddesktop.github.io/2018/12/08/drm-kmod-primer.html">https://freebsddesktop.github.io/2018/12/08/drm-kmod-primer.html</a></p></li>
+
+<li><p>FreeBSD wiki: Suspend/Resume<br />
+<a href="https://wiki.freebsd.org/SuspendResume">https://wiki.freebsd.org/SuspendResume</a></p></li>
+
+<li><p>FreeBSD Handbook: Wireless Networking<br />
+<a href="https://www.freebsd.org/doc/handbook/network-wireless.html">https://www.freebsd.org/doc/handbook/network-wireless.html</a></p></li>
+
+<li><p>FreeBSD Wireless Quickstart<br />
+<a href="http://srobb.net/fbsdquickwireless.html">http://srobb.net/fbsdquickwireless.html</a></p></li>
+
+<li><p>FreeBSD wiki: Synaptics Touchpad<br />
+<a href="https://wiki.freebsd.org/SynapticsTouchpad">https://wiki.freebsd.org/SynapticsTouchpad</a></p></li>
+
+<li><p>FreeBSD Forum &amp; Bugzilla: Two-finger Scroll<br />
+<a href="https://forums.freebsd.org/threads/touchpad-envy.58739/">https://forums.freebsd.org/threads/touchpad-envy.58739/</a><br />
+<a href="https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=228875">https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=228875</a><br />
+<a href="https://forums.freebsd.org/threads/synaptics-two-finger-scroll.53720/">https://forums.freebsd.org/threads/synaptics-two-finger-scroll.53720/</a></p></li>
+
+<li><p>FreeBSD: Disable Your Lenovo Trackpad<br />
+<a href="https://ben-rowan.github.io/post/disable_lenovo_trackpad/">https://ben-rowan.github.io/post/disable_lenovo_trackpad/</a></p></li>
+
+<li><p>FreeBSD Forum: How to disable mousepad tapping ?<br />
+<a href="https://forums.freebsd.org/threads/how-to-disable-mousepad-tapping.17370/">https://forums.freebsd.org/threads/how-to-disable-mousepad-tapping.17370/</a></p></li>
+</ul>
+
+<h2 id="revision-history">Revision History</h2>
+
+<ul>
+<li>2019-08-22: Created</li>
+</ul>
+
+    </article>
+
+    
+
+
+    <ul class="pager article-pager">
+      <li class="pager-newer pager-noitem">&lt; Newer</li>
+      <li class="pager-older">
+        <a href="https://genneko.github.io/playing-with-bsd/storage/growing-a-zfs-mirror/" data-toggle="tooltip" data-placement="top" title="Growing a ZFS Mirror Pool">Older &gt;</a>
+      </li>
+    </ul>
+  </div>
+
+
+<div class="site-footer">
+  <div class="copyright">&copy; Copyright 2018 - 2019 genneko</div>
+  <ul class="site-footer-items">
+    <li class="site-footer-item-about"><a href="https://genneko.github.io/about/" title="About">About</a></li>
+  </ul>
+  <div class="powerdby">
+    Powered by <a href="https://gohugo.io/">Hugo</a> and <a href="https://github.com/taikii/whiteplain">Whiteplain</a>
+  </div>
+</div>
+
+
+</body>
+</html>

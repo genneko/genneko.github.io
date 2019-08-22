@@ -7,17 +7,53 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>&amp;copy; Copyright 2018 - 2019 genneko</copyright>
-    <lastBuildDate>Sat, 10 Aug 2019 18:00:00 +0900</lastBuildDate>
+    <lastBuildDate>Thu, 22 Aug 2019 00:50:00 +0900</lastBuildDate>
     
 	<atom:link href="https://genneko.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
+      <title>desktop</title>
+      <link>https://genneko.github.io/tags/desktop/</link>
+      <pubDate>Thu, 22 Aug 2019 00:50:00 +0900</pubDate>
+      
+      <guid>https://genneko.github.io/tags/desktop/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>freebsd</title>
       <link>https://genneko.github.io/tags/freebsd/</link>
-      <pubDate>Sat, 10 Aug 2019 18:00:00 +0900</pubDate>
+      <pubDate>Thu, 22 Aug 2019 00:50:00 +0900</pubDate>
       
       <guid>https://genneko.github.io/tags/freebsd/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>installation</title>
+      <link>https://genneko.github.io/tags/installation/</link>
+      <pubDate>Thu, 22 Aug 2019 00:50:00 +0900</pubDate>
+      
+      <guid>https://genneko.github.io/tags/installation/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>laptop</title>
+      <link>https://genneko.github.io/tags/laptop/</link>
+      <pubDate>Thu, 22 Aug 2019 00:50:00 +0900</pubDate>
+      
+      <guid>https://genneko.github.io/tags/laptop/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>xorg</title>
+      <link>https://genneko.github.io/tags/xorg/</link>
+      <pubDate>Thu, 22 Aug 2019 00:50:00 +0900</pubDate>
+      
+      <guid>https://genneko.github.io/tags/xorg/</guid>
       <description></description>
     </item>
     
@@ -63,15 +99,6 @@
       <pubDate>Fri, 21 Jun 2019 23:20:00 +0900</pubDate>
       
       <guid>https://genneko.github.io/tags/application/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>installation</title>
-      <link>https://genneko.github.io/tags/installation/</link>
-      <pubDate>Fri, 21 Jun 2019 23:20:00 +0900</pubDate>
-      
-      <guid>https://genneko.github.io/tags/installation/</guid>
       <description></description>
     </item>
     
