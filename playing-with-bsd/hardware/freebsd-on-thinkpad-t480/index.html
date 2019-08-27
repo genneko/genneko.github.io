@@ -60,6 +60,8 @@ Maybe it&rsquo;s partly because I&rsquo;m …">
       <ul class="article-meta">
         <li class="article-meta-date"><time>2019-08-22</time>
         
+        <span class="updated">Update: 2019-08-27</span>
+        
         </li>
         <li class="article-meta-tags">
           <a href="https://genneko.github.io/tags/desktop/">
@@ -119,6 +121,7 @@ Maybe it&rsquo;s partly because I&rsquo;m …">
 <li><a href="#onedrive">OneDrive</a></li>
 <li><a href="#wine">WINE</a></li>
 <li><a href="#bhyve">Bhyve</a></li>
+<li><a href="#failover-between-ethernet-and-wifi">Failover between Ethernet and WiFi</a></li>
 </ul></li>
 <li><a href="#references">References</a></li>
 <li><a href="#revision-history">Revision History</a></li>
@@ -174,15 +177,14 @@ But, for unknown reasons, I have never seriously used it on client workstations.
 <li>LCD Brightness buttons work.</li>
 <li>SD card reader seems to work. DOS-formatted SD card can be mounted and read as usual filesystems.</li>
 <li>Some Windows programs can be run on WINE.</li>
-<li>Windows 10 can be run on bhyve.</li>
+<li>Windows 10 can be run on bhyve (to purchase MP3s on Amazon Music, etc).</li>
+<li>LAGG Failover between Ethernet and WiFi works (Use Ethernet if it&rsquo;s available. Otherwise use WiFi).</li>
 </ul>
 
 <p>I haven&rsquo;t able to make those things work so far.</p>
 
 <ul>
 <li>Webcam works on pwcview with webcamd and cuse.ko but isn&rsquo;t detected by Google Hangouts on Firefox/Chromium.</li>
-<li>Failover between Ethernet and WiFi in the following example (Example 31.3. Failover Mode Between Ethernet and Wireless Interfaces).<br />
-<a href="https://www.freebsd.org/doc/handbook/network-aggregation.html">https://www.freebsd.org/doc/handbook/network-aggregation.html</a></li>
 </ul>
 
 <p>I haven&rsquo;t tested the following items.</p>
@@ -314,6 +316,7 @@ pkg install git vim tmux bash sudo rsync perl5 ja-nkf zfs-stats portmaster gnupg
 <li>Rhythmbox - Jukebox</li>
 <li>VLC media player - Media Player</li>
 <li>GIMP - Image Editor</li>
+<li>Inkscape - Drawing Tool</li>
 <li>Audacity - Audio Editor</li>
 <li>HandBrake - Video Transcoder</li>
 <li>Picasa3 (Windows Application) - Picture Organizer which runs on WINE.</li>
@@ -508,6 +511,63 @@ onedrive --download-only --synchronize
 
 <p>Maybe in another post.</p>
 
+<h3 id="failover-between-ethernet-and-wifi">Failover between Ethernet and WiFi</h3>
+
+<p>With the advice on FreeBSD Forum and Twitter, I finally got &ldquo;lagg failover between Ethernet and Wireless interfaces&rdquo; working as in the FreeBSD Handbook.</p>
+
+<ul>
+<li>FreeBSD Handbook: 31.7 Link Aggregation and Failover<br />
+<a href="https://www.freebsd.org/doc/handbook/network-aggregation.html">https://www.freebsd.org/doc/handbook/network-aggregation.html</a><br />
+(Example 31.3. Failover Mode Between Ethernet and Wireless Interfaces).<br /></li>
+</ul>
+
+<p>My configuration (in /etc/rc.conf) is as follows.</p>
+
+<pre><code>ifconfig_em0=&quot;ether &lt;WiFi MAC Address&gt; up&quot;
+wlans_iwm0=&quot;wlan0&quot;
+ifconfig_wlan0=&quot;WPA up&quot;
+create_args_wlan0=&quot;country JP&quot;
+cloned_interfaces=&quot;lagg0&quot;
+ifconfig_lagg0=&quot;up laggproto failover laggport em0 laggport wlan0 DHCP&quot;
+</code></pre>
+
+<p>As opposed to the handbook&rsquo;s example, I use the WiFi MAC address on the Ethernet interface. Other than that, it&rsquo;s essentially the same as the handbook.<br />
+(I&rsquo;ve also tried &ldquo;Ethernet MAC on WiFi&rdquo; and it worked)</p>
+
+<p>But at first I ran into a problem here.</p>
+
+<p>When I reboot my system with the above configuration, lagg0 has only Ethernet (em0) as its member port. WiFi interface was not in the lagg0 because it seemed to be created after the lagg was initially configured. By manually running &ldquo;service netif restart&rdquo;, the lagg failover begins to work but I wondered how to avoid this manual intervention.</p>
+
+<p>A discussion on the forum quickly solved the problem.</p>
+
+<ul>
+<li>FreeBSD Forum: lagg not working on cold boot<br />
+<a href="https://forums.freebsd.org/threads/lagg-not-working-on-cold-boot.71992/">https://forums.freebsd.org/threads/lagg-not-working-on-cold-boot.71992/</a></li>
+</ul>
+
+<p>It suggests loading WiFi-related kernel modueles by loader instead of devd.<br />
+I achieved this by adding the following lines to /boot/loader.conf and reboot.</p>
+
+<pre><code>if_iwm_load=&quot;YES&quot;
+iwm8265fw_load=&quot;YES&quot;
+</code></pre>
+
+<p>This made iwm0 detected much earlier and lagg0 was successfully configured with both em0 and wlan0 as its members on boot.</p>
+
+<p>Then I got another suggestion on Twitter that it&rsquo;s better to load modules which are not required for boot from rc not loader.</p>
+
+<ul>
+<li>Twitter<br />
+<a href="https://twitter.com/debdrup/status/1166016787013689344">https://twitter.com/debdrup/status/1166016787013689344</a></li>
+</ul>
+
+<p>I moved them from /boot/loader.conf to /etc/rc.conf and confirmed that it also worked as expected.</p>
+
+<pre><code>kld_list=&quot;/boot/modules/i915kms.ko if_iwm iwm8265fw&quot;
+</code></pre>
+
+<p>(As I previously mentioned, i915kms.ko is for graphics.)</p>
+
 <h2 id="references">References</h2>
 
 <ul>
@@ -560,6 +620,7 @@ onedrive --download-only --synchronize
 
 <ul>
 <li>2019-08-22: Created</li>
+<li>2019-08-27: Added &ldquo;Failover between Ethernet and WiFi&rdquo;</li>
 </ul>
 
     </article>
