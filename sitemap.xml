@@ -3,9 +3,33 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>https://genneko.github.io/tags/</loc>
+    <loc>https://genneko.github.io/tags/desktop/</loc>
     <lastmod>2019-08-27T20:11:00+09:00</lastmod>
-    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://genneko.github.io/tags/freebsd/</loc>
+    <lastmod>2019-09-05T17:50:00+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://genneko.github.io/</loc>
+    <lastmod>2019-09-05T17:50:00+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://genneko.github.io/tags/installation/</loc>
+    <lastmod>2019-09-05T17:50:00+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://genneko.github.io/tags/laptop/</loc>
+    <lastmod>2019-08-27T20:11:00+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://genneko.github.io/tags/</loc>
+    <lastmod>2019-09-05T17:50:00+09:00</lastmod>
   </url>
   
   <url>
@@ -14,39 +38,8 @@
   </url>
   
   <url>
-    <loc>https://genneko.github.io/tags/desktop/</loc>
-    <lastmod>2019-08-27T20:11:00+09:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://genneko.github.io/tags/freebsd/</loc>
-    <lastmod>2019-08-27T20:11:00+09:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://genneko.github.io/</loc>
-    <lastmod>2019-08-27T20:11:00+09:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://genneko.github.io/tags/installation/</loc>
-    <lastmod>2019-08-27T20:11:00+09:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://genneko.github.io/tags/laptop/</loc>
-    <lastmod>2019-08-27T20:11:00+09:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
     <loc>https://genneko.github.io/tags/xorg/</loc>
     <lastmod>2019-08-27T20:11:00+09:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
@@ -57,13 +50,11 @@
   <url>
     <loc>https://genneko.github.io/tags/storage/</loc>
     <lastmod>2019-08-10T18:00:00+09:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
     <loc>https://genneko.github.io/tags/zfs/</loc>
     <lastmod>2019-08-10T18:00:00+09:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
@@ -74,59 +65,51 @@
   <url>
     <loc>https://genneko.github.io/tags/ufs/</loc>
     <lastmod>2019-07-18T19:08:00+09:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
     <loc>https://genneko.github.io/tags/usb/</loc>
     <lastmod>2019-07-18T19:08:00+09:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://genneko.github.io/playing-with-bsd/application/joplin-on-freebsd/</loc>
-    <lastmod>2019-07-28T06:52:00+09:00</lastmod>
   </url>
   
   <url>
     <loc>https://genneko.github.io/tags/application/</loc>
-    <lastmod>2019-07-28T06:52:00+09:00</lastmod>
-    <priority>0</priority>
+    <lastmod>2019-09-05T17:50:00+09:00</lastmod>
   </url>
   
   <url>
     <loc>https://genneko.github.io/tags/nodejs/</loc>
-    <lastmod>2019-07-28T06:52:00+09:00</lastmod>
-    <priority>0</priority>
+    <lastmod>2019-09-05T17:50:00+09:00</lastmod>
   </url>
   
   <url>
-    <loc>https://genneko.github.io/playing-with-bsd/networking/freebsd-wireguard-android/</loc>
-    <lastmod>2019-01-23T01:22:00+09:00</lastmod>
+    <loc>https://genneko.github.io/playing-with-bsd/application/joplin-on-freebsd/</loc>
+    <lastmod>2019-09-05T17:50:00+09:00</lastmod>
   </url>
   
   <url>
     <loc>https://genneko.github.io/tags/android/</loc>
     <lastmod>2019-01-23T01:22:00+09:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
     <loc>https://genneko.github.io/tags/network/</loc>
     <lastmod>2019-05-29T22:00:00+09:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
     <loc>https://genneko.github.io/tags/vpn/</loc>
     <lastmod>2019-05-29T22:00:00+09:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
     <loc>https://genneko.github.io/tags/wireguard/</loc>
     <lastmod>2019-05-29T22:00:00+09:00</lastmod>
-    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://genneko.github.io/playing-with-bsd/networking/freebsd-wireguard-android/</loc>
+    <lastmod>2019-01-23T01:22:00+09:00</lastmod>
   </url>
   
   <url>
@@ -140,20 +123,28 @@
   </url>
   
   <url>
+    <loc>https://genneko.github.io/tags/bridge/</loc>
+    <lastmod>2018-11-04T21:19:01+09:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://genneko.github.io/playing-with-bsd/networking/learning-stp/</loc>
     <lastmod>2018-11-04T21:19:01+09:00</lastmod>
   </url>
   
   <url>
-    <loc>https://genneko.github.io/tags/bridge/</loc>
+    <loc>https://genneko.github.io/tags/stp/</loc>
     <lastmod>2018-11-04T21:19:01+09:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://genneko.github.io/tags/stp/</loc>
-    <lastmod>2018-11-04T21:19:01+09:00</lastmod>
-    <priority>0</priority>
+    <loc>https://genneko.github.io/tags/administration/</loc>
+    <lastmod>2019-05-05T18:00:00+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://genneko.github.io/tags/jail/</loc>
+    <lastmod>2019-05-05T18:00:00+09:00</lastmod>
   </url>
   
   <url>
@@ -162,21 +153,8 @@
   </url>
   
   <url>
-    <loc>https://genneko.github.io/tags/administration/</loc>
-    <lastmod>2019-05-05T18:00:00+09:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://genneko.github.io/tags/jail/</loc>
-    <lastmod>2019-05-05T18:00:00+09:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
     <loc>https://genneko.github.io/tags/virtualization/</loc>
     <lastmod>2019-05-05T18:00:00+09:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
@@ -187,13 +165,11 @@
   <url>
     <loc>https://genneko.github.io/tags/geli/</loc>
     <lastmod>2018-09-07T07:13:08+00:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
     <loc>https://genneko.github.io/tags/geom/</loc>
     <lastmod>2018-09-07T07:13:08+00:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
@@ -214,7 +190,6 @@
   <url>
     <loc>https://genneko.github.io/tags/ipv6/</loc>
     <lastmod>2018-08-29T15:18:01+09:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
@@ -223,14 +198,13 @@
   </url>
   
   <url>
-    <loc>https://genneko.github.io/playing-with-bsd/networking/freebsd-vti-ipsec/</loc>
+    <loc>https://genneko.github.io/tags/ipsec/</loc>
     <lastmod>2017-06-22T15:09:50+09:00</lastmod>
   </url>
   
   <url>
-    <loc>https://genneko.github.io/tags/ipsec/</loc>
+    <loc>https://genneko.github.io/playing-with-bsd/networking/freebsd-vti-ipsec/</loc>
     <lastmod>2017-06-22T15:09:50+09:00</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
