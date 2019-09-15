@@ -418,18 +418,21 @@ sudo service slim start
 
 <h3 id="suspend-resume">Suspend/Resume</h3>
 
-<p>I can perform suspend/resume by running <code>acpiconf -s 3</code> or from the XFCE4&rsquo;s &ldquo;Logout&rdquo; dialog almost out of the box.<br />
+<p>I was able to perform suspend/resume by running <code>acpiconf -s 3</code> or from the XFCE4&rsquo;s &ldquo;Logout&rdquo; dialog almost out of the box.<br />
 But at some point, I realized the following behaviors of the Logout dialog.</p>
 
 <ul>
-<li>When I login for the first time after the system boots, the dialog shows all of &ldquo;Logout&rdquo;, &ldquo;Reboot&rdquo;, &ldquo;Shutdown&rdquo;, &ldquo;Suspend&rdquo; and &ldquo;Hibernate&rdquo; and all work fine.<br />
-(I think the last one is not supported by the OS and haven&rsquo;t tried it)</li>
-<li>When I resume the suspended system or login after logging out, the dialog only shows &ldquo;Logout&rdquo; in active state and other options are grayed out or not displayed.</li>
+<li><p>When I login for the first time after the system boots, the dialog shows all of &ldquo;Logout&rdquo;, &ldquo;Reboot&rdquo;, &ldquo;Shutdown&rdquo;, &ldquo;Suspend&rdquo; and &ldquo;Hibernate&rdquo; and all work fine.<br />
+(I thought the last one was not supported by the OS and didn&rsquo;t tried it)</p></li>
+
+<li><p>When the suspended system resumes or I login to the system after logging out, the dialog only shows &ldquo;Logout&rdquo; in active state and other options are grayed out or not displayed at all.</p></li>
 </ul>
 
-<p>Finally, this problem was solved by creating the following polkit rule file in /usr/local/etc/polkit-1/rules.d as &lsquo;85-suspend.rules&rsquo;.</p>
+<p>After some struggle, those were solved by creating the following polkit rule file (e.g. 85-suspend.rules) in /usr/local/etc/polkit-1/rules.d directory.</p>
 
-<p><em>NOTE: To use this configuration, your user have to be in operator group. I did this during installation as mentioned earlier.</em></p>
+<p><a href="https://forums.freebsd.org/threads/xfce4-power-manager-plugin-not-working-as-expected.67780/">https://forums.freebsd.org/threads/xfce4-power-manager-plugin-not-working-as-expected.67780/</a></p>
+
+<p><em>NOTE: To use this configuration, your user account have to be in operator group. I did this during installation as mentioned earlier.</em></p>
 
 <pre><code>// pkg info -D xfce4-session
 //
@@ -465,7 +468,7 @@ polkit.addRule(function (action, subject) {
 });
 </code></pre>
 
-<p>Now suspend/resume seems to work more reliably by lid close/open, by command or from Logout dialog!</p>
+<p>Now suspend/resume seems to work more reliably by command, lid close/open or from Logout dialog!</p>
 
 <h3 id="screen-brightness">Screen Brightness</h3>
 
@@ -666,9 +669,6 @@ iwm8265fw_load=&quot;YES&quot;
 
 <li><p>FreeBSD Forum: How to disable mousepad tapping ?<br />
 <a href="https://forums.freebsd.org/threads/how-to-disable-mousepad-tapping.17370/">https://forums.freebsd.org/threads/how-to-disable-mousepad-tapping.17370/</a></p></li>
-
-<li><p>FreeBSD Forum: xfce4-power-manager plugin not working as expected
-<a href="https://forums.freebsd.org/threads/xfce4-power-manager-plugin-not-working-as-expected.67780/">https://forums.freebsd.org/threads/xfce4-power-manager-plugin-not-working-as-expected.67780/</a></p></li>
 </ul>
 
 <h2 id="revision-history">Revision History</h2>
