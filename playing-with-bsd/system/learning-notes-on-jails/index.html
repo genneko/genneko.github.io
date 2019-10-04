@@ -455,6 +455,11 @@ done
 <pre><code>sudo freebsd-update -b /vm/h1 fetch install
 </code></pre>
 
+<p>If the host OS is newer, set UNAME_r to the jail&rsquo;s version.</p>
+
+<pre><code>sudo UNAME_r=11.1-RELEASE freebsd-update -b /vm/h1 fetch install
+</code></pre>
+
 <p>Upgrade system on a jail.</p>
 
 <pre><code>sudo freebsd-update -b /vm/h1 -r 11.3-RELEASE upgrade
