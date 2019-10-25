@@ -57,7 +57,7 @@ This article is a sort of personal notebook where I summarize …">
       <ul class="article-meta">
         <li class="article-meta-date"><time>2018-10-07</time>
         
-        <span class="updated">Update: 2019-10-13</span>
+        <span class="updated">Update: 2019-10-25</span>
         
         </li>
         <li class="article-meta-tags">
@@ -230,6 +230,15 @@ PACKAGES = /var/ports/packages
 <li><p>Apply system updates to the template.</p>
 
 <pre><code>sudo freebsd-update -b /vm/tmpl/11.2 fetch install
+</code></pre></li>
+
+<li><p>Optionally, you can customize the jails&rsquo; root shell prompt to make it easily distinguishable from the host.</p>
+
+<pre><code>sudo vi /vm/tmpl/11.2/root/.cshrc
+</code></pre>
+
+<pre><code># ANSI Color 32 = Green
+set prompt=&quot;%{\033[32m%}%B&lt;%n@%m&gt;%b%{\033[0m%}:%~%# &quot;
 </code></pre></li>
 
 <li><p>Take a snapshot of the template dataset.<br />
@@ -960,6 +969,7 @@ The following line in /etc/jail.conf achieves this.  The host&rsquo;s /var/cache
 <li>2018-12-14: Add a note on FreeBSD 12.0</li>
 <li>2019-01-19: Add &ldquo;Separate Network Configuration&rdquo; to &ldquo;VNET Jails&rdquo;</li>
 <li>2019-10-13: Update the procedure to run &ldquo;freebsd-update upgrade&rdquo; on jails</li>
+<li>2019-10-25: Add an optional &ldquo;change jail&rsquo;s root prompt&rdquo; step to &ldquo;Creating a Template&rdquo;</li>
 </ul>
 
     </article>
