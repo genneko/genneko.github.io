@@ -7,20 +7,20 @@
   <meta property="og:title" content="Expanding a GELI-encrypted ZFS pool - genneko" />
   <meta name="twitter:title" content="Expanding a GELI-encrypted ZFS pool - genneko" />
   <meta name="description" content="My personal FreeBSD 11.3 server (VPS) was running low on storage space.
-By using the VPS provider&rsquo;s &ldquo;scale-up&rdquo; option, I could easily grow the virtual disk.
+By using the VPS provider&rsquo;s disk expansion option, I could easily grow the virtual disk.
 But then I wondered how to expand the filesystem on it.
 In my case, the filesystem is on a GELI-encrypted ZFS storage pool.
 So I had to resize the following entities.
  GPT freebsd-zfs partition GELI device on the GPT partition ZFS pool comprised of the GELI device  After rehearsing on VirtualBox VMs, I took the following steps to get more free space for the server.">
   <meta property="og:description" content="My personal FreeBSD 11.3 server (VPS) was running low on storage space.
-By using the VPS provider&rsquo;s &ldquo;scale-up&rdquo; option, I could easily grow the virtual disk.
+By using the VPS provider&rsquo;s disk expansion option, I could easily grow the virtual disk.
 But then I wondered how to expand the filesystem on it.
 In my case, the filesystem is on a GELI-encrypted ZFS storage pool.
 So I had to resize the following entities.
  GPT freebsd-zfs partition GELI device on the GPT partition ZFS pool comprised of the GELI device  After rehearsing on VirtualBox VMs, I took the following steps to get more free space for the server.">
   <meta name="twitter:description" content="My personal FreeBSD 11.3 server (VPS) was running low on storage space.
-By using the VPS provider&rsquo;s &ldquo;scale-up&rdquo; option, I could easily grow the virtual disk.
-But then I wondered how …">
+By using the VPS provider&rsquo;s disk expansion option, I could easily grow the virtual disk.
+But then I wondered how to expand …">
   <meta name="author" content="genneko"/>
   <meta property="og:site_name" content="genneko" />
   <meta property="og:url" content="https://genneko.github.io/playing-with-bsd/storage/expanding-zfs-on-geli/" />
@@ -104,7 +104,7 @@ But then I wondered how …">
       
 
 <p>My personal FreeBSD 11.3 server (VPS) was running low on storage space.<br />
-By using the VPS provider&rsquo;s &ldquo;scale-up&rdquo; option, I could easily grow the virtual disk.<br />
+By using the VPS provider&rsquo;s disk expansion option, I could easily grow the virtual disk.<br />
 But then I wondered how to expand the filesystem on it.</p>
 
 <p>In my case, the filesystem is on a GELI-encrypted ZFS storage pool.<br />
@@ -168,9 +168,9 @@ config:
 ...
 </code></pre></li>
 
-<li><p>Shutdown the server and apply &ldquo;scale-up&rdquo; option to increase the virtual disk size.</p></li>
+<li><p>Shutdown the server and apply disk expansion option to increase the virtual disk size.</p></li>
 
-<li><p>Once the &ldquo;scale-up&rdquo; opearation at the VPS provider is complete, boot the server with FreeBSD 11.3 installer ISO and open a console.</p></li>
+<li><p>Once the disk expansion opearation at the VPS provider is complete, boot the server with FreeBSD 11.3 installer ISO and open a console.</p></li>
 
 <li><p>Go into &ldquo;Shell&rdquo; at the installer&rsquo;s Welcome screen.</p></li>
 
@@ -237,7 +237,7 @@ zroot   399G   177G   222G        -         -    29%    44%  1.00x  ONLINE  -
 </code></pre></li>
 
 <li><p>That&rsquo;s all!<br />
-The whole process only took an hour where the scale-up operation at the VPS provider took about 50 minutes.</p>
+The whole process only took an hour where the disk expansion operation at the VPS provider took about 50 minutes.</p>
 
 <pre><code># gpart show
 =&gt;       40  838860720  vtbd0  GPT  (400G)
