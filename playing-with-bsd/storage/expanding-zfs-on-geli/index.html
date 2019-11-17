@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <title>Expanding a GELI-encrypted ZFS pool - genneko</title>
+  <meta property="og:title" content="Expanding a GELI-encrypted ZFS pool - genneko" />
+  <meta name="twitter:title" content="Expanding a GELI-encrypted ZFS pool - genneko" />
+  <meta name="description" content="My personal FreeBSD 11.3 server (VPS) was running low on storage space.
+By using the VPS provider&rsquo;s &ldquo;scale-up&rdquo; option, I could easily grow the virtual disk.
+But then I wondered how to expand the filesystem on it.
+In my case, the filesystem is on a GELI-encrypted ZFS storage pool.
+So I had to resize the following entities.
+ GPT freebsd-zfs partition GELI device on the GPT partition ZFS pool comprised of the GELI device  After rehearsing on VirtualBox VMs, I took the following steps to get more free space for the server.">
+  <meta property="og:description" content="My personal FreeBSD 11.3 server (VPS) was running low on storage space.
+By using the VPS provider&rsquo;s &ldquo;scale-up&rdquo; option, I could easily grow the virtual disk.
+But then I wondered how to expand the filesystem on it.
+In my case, the filesystem is on a GELI-encrypted ZFS storage pool.
+So I had to resize the following entities.
+ GPT freebsd-zfs partition GELI device on the GPT partition ZFS pool comprised of the GELI device  After rehearsing on VirtualBox VMs, I took the following steps to get more free space for the server.">
+  <meta name="twitter:description" content="My personal FreeBSD 11.3 server (VPS) was running low on storage space.
+By using the VPS provider&rsquo;s &ldquo;scale-up&rdquo; option, I could easily grow the virtual disk.
+But then I wondered how …">
+  <meta name="author" content="genneko"/>
+  <meta property="og:site_name" content="genneko" />
+  <meta property="og:url" content="https://genneko.github.io/playing-with-bsd/storage/expanding-zfs-on-geli/" />
+  <meta property="og:type" content="article" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="generator" content="Hugo 0.59.1" />
+
+  <link rel="stylesheet" href="https://genneko.github.io/css/style.css" media="all" />
+  <link rel="stylesheet" href="https://genneko.github.io/css/syntax.css" media="all" />
+  <link rel="stylesheet" href="https://genneko.github.io/css/custom.css" media="all" />
+
+  <script src="https://genneko.github.io/js/script.js"></script>
+  <script src="https://genneko.github.io/js/custom.js"></script>
+  <script defer src="https://genneko.github.io/js/fontawesome.js"></script>
+</head>
+
+<body>
+
+<header class="site-header">
+  <nav class="site-navi">
+    <img class="site-icon" src="https://genneko.github.io/images/genneko-icon.png">
+    <h1 class="site-title"><a href="https://genneko.github.io/">genneko</a></h1>
+    <ul class="site-navi-items">
+      <li class="site-navi-item-playing-with-bsd"><a href="https://genneko.github.io/playing-with-bsd/" title="Playing with BSD">Playing with BSD</a></li>
+      <li class="site-navi-item-tags"><a href="https://genneko.github.io/tags/" title="Tags">Tags</a></li>
+      <li class="site-navi-item-archives"><a href="https://genneko.github.io/archives/" title="Archives">Archives</a></li>
+      <li class="site-navi-item-about"><a href="https://genneko.github.io/about/" title="About">About</a></li>
+    </ul>
+  </nav>
+</header>
+<hr class="site-header-bottom">
+
+
+  <div class="main" role="main">
+    <article class="article">
+      
+      
+      <h1 class="article-title">Expanding a GELI-encrypted ZFS pool</h1>
+      
+      <hr class="article-title-bottom">
+      <ul class="article-meta">
+        <li class="article-meta-date"><time>2019-11-17</time>
+        
+        </li>
+        <li class="article-meta-tags">
+          <a href="https://genneko.github.io/tags/freebsd/">
+            <i class="fas fa-tag"></i>
+            freebsd
+          </a>&nbsp;
+        </li>
+        <li class="article-meta-tags">
+          <a href="https://genneko.github.io/tags/geli/">
+            <i class="fas fa-tag"></i>
+            geli
+          </a>&nbsp;
+        </li>
+        <li class="article-meta-tags">
+          <a href="https://genneko.github.io/tags/storage/">
+            <i class="fas fa-tag"></i>
+            storage
+          </a>&nbsp;
+        </li>
+        <li class="article-meta-tags">
+          <a href="https://genneko.github.io/tags/zfs/">
+            <i class="fas fa-tag"></i>
+            zfs
+          </a>&nbsp;
+        </li>
+      </ul>
+      
+<aside class="toc">
+  <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#references">References</a></li>
+</ul></li>
+</ul>
+</nav>
+</aside>
+      
+
+<p>My personal FreeBSD 11.3 server (VPS) was running low on storage space.<br />
+By using the VPS provider&rsquo;s &ldquo;scale-up&rdquo; option, I could easily grow the virtual disk.<br />
+But then I wondered how to expand the filesystem on it.</p>
+
+<p>In my case, the filesystem is on a GELI-encrypted ZFS storage pool.<br />
+So I had to resize the following entities.</p>
+
+<ul>
+<li>GPT freebsd-zfs partition</li>
+<li>GELI device on the GPT partition</li>
+<li>ZFS pool comprised of the GELI device</li>
+</ul>
+
+<p>After rehearsing on VirtualBox VMs, I took the following steps to get more free space for the server.</p>
+
+<ol>
+<li><p>First of all, make sure to backup all the important data on the server.<br />
+I also took a backup of the GELI metadata using the following command and stored it off-site.</p>
+
+<pre><code># geli backup vtbd0p2 vtbd0p2.eli
+</code></pre></li>
+
+<li><p>Gather disk-related information.<br />
+The most important here is the Consumer&rsquo;s Mediasize in <code>geli list</code>, which is the current size of the partition where the GELI device resides.<br />
+(Provider&rsquo;s Mediasize of the partition in <code>geom part list</code> has the same number, I guess.)<br />
+Write down this value somewhere so that you can use it when you resize the GELI device after expanding the virtual disk and the partition.</p>
+
+<pre><code># gpart show
+=&gt;       40  419430320  vtbd0  GPT  (200G)
+        40       1024      1  freebsd-boot  (512K)
+      1064        984         - free -  (492K)
+      2048  419426304      2  freebsd-zfs  (200G)
+ 419428352       2008         - free -  (1.0M)
+   
+# geli list
+Geom name: vtbd0p2.eli
+...
+Providers:
+1. Name: vtbd0p2.eli
+  Mediasize: 214746263552 (200G)
+  Sectorsize: 4096
+  Mode: r1w1e1
+Consumers:
+1. Name: vtbd0p2
+  Mediasize: 214746267648 (200G) &lt;--- Note here!
+  Sectorsize: 512
+  Stripesize: 0
+  Stripeoffset: 1048576
+  Mode: r1w1e1
+   
+# zpool list
+NAME    SIZE  ALLOC   FREE  CKPOINT  EXPANDSZ   FRAG    CAP  DEDUP  HEALTH  ALTROOT
+zroot   199G   177G  22.1G        -      200G    58%    88%  1.00x  ONLINE  -
+   
+# zpool status
+ pool: zroot
+...
+config:
+   
+       NAME           STATE     READ WRITE CKSUM
+       zroot          ONLINE       0     0     0
+         vtbd0p2.eli  ONLINE       0     0     0
+...
+</code></pre></li>
+
+<li><p>Shutdown the server and apply &ldquo;scale-up&rdquo; option to increase the virtual disk size.</p></li>
+
+<li><p>Once the &ldquo;scale-up&rdquo; opearation at the VPS provider is complete, boot the server with FreeBSD 11.3 installer ISO and open a console.</p></li>
+
+<li><p>Go into &ldquo;Shell&rdquo; at the installer&rsquo;s Welcome screen.</p></li>
+
+<li><p>At this point, <code>gpart show</code> reports GPT corruption on the virtual disk (vtbd0).<br />
+This is because the GPT secondary metadata is no longer located at the end of the expanded disk.</p>
+
+<pre><code># gpart show
+=&gt;       40  419430320  vtbd0  GPT  (400G) [CORRUPT]
+        40       1024      1  freebsd-boot  (512K)
+      1064        984         - free -  (492K)
+      2048  419426304      2  freebsd-zfs  (200G)
+ 419428352       2008         - free -  (1.0M)
+</code></pre>
+
+<p>Run the following command to fix this by using the primary metadata at the beginning of the disk.</p>
+
+<pre><code># gpart recover vtbd0
+# gpart show
+=&gt;       40  838860720  vtbd0  GPT  (400G)
+        40       1024      1  freebsd-boot  (512K)
+      1064        984         - free -  (492K)
+      2048  419426304      2  freebsd-zfs  (200G)
+ 419428352  419432408         - free -  (200G)
+</code></pre></li>
+
+<li><p>Resize the FreeBSD ZFS partition (vtbd0p2) to make it use all the increased space.</p>
+
+<pre><code># gpart resize -i 2 -a 1m vtbd0
+# gpart show
+=&gt;       40  838860720  vtbd0  GPT  (400G)
+        40       1024      1  freebsd-boot  (512K)
+      1064        984         - free -  (492K)
+      2048  838856704      2  freebsd-zfs  (400G)
+ 838858752       2008         - free -  (1.0M)
+</code></pre></li>
+
+<li><p>Resize the GELI device on the expanded partition with <code>geli resize</code> command.<br />
+Specify the previous partition size with <code>-s oldsize</code> option to let the command find the GELI metadata, which is no longer at the end of the expanded partition.<br />
+You can find this value at several places. This time I used vtbd0p2&rsquo;s &ldquo;Consumer Mediasize&rdquo; in the output of <code>geli list</code> I ran before expanding the disk (See step 2).<br />
+(<code>geli load</code> is used to load the kernel module &ldquo;geom_eli.ko&rdquo;.)</p>
+
+<pre><code># geli load
+# geli resize -v -s 214746267648 vtbd0p2
+</code></pre></li>
+
+<li><p>Reboot with the resized partition.</p>
+
+<pre><code># shutdown -r now
+</code></pre></li>
+
+<li><p>Although the underlying partition and the GELI device have been expanded, the ZFS pool size hasn&rsquo;t been changed yet.</p>
+
+<pre><code># zpool list
+NAME    SIZE  ALLOC   FREE  CKPOINT  EXPANDSZ   FRAG    CAP  DEDUP  HEALTH  ALTROOT
+zroot   199G   177G  22.1G        -      200G    58%    88%  1.00x  ONLINE  -
+</code></pre>
+
+<p>Use <code>zpool online -e</code> to expand the ZFS pool on the GELI device.</p>
+
+<pre><code># zpool online -e zroot vtbd0p2.eli
+# zpool list
+NAME    SIZE  ALLOC   FREE  CKPOINT  EXPANDSZ   FRAG    CAP  DEDUP  HEALTH  ALTROOT
+zroot   399G   177G   222G        -         -    29%    44%  1.00x  ONLINE  -
+</code></pre></li>
+
+<li><p>That&rsquo;s all!<br />
+The whole process only took an hour where the scale-up operation at the VPS provider took about 50 minutes.</p>
+
+<pre><code># gpart show
+=&gt;       40  838860720  vtbd0  GPT  (400G)
+        40       1024      1  freebsd-boot  (512K)
+      1064        984         - free -  (492K)
+      2048  838856704      2  freebsd-zfs  (400G)
+ 838858752       2008         - free -  (1.0M)
+   
+# geli list
+Geom name: vtbd0p2.eli
+...
+Providers:
+1. Name: vtbd0p2.eli
+  Mediasize: 429494628352 (400G)
+  Sectorsize: 4096
+  Mode: r1w1e1
+Consumers:
+1. Name: vtbd0p2
+  Mediasize: 429494632448 (400G)
+  Sectorsize: 512
+  Stripesize: 0
+  Stripeoffset: 1048576
+  Mode: r1w1e1
+   
+# zpool list
+NAME    SIZE  ALLOC   FREE  CKPOINT  EXPANDSZ   FRAG    CAP  DEDUP  HEALTH  ALTROOT
+zroot   399G   174G   225G        -         -    31%    43%  1.00x  ONLINE  -
+   
+# zpool status
+ pool: zroot
+...
+config:
+   
+       NAME           STATE     READ WRITE CKSUM
+       zroot          ONLINE       0     0     0
+         vtbd0p2.eli  ONLINE       0     0     0
+...
+</code></pre></li>
+</ol>
+
+<h2 id="references">References</h2>
+
+<ul>
+<li><p>FreeBSD Handbook: zpool Administration<br />
+<a href="https://www.freebsd.org/doc/handbook/zfs-zpool.html">https://www.freebsd.org/doc/handbook/zfs-zpool.html</a></p></li>
+
+<li><p>FreeBSD Manual: gpart(8)<br />
+<a href="https://www.freebsd.org/cgi/man.cgi?gpart(8)">https://www.freebsd.org/cgi/man.cgi?gpart(8)</a></p></li>
+
+<li><p>FreeBSD Manual: geli(8)<br />
+<a href="https://www.freebsd.org/cgi/man.cgi?geli(8)">https://www.freebsd.org/cgi/man.cgi?geli(8)</a></p></li>
+
+<li><p>FreeBSD Manual: zpool(8)<br />
+<a href="https://www.freebsd.org/cgi/man.cgi?zpool(8)">https://www.freebsd.org/cgi/man.cgi?zpool(8)</a></p></li>
+
+<li><p>FreeBSD Mastery: Storage Essentials by Michael W. Lucas<br />
+<a href="https://mwl.io/nonfiction/os#fmse">https://mwl.io/nonfiction/os#fmse</a></p></li>
+
+<li><p>FreeBSD Mastery: ZFS by Michael W. Lucas and Allan Jude<br />
+<a href="https://mwl.io/nonfiction/os#fmzfs">https://mwl.io/nonfiction/os#fmzfs</a></p></li>
+
+<li><p>YAUB (Yet Another Useless blog): Resize a zpool on a FreeBSD geli partition<br />
+<a href="https://stderr.at/blog/freebsd/2015/09/20/freebsd-geli-resize/">https://stderr.at/blog/freebsd/2015/09/20/freebsd-geli-resize/</a></p></li>
+
+<li><p>FreeBSD Forum: [solved]GELI resize doesn&rsquo;t work.<br />
+<a href="https://forums.freebsd.org/threads/solved-geli-resize-doesnt-work.45133/">https://forums.freebsd.org/threads/solved-geli-resize-doesnt-work.45133/</a></p></li>
+</ul>
+
+    </article>
+
+    
+
+
+    <ul class="pager article-pager">
+      <li class="pager-newer pager-noitem">&lt; Newer</li>
+      <li class="pager-older">
+        <a href="https://genneko.github.io/playing-with-bsd/hardware/freebsd-on-thinkpad-t480/" data-toggle="tooltip" data-placement="top" title="ThinkPad T480 is my new main laptop which runs FreeBSD">Older &gt;</a>
+      </li>
+    </ul>
+  </div>
+
+
+<div class="site-footer">
+  <div class="copyright">&copy; Copyright 2018 - 2019 genneko</div>
+  <ul class="site-footer-items">
+    <li class="site-footer-item-about"><a href="https://genneko.github.io/about/" title="About">About</a></li>
+  </ul>
+  <div class="powerdby">
+    Powered by <a href="https://gohugo.io/">Hugo</a> and <a href="https://github.com/taikii/whiteplain">Whiteplain</a>
+  </div>
+</div>
+
+
+</body>
+</html>

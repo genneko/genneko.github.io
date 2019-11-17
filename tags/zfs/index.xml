@@ -7,10 +7,24 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>&amp;copy; Copyright 2018 - 2019 genneko</copyright>
-    <lastBuildDate>Sat, 10 Aug 2019 18:00:00 +0900</lastBuildDate>
+    <lastBuildDate>Sun, 17 Nov 2019 19:37:00 +0900</lastBuildDate>
     
 	<atom:link href="https://genneko.github.io/tags/zfs/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Expanding a GELI-encrypted ZFS pool</title>
+      <link>https://genneko.github.io/playing-with-bsd/storage/expanding-zfs-on-geli/</link>
+      <pubDate>Sun, 17 Nov 2019 19:37:00 +0900</pubDate>
+      
+      <guid>https://genneko.github.io/playing-with-bsd/storage/expanding-zfs-on-geli/</guid>
+      <description>My personal FreeBSD 11.3 server (VPS) was running low on storage space.
+By using the VPS provider&amp;rsquo;s &amp;ldquo;scale-up&amp;rdquo; option, I could easily grow the virtual disk.
+But then I wondered how to expand the filesystem on it.
+In my case, the filesystem is on a GELI-encrypted ZFS storage pool.
+So I had to resize the following entities.
+ GPT freebsd-zfs partition GELI device on the GPT partition ZFS pool comprised of the GELI device  After rehearsing on VirtualBox VMs, I took the following steps to get more free space for the server.</description>
+    </item>
     
     <item>
       <title>Growing a ZFS Mirror Pool</title>

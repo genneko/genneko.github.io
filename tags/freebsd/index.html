@@ -47,6 +47,51 @@
   <div class="main" role="main">
     <section class="list taxonomy-list">
       <article class="article">
+        <a href="https://genneko.github.io/playing-with-bsd/storage/expanding-zfs-on-geli/" class="article-titles">
+          <h2 class="article-title">Expanding a GELI-encrypted ZFS pool</h2>
+          
+        </a>
+        <ul class="article-meta">
+          <li class="article-meta-date"><time>2019-11-17</time>
+          
+          </li>
+          <li class="article-meta-tags">
+            <a href="https://genneko.github.io/tags/freebsd/">
+              <i class="fas fa-tag"></i>
+              freebsd
+            </a>&nbsp;
+          </li>
+          <li class="article-meta-tags">
+            <a href="https://genneko.github.io/tags/geli/">
+              <i class="fas fa-tag"></i>
+              geli
+            </a>&nbsp;
+          </li>
+          <li class="article-meta-tags">
+            <a href="https://genneko.github.io/tags/storage/">
+              <i class="fas fa-tag"></i>
+              storage
+            </a>&nbsp;
+          </li>
+          <li class="article-meta-tags">
+            <a href="https://genneko.github.io/tags/zfs/">
+              <i class="fas fa-tag"></i>
+              zfs
+            </a>&nbsp;
+          </li>
+        </ul>
+        <div class="article-content">
+          My personal FreeBSD 11.3 server (VPS) was running low on storage space.
+By using the VPS provider&rsquo;s &ldquo;scale-up&rdquo; option, I could easily grow the virtual disk.
+But then I wondered how to expand the filesystem on it.
+In my case, the filesystem is on a GELI-encrypted ZFS storage pool.
+So I had to resize the following entities.
+ GPT freebsd-zfs partition GELI device on the GPT partition ZFS pool comprised of the GELI device  After rehearsing on VirtualBox VMs, I took the following steps to get more free space for the server.
+        </div>
+        <div class="article-readmore"><a href="https://genneko.github.io/playing-with-bsd/storage/expanding-zfs-on-geli/">Read more...</a></div>
+        <div class="article-floatclear"></div>
+      </article>
+      <article class="article">
         <a href="https://genneko.github.io/playing-with-bsd/hardware/freebsd-on-thinkpad-t480/" class="article-titles">
           <h2 class="article-title">ThinkPad T480 is my new main laptop which runs FreeBSD</h2>
           
@@ -431,54 +476,6 @@ This article is a sort of personal notebook where I summarize what I learned abo
 Assumptions  The host is running FreeBSD 11.2/amd64 on ZFS. Each jail has a separate root dataset under /vm on the host.
         </div>
         <div class="article-readmore"><a href="https://genneko.github.io/playing-with-bsd/system/learning-notes-on-jails/">Read more...</a></div>
-        <div class="article-floatclear"></div>
-      </article>
-      <article class="article">
-        <a href="https://genneko.github.io/playing-with-bsd/storage/encrypted-temporary-storage/" class="article-titles">
-          <h2 class="article-title">Encrypted Temporary Storage with GELI</h2>
-          
-        </a>
-        <ul class="article-meta">
-          <li class="article-meta-date"><time>2018-09-07</time>
-          
-          </li>
-          <li class="article-meta-tags">
-            <a href="https://genneko.github.io/tags/freebsd/">
-              <i class="fas fa-tag"></i>
-              freebsd
-            </a>&nbsp;
-          </li>
-          <li class="article-meta-tags">
-            <a href="https://genneko.github.io/tags/geli/">
-              <i class="fas fa-tag"></i>
-              geli
-            </a>&nbsp;
-          </li>
-          <li class="article-meta-tags">
-            <a href="https://genneko.github.io/tags/geom/">
-              <i class="fas fa-tag"></i>
-              geom
-            </a>&nbsp;
-          </li>
-          <li class="article-meta-tags">
-            <a href="https://genneko.github.io/tags/storage/">
-              <i class="fas fa-tag"></i>
-              storage
-            </a>&nbsp;
-          </li>
-          <li class="article-meta-tags">
-            <a href="https://genneko.github.io/tags/zfs/">
-              <i class="fas fa-tag"></i>
-              zfs
-            </a>&nbsp;
-          </li>
-        </ul>
-        <div class="article-content">
-          Recently, I wanted an encrypted working directory on a running FreeBSD system. The system was running on a plain (unencrypted) ZFS pool and there&rsquo;s no plan to add disks to it. I needed the working directory only temporarily.
-I came up with the following options.
- Use GELI on a ZFS volume (zvol). Use GELI on a memory disk (md). Use PEFS on a directory.  I excluded PEFS because I had very little experience.
-        </div>
-        <div class="article-readmore"><a href="https://genneko.github.io/playing-with-bsd/storage/encrypted-temporary-storage/">Read more...</a></div>
         <div class="article-floatclear"></div>
       </article>
     </section>
