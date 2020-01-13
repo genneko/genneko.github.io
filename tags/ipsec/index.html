@@ -11,7 +11,7 @@
   <meta property="og:url" content="https://genneko.github.io/tags/ipsec/" />
   <meta property="og:type" content="website" />
   <meta name="twitter:card" content="summary" />
-  <meta name="generator" content="Hugo 0.59.1" />
+  <meta name="generator" content="Hugo 0.62.1" />
   <link href="https://genneko.github.io/tags/ipsec/index.xml" rel="alternate" type="application/rss+xml" title="genneko" />
   <link href="https://genneko.github.io/tags/ipsec/index.xml" rel="feed" type="application/rss+xml" title="genneko" />
 
@@ -83,7 +83,7 @@
         <div class="article-content">
           I have managed to setup route-based IPsec VPN with FreeBSD-11.1 RC3, which had introduced ipsec virtual tunnel interface if_ipsec(4). Here is a record of my experiment just for your information.
 Prerequisite  FreeBSD-11.1-RC3/amd64 Generic kernel No special packages/ports (just added sudo and a few other must-have utilities)  Network configuration NOTE: The following text shows bsd1 configurations only.
- 10.0.0.1 10.0.0.2 192.168.10.0/24 --- [bsd1] ----- /// ----- [bsd2] --- 192.
+ 10.0.0.1 10.0.0.2 192.168.10.0/24 --- [bsd1] ----- /// ----- [bsd2] --- 192.168.20.0/24 172.
         </div>
         <div class="article-readmore"><a href="https://genneko.github.io/playing-with-bsd/networking/freebsd-vti-ipsec/">Read more...</a></div>
         <div class="article-floatclear"></div>
@@ -97,7 +97,7 @@ Prerequisite  FreeBSD-11.1-RC3/amd64 Generic kernel No special packages/ports (j
 
 
 <div class="site-footer">
-  <div class="copyright">&copy; Copyright 2018 - 2019 genneko</div>
+  <div class="copyright">&copy; Copyright 2017 - 2020 genneko</div>
   <ul class="site-footer-items">
     <li class="site-footer-item-rsslink">
       <a href="https://genneko.github.io/tags/ipsec/index.xml" type="application/rss+xml" target="_blank" title="RSS">

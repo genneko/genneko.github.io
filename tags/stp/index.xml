@@ -6,7 +6,7 @@
     <description>Recent content in stp on genneko</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <copyright>&amp;copy; Copyright 2018 - 2019 genneko</copyright>
+    <copyright>&amp;copy; Copyright 2017 - 2020 genneko</copyright>
     <lastBuildDate>Sun, 04 Nov 2018 21:19:01 +0900</lastBuildDate>
     
 	<atom:link href="https://genneko.github.io/tags/stp/index.xml" rel="self" type="application/rss+xml" />
@@ -20,7 +20,7 @@
       <guid>https://genneko.github.io/playing-with-bsd/networking/learning-stp/</guid>
       <description>Spanning Tree Protocol is a standard protocol for network bridges (layer-two switches) to autonomously find a logical loop-free topology and provide redundancy to the network.
 Several variants have been developed since its birth, in which the most common standard is Rapid Spanning Tree Protocol (RSTP). Many managed switches implement the protocol and often enable it by default.
-Although it&amp;rsquo;s quite common in the networking world where I&amp;rsquo;m living in its perimeter, it&amp;rsquo;s been something vague and unfamiliar to me for a long time.</description>
+Although it&#39;s quite common in the networking world where I&#39;m living in its perimeter, it&#39;s been something vague and unfamiliar to me for a long time.</description>
     </item>
     
   </channel>

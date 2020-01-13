@@ -8,21 +8,23 @@
   <meta name="twitter:title" content="Migrating a live system from GEOM mirror to ZFS mirror - genneko" />
   <meta name="description" content="I had been wanting to migrate a FreeBSD system on a GEOM mirror (gmirror) to a ZFS mirror.
 After several rehearsals on a VM, I have finally achieved that goal with the following steps.
- Load ZFS-releated kernel modules and set a tunable to use 4K sector drives.
-sudo kldload zfs sudo sysctl vfs.zfs.min_auto_ashift=12  Remove one (da0) of the two disks (da0, da1) which make up the gmirror (gm0).">
+  Load ZFS-releated kernel modules and set a tunable to use 4K sector drives.
+sudo kldload zfs sudo sysctl vfs.zfs.min_auto_ashift=12 ``
+  Remove one (da0) of the two disks (da0, da1) which make up the gmirror (gm0).">
   <meta property="og:description" content="I had been wanting to migrate a FreeBSD system on a GEOM mirror (gmirror) to a ZFS mirror.
 After several rehearsals on a VM, I have finally achieved that goal with the following steps.
- Load ZFS-releated kernel modules and set a tunable to use 4K sector drives.
-sudo kldload zfs sudo sysctl vfs.zfs.min_auto_ashift=12  Remove one (da0) of the two disks (da0, da1) which make up the gmirror (gm0).">
+  Load ZFS-releated kernel modules and set a tunable to use 4K sector drives.
+sudo kldload zfs sudo sysctl vfs.zfs.min_auto_ashift=12 ``
+  Remove one (da0) of the two disks (da0, da1) which make up the gmirror (gm0).">
   <meta name="twitter:description" content="I had been wanting to migrate a FreeBSD system on a GEOM mirror (gmirror) to a ZFS mirror.
 After several rehearsals on a VM, I have finally achieved that goal with the following steps.
- Load …">
+  Load …">
   <meta name="author" content="genneko"/>
   <meta property="og:site_name" content="genneko" />
   <meta property="og:url" content="https://genneko.github.io/playing-with-bsd/storage/gmirror-to-zfs/" />
   <meta property="og:type" content="article" />
   <meta name="twitter:card" content="summary" />
-  <meta name="generator" content="Hugo 0.59.1" />
+  <meta name="generator" content="Hugo 0.62.1" />
 
   <link rel="stylesheet" href="https://genneko.github.io/css/style.css" media="all" />
   <link rel="stylesheet" href="https://genneko.github.io/css/syntax.css" media="all" />
@@ -89,56 +91,48 @@ After several rehearsals on a VM, I have finally achieved that goal with the fol
       
 <aside class="toc">
   <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#references">References</a></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#references">References</a></li>
+  </ul>
 </nav>
 </aside>
-      
-
-<p>I had been wanting to migrate a FreeBSD system on a GEOM mirror (gmirror) to a ZFS mirror.</p>
-
+      <p>I had been wanting to migrate a FreeBSD system on a GEOM mirror (gmirror) to a ZFS mirror.</p>
 <p>After several rehearsals on a VM, I have finally achieved that goal with the following steps.</p>
-
 <ol>
-<li><p>Load ZFS-releated kernel modules and set a tunable to use 4K sector drives.</p>
-
+<li>
+<p>Load ZFS-releated kernel modules and set a tunable to use 4K sector drives.</p>
 <pre><code>sudo kldload zfs
 sudo sysctl vfs.zfs.min_auto_ashift=12
-</code></pre></li>
-
-<li><p>Remove one (da0) of the two disks (da0, da1) which make up the gmirror (gm0).</p>
-
+</code></pre><p>``</p>
+</li>
+<li>
+<p>Remove one (da0) of the two disks (da0, da1) which make up the gmirror (gm0).</p>
 <pre><code>sudo gmirror remove gm0 da0
-</code></pre></li>
-
-<li><p>Re-create partitions on the disk removed from the gmirror (da0). Label them appropriately.</p>
-
+</code></pre><p>``</p>
+</li>
+<li>
+<p>Re-create partitions on the disk removed from the gmirror (da0). Label them appropriately.</p>
 <pre><code>sudo gpart destroy -F da0
 sudo gpart create -s gpt da0
 sudo gpart add -a 4k -t freebsd-boot -s 512k -l zfsboot0 da0
 sudo gpart add -a 1m -t freebsd-zfs -l zfssys0 da0
 sudo gpart bootcode -b /boot/pmbr -p /boot/gptzfsboot -i 1 da0
-</code></pre>
-
-<p>GEOM mirrored disks usually use MBR partitioning because both gmirror and GPT(another partitioning scheme) store metadata at the end of the disk.</p></li>
-
-<li><p>Create a ZFS pool (zroot) with a partition (gpt/zfssys0) on da0.</p>
-
+</code></pre><p>``</p>
+<p>GEOM mirrored disks usually use MBR partitioning because both gmirror and GPT(another partitioning scheme) store metadata at the end of the disk.</p>
+</li>
+<li>
+<p>Create a ZFS pool (zroot) with a partition (gpt/zfssys0) on da0.</p>
 <pre><code>sudo zpool create -O compression=lz4 -O atime=off -o altroot=/mnt -m none zroot gpt/zfssys0
-</code></pre></li>
-
-<li><p>Export and re-import the pool and mount it on a temporary location (/mnt).</p>
-
+</code></pre><p>``</p>
+</li>
+<li>
+<p>Export and re-import the pool and mount it on a temporary location (/mnt).</p>
 <pre><code>sudo zpool export zroot
 sudo zpool import -o altroot=/mnt zroot
-</code></pre></li>
-
-<li><p>Create datasets in a Boot Environment compliant layout.</p>
-
+</code></pre><p>``</p>
+</li>
+<li>
+<p>Create datasets in a Boot Environment compliant layout.</p>
 <pre><code>sudo zfs create -o mountpoint=none zroot/ROOT
 sudo zfs create -o mountpoint=/ zroot/ROOT/default
 sudo zfs create -o mountpoint=/tmp -o exec=on -o setuid=off zroot/tmp
@@ -155,96 +149,90 @@ sudo zfs create -o exec=off -o setuid=off zroot/var/log
 sudo zfs create -o atime=on zroot/var/mail
 sudo zfs create -o setuid=off zroot/var/tmp
 sudo zfs create -o mountpoint=/data zroot/data
-</code></pre></li>
-
-<li><p>Set bootfs property and fix permissions on temporay directories.</p>
-
+</code></pre><p>``</p>
+</li>
+<li>
+<p>Set bootfs property and fix permissions on temporay directories.</p>
 <pre><code>sudo zpool set bootfs=zroot/ROOT/default zroot
 sudo chmod 1777 /mnt/tmp
 sudo chmod 1777 /mnt/var/tmp
-</code></pre></li>
-
-<li><p>Copy files from the gmirror to the new ZFS pool.</p>
-
+</code></pre><p>``</p>
+</li>
+<li>
+<p>Copy files from the gmirror to the new ZFS pool.</p>
 <pre><code>sudo sh -c &quot;find -x / | cpio -pmd /mnt&quot;
 sudo sh -c &quot;find -x /var | cpio -pmd /mnt&quot;
 sudo sh -c &quot;find -x /usr | cpio -pmd /mnt&quot;
 sudo sh -c &quot;find -x /home | cpio -pmd /mnt&quot;
 sudo sh -c &quot;find -x /data | cpio -pmd /mnt
-</code></pre></li>
-
-<li><p>Modify configuration files on the pool.</p>
-
+</code></pre><p>``</p>
+</li>
+<li>
+<p>Modify configuration files on the pool.</p>
 <p>[/mnt/boot/loader.conf]</p>
-
 <pre><code># geom_mirror_load=&quot;YES&quot;
 kern.geom.label.disk_ident.enable=&quot;0&quot;
 kern.geom.label.gptid.enable=&quot;0&quot;
 zfs_load=&quot;YES&quot;
-</code></pre>
-
+</code></pre><p>``</p>
 <p>[/mnt/etc/sysctl.conf]</p>
-
 <pre><code>vfs.zfs.min_auto_ashift=12
-</code></pre>
-
+</code></pre><p>``</p>
 <p>[/mnt/etc/rc.conf]</p>
-
 <pre><code>zfs_enable=&quot;YES&quot;
-</code></pre>
-
+</code></pre><p>``</p>
 <p>[/mnt/etc/fstab]</p>
-
 <pre><code># comment out all mount entries for gmirror (gm0).
-</code></pre></li>
-
-<li><p>Reboot into ZFS.</p>
-
+</code></pre><p>``</p>
+</li>
+<li>
+<p>Reboot into ZFS.</p>
 <pre><code>sudo shutdown -r now
 </code></pre></li>
-
-<li><p>After reboot, destroy the remaining gmirror (gm0) which is no longer used.</p>
-
+<li>
+<p>After reboot, destroy the remaining gmirror (gm0) which is no longer used.</p>
 <pre><code>sudo gmirror load
 sudo gmirror destroy gm0
 </code></pre></li>
-
-<li><p>Re-create partitions on da1 which had remained in the gmirror.</p>
-
+<li>
+<p>Re-create partitions on da1 which had remained in the gmirror.</p>
 <pre><code>sudo gpart destroy -F da1
 sudo gpart create -s gpt da1
 sudo gpart add -a 4k -t freebsd-boot -s 512k -l zfsboot0 da1
 sudo gpart add -a 1m -t freebsd-zfs -l zfssys0 da1
 sudo gpart bootcode -b /boot/pmbr -p /boot/gptzfsboot -i 1 da1
 </code></pre></li>
-
-<li><p>Add a partition (gpt/zfssys1) on da1 to the ZFS pool (zroot) to form a mirror again. Resilvering starts.</p>
-
+<li>
+<p>Add a partition (gpt/zfssys1) on da1 to the ZFS pool (zroot) to form a mirror again. Resilvering starts.</p>
 <p><strong>NOTE</strong>: To add mirrored disks, use <code>zpool attach</code> instead of <code>zpool add</code>. The latter expands a pool by adding the specified vdev as another stripe.</p>
-
 <pre><code>sudo zpool attach zroot gpt/zfssys0 gpt/zfssys1
 </code></pre></li>
-
-<li><p>When resilvering is done, you&rsquo;ve got a brand new ZFS mirror pool!</p></li>
+<li>
+<p>When resilvering is done, you've got a brand new ZFS mirror pool!</p>
+</li>
 </ol>
-
 <h2 id="references">References</h2>
-
 <ul>
-<li><p>FreeBSD Handbook: GEOM: Modular Disk Transformation Framework / RAID1 - Mirroring<br />
-<a href="https://www.freebsd.org/doc/en_US.ISO8859-1/books/handbook/geom-mirror.html">https://www.freebsd.org/doc/en_US.ISO8859-1/books/handbook/geom-mirror.html</a></p></li>
-
-<li><p>FreeBSD Handbook: The Z File System (ZFS)<br />
-<a href="https://www.freebsd.org/doc/en_US.ISO8859-1/books/handbook/zfs.html">https://www.freebsd.org/doc/en_US.ISO8859-1/books/handbook/zfs.html</a></p></li>
-
-<li><p>FreeBSD Mastery: Storage Essentials by Michael W. Lucas<br />
-<a href="https://mwl.io/nonfiction/os#fmse">https://mwl.io/nonfiction/os#fmse</a></p></li>
-
-<li><p>FreeBSD Mastery: ZFS by Michael W. Lucas and Allan Jude<br />
-<a href="https://mwl.io/nonfiction/os#fmzfs">https://mwl.io/nonfiction/os#fmzfs</a></p></li>
-
-<li><p>FreeBSD Mastery: Advanced ZFS by Michael W. Lucas and Allan Jude<br />
-<a href="https://mwl.io/nonfiction/os#fmaz">https://mwl.io/nonfiction/os#fmaz</a></p></li>
+<li>
+<p>FreeBSD Handbook: GEOM: Modular Disk Transformation Framework / RAID1 - Mirroring<br>
+<a href="https://www.freebsd.org/doc/en_US.ISO8859-1/books/handbook/geom-mirror.html">https://www.freebsd.org/doc/en_US.ISO8859-1/books/handbook/geom-mirror.html</a></p>
+</li>
+<li>
+<p>FreeBSD Handbook: The Z File System (ZFS)<br>
+<a href="https://www.freebsd.org/doc/en_US.ISO8859-1/books/handbook/zfs.html">https://www.freebsd.org/doc/en_US.ISO8859-1/books/handbook/zfs.html</a></p>
+</li>
+<li>
+<p>FreeBSD Mastery: Storage Essentials by Michael W. Lucas<br>
+<a href="https://mwl.io/nonfiction/os#fmse">https://mwl.io/nonfiction/os#fmse</a></p>
+</li>
+<li>
+<p>FreeBSD Mastery: ZFS by Michael W. Lucas and Allan Jude<br>
+<a href="https://mwl.io/nonfiction/os#fmzfs">https://mwl.io/nonfiction/os#fmzfs</a></p>
+</li>
+<li>
+<p>FreeBSD Mastery: Advanced ZFS by Michael W. Lucas and Allan Jude<br>
+<a href="https://mwl.io/nonfiction/os#fmaz">https://mwl.io/nonfiction/os#fmaz</a></p>
+</li>
 </ul>
 
     </article>
@@ -264,7 +252,7 @@ sudo gpart bootcode -b /boot/pmbr -p /boot/gptzfsboot -i 1 da1
 
 
 <div class="site-footer">
-  <div class="copyright">&copy; Copyright 2018 - 2019 genneko</div>
+  <div class="copyright">&copy; Copyright 2017 - 2020 genneko</div>
   <ul class="site-footer-items">
     <li class="site-footer-item-about"><a href="https://genneko.github.io/about/" title="About">About</a></li>
   </ul>

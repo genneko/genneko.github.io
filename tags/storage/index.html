@@ -11,7 +11,7 @@
   <meta property="og:url" content="https://genneko.github.io/tags/storage/" />
   <meta property="og:type" content="website" />
   <meta name="twitter:card" content="summary" />
-  <meta name="generator" content="Hugo 0.59.1" />
+  <meta name="generator" content="Hugo 0.62.1" />
   <link href="https://genneko.github.io/tags/storage/index.xml" rel="alternate" type="application/rss+xml" title="genneko" />
   <link href="https://genneko.github.io/tags/storage/index.xml" rel="feed" type="application/rss+xml" title="genneko" />
 
@@ -82,7 +82,7 @@
         </ul>
         <div class="article-content">
           My personal FreeBSD 11.3 server (VPS) was running low on storage space.
-By using the VPS provider&rsquo;s disk expansion option, I could easily grow the virtual disk.
+By using the VPS provider's disk expansion option, I could easily grow the virtual disk.
 But then I wondered how to expand the filesystem on it.
 In my case, the filesystem is on a GELI-encrypted ZFS storage pool.
 So I had to resize the following entities.
@@ -120,9 +120,9 @@ So I had to resize the following entities.
           </li>
         </ul>
         <div class="article-content">
-          I have a tiny home server for my family. It&rsquo;s based on Atom N2800 CPU and runs FreeBSD 11.2 with a two-disk ZFS mirror.
+          I have a tiny home server for my family. It's based on Atom N2800 CPU and runs FreeBSD 11.2 with a two-disk ZFS mirror.
 Originally it had two 500GB disks, but now it has a 500GB and a 1TB ones because one of them was replaced due to a failure.
-As the Handbook says, the available space of a mirror pool is limited by the size of the smallest disk.
+As the Handbook says, the available space of a mirror pool is limited by the size of the smallest disk. So my server can still get only 500GB from the total space of 1.
         </div>
         <div class="article-readmore"><a href="https://genneko.github.io/playing-with-bsd/storage/growing-a-zfs-mirror/">Read more...</a></div>
         <div class="article-floatclear"></div>
@@ -169,7 +169,7 @@ As the Handbook says, the available space of a mirror pool is limited by the siz
         </ul>
         <div class="article-content">
           Last week, one of my FreeBSD 11.2 servers failed to boot with the following error after freebsd-update.
-Mounting from zfs:zroot/ROOT/default failed with error 6; retrying for 3 more seconds  It was the first time I encountered this type of error.
+Mounting from zfs:zroot/ROOT/default failed with error 6; retrying for 3 more seconds It was the first time I encountered this type of error.
 After struggling for some hours, I was able to boot the server by disconnecting an external USB harddrive, which I had prepared as a secondary backup storage. But since then, I had been wondering what the root cause was.
         </div>
         <div class="article-readmore"><a href="https://genneko.github.io/playing-with-bsd/storage/mounting-from-zfs-failed/">Read more...</a></div>
@@ -216,7 +216,7 @@ After struggling for some hours, I was able to boot the server by disconnecting 
           </li>
         </ul>
         <div class="article-content">
-          Recently, I wanted an encrypted working directory on a running FreeBSD system. The system was running on a plain (unencrypted) ZFS pool and there&rsquo;s no plan to add disks to it. I needed the working directory only temporarily.
+          Recently, I wanted an encrypted working directory on a running FreeBSD system. The system was running on a plain (unencrypted) ZFS pool and there's no plan to add disks to it. I needed the working directory only temporarily.
 I came up with the following options.
  Use GELI on a ZFS volume (zvol). Use GELI on a memory disk (md). Use PEFS on a directory.  I excluded PEFS because I had very little experience.
         </div>
@@ -260,8 +260,9 @@ I came up with the following options.
         <div class="article-content">
           I had been wanting to migrate a FreeBSD system on a GEOM mirror (gmirror) to a ZFS mirror.
 After several rehearsals on a VM, I have finally achieved that goal with the following steps.
- Load ZFS-releated kernel modules and set a tunable to use 4K sector drives.
-sudo kldload zfs sudo sysctl vfs.zfs.min_auto_ashift=12  Remove one (da0) of the two disks (da0, da1) which make up the gmirror (gm0).
+  Load ZFS-releated kernel modules and set a tunable to use 4K sector drives.
+sudo kldload zfs sudo sysctl vfs.zfs.min_auto_ashift=12 ``
+  Remove one (da0) of the two disks (da0, da1) which make up the gmirror (gm0).
         </div>
         <div class="article-readmore"><a href="https://genneko.github.io/playing-with-bsd/storage/gmirror-to-zfs/">Read more...</a></div>
         <div class="article-floatclear"></div>
@@ -275,7 +276,7 @@ sudo kldload zfs sudo sysctl vfs.zfs.min_auto_ashift=12  Remove one (da0) of the
 
 
 <div class="site-footer">
-  <div class="copyright">&copy; Copyright 2018 - 2019 genneko</div>
+  <div class="copyright">&copy; Copyright 2017 - 2020 genneko</div>
   <ul class="site-footer-items">
     <li class="site-footer-item-rsslink">
       <a href="https://genneko.github.io/tags/storage/index.xml" type="application/rss+xml" target="_blank" title="RSS">

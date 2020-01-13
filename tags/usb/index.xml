@@ -6,7 +6,7 @@
     <description>Recent content in usb on genneko</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <copyright>&amp;copy; Copyright 2018 - 2019 genneko</copyright>
+    <copyright>&amp;copy; Copyright 2017 - 2020 genneko</copyright>
     <lastBuildDate>Thu, 18 Jul 2019 19:08:00 +0900</lastBuildDate>
     
 	<atom:link href="https://genneko.github.io/tags/usb/index.xml" rel="self" type="application/rss+xml" />
@@ -19,7 +19,7 @@
       
       <guid>https://genneko.github.io/playing-with-bsd/storage/mounting-from-zfs-failed/</guid>
       <description>Last week, one of my FreeBSD 11.2 servers failed to boot with the following error after freebsd-update.
-Mounting from zfs:zroot/ROOT/default failed with error 6; retrying for 3 more seconds  It was the first time I encountered this type of error.
+Mounting from zfs:zroot/ROOT/default failed with error 6; retrying for 3 more seconds It was the first time I encountered this type of error.
 After struggling for some hours, I was able to boot the server by disconnecting an external USB harddrive, which I had prepared as a secondary backup storage. But since then, I had been wondering what the root cause was.</description>
     </item>
     

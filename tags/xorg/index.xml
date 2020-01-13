@@ -6,7 +6,7 @@
     <description>Recent content in xorg on genneko</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <copyright>&amp;copy; Copyright 2018 - 2019 genneko</copyright>
+    <copyright>&amp;copy; Copyright 2017 - 2020 genneko</copyright>
     <lastBuildDate>Thu, 22 Aug 2019 00:50:00 +0900</lastBuildDate>
     
 	<atom:link href="https://genneko.github.io/tags/xorg/index.xml" rel="self" type="application/rss+xml" />
@@ -18,10 +18,10 @@
       <pubDate>Thu, 22 Aug 2019 00:50:00 +0900</pubDate>
       
       <guid>https://genneko.github.io/playing-with-bsd/hardware/freebsd-on-thinkpad-t480/</guid>
-      <description>I&amp;rsquo;ve been using FreeBSD as my primary server OS for quite a long time.
+      <description>I&#39;ve been using FreeBSD as my primary server OS for quite a long time.
 But, for unknown reasons, I have never seriously used it on client workstations.
-Maybe it&amp;rsquo;s partly because I&amp;rsquo;m a CUI-oriented person who loves doing things on text terminals as much as possible.
-Actually, I have been pretty happy with any client OS as long as I could use a decent terminal on it, so that I could SSH into FreeBSD servers where I spent a lot of time doing jobs which didn&amp;rsquo;t require graphical interface.</description>
+Maybe it&#39;s partly because I&#39;m a CUI-oriented person who loves doing things on text terminals as much as possible.
+Actually, I have been pretty happy with any client OS as long as I could use a decent terminal on it, so that I could SSH into FreeBSD servers where I spent a lot of time doing jobs which didn&#39;t require graphical interface.</description>
     </item>
     
   </channel>

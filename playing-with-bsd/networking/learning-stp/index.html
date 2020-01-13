@@ -8,10 +8,10 @@
   <meta name="twitter:title" content="Learning Spanning Tree Protocol with FreeBSD Bridges - genneko" />
   <meta name="description" content="Spanning Tree Protocol is a standard protocol for network bridges (layer-two switches) to autonomously find a logical loop-free topology and provide redundancy to the network.
 Several variants have been developed since its birth, in which the most common standard is Rapid Spanning Tree Protocol (RSTP). Many managed switches implement the protocol and often enable it by default.
-Although it&rsquo;s quite common in the networking world where I&rsquo;m living in its perimeter, it&rsquo;s been something vague and unfamiliar to me for a long time.">
+Although it&#39;s quite common in the networking world where I&#39;m living in its perimeter, it&#39;s been something vague and unfamiliar to me for a long time.">
   <meta property="og:description" content="Spanning Tree Protocol is a standard protocol for network bridges (layer-two switches) to autonomously find a logical loop-free topology and provide redundancy to the network.
 Several variants have been developed since its birth, in which the most common standard is Rapid Spanning Tree Protocol (RSTP). Many managed switches implement the protocol and often enable it by default.
-Although it&rsquo;s quite common in the networking world where I&rsquo;m living in its perimeter, it&rsquo;s been something vague and unfamiliar to me for a long time.">
+Although it&#39;s quite common in the networking world where I&#39;m living in its perimeter, it&#39;s been something vague and unfamiliar to me for a long time.">
   <meta name="twitter:description" content="Spanning Tree Protocol is a standard protocol for network bridges (layer-two switches) to autonomously find a logical loop-free topology and provide redundancy to the network.
 Several variants have …">
   <meta name="author" content="genneko"/>
@@ -19,7 +19,7 @@ Several variants have …">
   <meta property="og:url" content="https://genneko.github.io/playing-with-bsd/networking/learning-stp/" />
   <meta property="og:type" content="article" />
   <meta name="twitter:card" content="summary" />
-  <meta name="generator" content="Hugo 0.59.1" />
+  <meta name="generator" content="Hugo 0.62.1" />
 
   <link rel="stylesheet" href="https://genneko.github.io/css/style.css" media="all" />
   <link rel="stylesheet" href="https://genneko.github.io/css/syntax.css" media="all" />
@@ -86,76 +86,56 @@ Several variants have …">
       
 <aside class="toc">
   <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#preparation">Preparation</a>
-<ul>
-<li><a href="#setting-up-a-single-freebsd-vm">Setting up a Single FreeBSD VM</a></li>
-<li><a href="#building-a-simple-network-manually">Building a Simple Network Manually</a></li>
-<li><a href="#scripting-bridge-operations">Scripting Bridge Operations</a></li>
-<li><a href="#visualizing-topology">Visualizing Topology</a></li>
-</ul></li>
-<li><a href="#seeing-how-rstp-works">Seeing How RSTP Works</a>
-<ul>
-<li><a href="#electing-a-root-bridge-in-a-network">Electing a Root Bridge in a Network</a></li>
-<li><a href="#selecting-a-root-port-on-each-bridge">Selecting a Root Port on Each Bridge</a></li>
-<li><a href="#determining-designated-and-alternate-ports">Determining Designated and Alternate Ports</a></li>
-<li><a href="#reacting-to-topology-changes">Reacting to Topology Changes</a></li>
-</ul></li>
-<li><a href="#very-brief-conclusion">Very Brief Conclusion</a></li>
-<li><a href="#references">References</a></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#preparation">Preparation</a>
+      <ul>
+        <li><a href="#setting-up-a-single-freebsd-vm">Setting up a Single FreeBSD VM</a></li>
+        <li><a href="#building-a-simple-network-manually">Building a Simple Network Manually</a></li>
+        <li><a href="#scripting-bridge-operations">Scripting Bridge Operations</a></li>
+        <li><a href="#visualizing-topology">Visualizing Topology</a></li>
+      </ul>
+    </li>
+    <li><a href="#seeing-how-rstp-works">Seeing How RSTP Works</a>
+      <ul>
+        <li><a href="#electing-a-root-bridge-in-a-network">Electing a Root Bridge in a Network</a></li>
+        <li><a href="#selecting-a-root-port-on-each-bridge">Selecting a Root Port on Each Bridge</a></li>
+        <li><a href="#determining-designated-and-alternate-ports">Determining Designated and Alternate Ports</a></li>
+        <li><a href="#reacting-to-topology-changes">Reacting to Topology Changes</a></li>
+      </ul>
+    </li>
+    <li><a href="#very-brief-conclusion">Very Brief Conclusion</a></li>
+    <li><a href="#references">References</a></li>
+  </ul>
 </nav>
 </aside>
-      
-
-<p>Spanning Tree Protocol is a standard protocol for network bridges (layer-two switches) to autonomously find a logical loop-free topology and provide redundancy to the network.</p>
-
+      <p>Spanning Tree Protocol is a standard protocol for network bridges (layer-two switches) to autonomously find a logical loop-free topology and provide redundancy to the network.</p>
 <p>Several variants have been developed since its birth, in which the most common standard is Rapid Spanning Tree Protocol (RSTP). Many managed switches implement the protocol and often enable it by default.</p>
-
-<p>Although it&rsquo;s quite common in the networking world where I&rsquo;m living in its perimeter, it&rsquo;s been something vague and unfamiliar to me for a long time. Maybe it&rsquo;s because I came from the userland that is above the application layer and gradually went down to lower layers <sup class="footnote-ref" id="fnref:0"><a href="#fn:0">1</a></sup>. After all, I&rsquo;m more interested in the higher layers and I haven&rsquo;t given much attention to the layer one and two.</p>
-
-<p>But recently I noticed that FreeBSD&rsquo;s if_bridge supports RSTP when I was playing with jails and reading related documents. I instantly felt that this is a good opportunity to learn a litle more about the protocol.</p>
-
+<p>Although it's quite common in the networking world where I'm living in its perimeter, it's been something vague and unfamiliar to me for a long time. Maybe it's because I came from the userland that is above the application layer and gradually went down to lower layers <sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup>. After all, I'm more interested in the higher layers and I haven't given much attention to the layer one and two.</p>
+<p>But recently I noticed that FreeBSD's if_bridge supports RSTP when I was playing with jails and reading related documents. I instantly felt that this is a good opportunity to learn a litle more about the protocol.</p>
 <p>I do know that there are things called network simulators and they are widely used for education. Using some of them would save me some time. But as a UNIX user I want to do it on my own, even if I re-invent the tiny wheel.</p>
-
-<p>This is definitely not a practical usage of FreeBSD <sup class="footnote-ref" id="fnref:1"><a href="#fn:1">2</a></sup> but it&rsquo;s gonna be fun. So I am going to misuse (or abuse) FreeBSD bridges to see how RSTP works!</p>
-
+<p>This is definitely not a practical usage of FreeBSD <sup id="fnref:2"><a href="#fn:2" class="footnote-ref" role="doc-noteref">2</a></sup> but it's gonna be fun. So I am going to misuse (or abuse) FreeBSD bridges to see how RSTP works!</p>
 <p>Please note:</p>
-
 <ul>
-<li>This article just describes my experience and understadings. It&rsquo;s never intended to be an accurate and/or concise explanation of Spanning Tree Protocol.</li>
+<li>This article just describes my experience and understadings. It's never intended to be an accurate and/or concise explanation of Spanning Tree Protocol.</li>
 <li>In the following text, I used the words Spanning Tree, Spanning Tree Protocol and STP mostly to refer to Rapid Spanning Tree Protocol (RSTP).</li>
 </ul>
-
 <h2 id="preparation">Preparation</h2>
-
 <h3 id="setting-up-a-single-freebsd-vm">Setting up a Single FreeBSD VM</h3>
-
 <p>Basically, all I need is a single FreeBSD host. A virtual machine is best suited because this experiment is inherently dangerous due to possible network loops.</p>
-
-<p>I picked up Vagrant box &lsquo;bento/freebsd-11.2&rsquo; to quickly create a VirtualBox vm running FreeBSD 11.2.<br />
-(I must confess. My laptop is running Windows 10 and I ran the following commands on cygwin <sup class="footnote-ref" id="fnref:2"><a href="#fn:2">3</a></sup>.)</p>
-
+<p>I picked up Vagrant box &lsquo;bento/freebsd-11.2&rsquo; to quickly create a VirtualBox vm running FreeBSD 11.2.<br>
+(I must confess. My laptop is running Windows 10 and I ran the following commands on cygwin <sup id="fnref:3"><a href="#fn:3" class="footnote-ref" role="doc-noteref">3</a></sup>.)</p>
 <pre><code>HostOS$ mkdir -p ~/vagrant/learnstp
 HostOS$ cd ~/vagrant/learnstp
 HostOS$ vagrant init bento/freebsd-11.2
 HostOS$ vim Vagrantfile
-</code></pre>
-
-<p>I edited the generated Vagrantfile in order to</p>
-
+</code></pre><p>I edited the generated Vagrantfile in order to</p>
 <ul>
 <li>set a memorable name for the vm.</li>
 <li>add port forwarding rule for a web application which visualizes topology.</li>
 <li>enable vm console.</li>
-<li>set a limit on vm&rsquo;s cpu usage.</li>
+<li>set a limit on vm's cpu usage.</li>
 </ul>
-
 <p>This is the modified Vagrantfile.</p>
-
 <pre><code>Vagrant.configure(&quot;2&quot;) do |config|
   config.vm.box = &quot;bento/freebsd-11.2&quot;
   config.vm.hostname = &quot;learnstp&quot;
@@ -166,37 +146,15 @@ HostOS$ vim Vagrantfile
     vb.customize [&quot;modifyvm&quot;, :id, &quot;--cpuexecutioncap&quot;, &quot;50&quot;]
   end
 end
-</code></pre>
-
-<p>Then I fired up the vm and logged in via ssh.</p>
-
+</code></pre><p>Then I fired up the vm and logged in via ssh.</p>
 <pre><code>HostOS$ vagrant up
 HostOS$ vagrant ssh
-</code></pre>
-
-<h3 id="building-a-simple-network-manually">Building a Simple Network Manually</h3>
-
-<p>To grasp the basics of FreeBSD bridge&rsquo;s STP configuration, I tried first to manually build a simple loop topology with three bridges. All the tasks can be done using a single command, ifconfig(8).</p>
-
-<pre style="line-height: 10pt"><code style="font-size: 9pt">
-     epair0b +---------+ epair1a
-        +----+ bridge1 +----+
-        |    +---------+    |
-        |                   |
-        |                   |
-        |                   |
-epair0a |                   | epair1b
-   +----+----+         +----+----+
-   | bridge0 +---------+ bridge2 |
-   +---------+         +---------+
-         epair2b      epair2a
-
-</code></pre>
-
-<p>This topology requires three bridges and three links. I used if_bridge(4) for the former and epair(4) for the latter. As I wrote in another article, I usually use ng_bridge(4) in the netgraph(4) framework but it doesn&rsquo;t support STP (it has its own loop-detection mechanism, though). Epair is something like a virtual direct attach cable (DAC), which is a network cable with a pluggable tranceiver on either end.</p>
-
-<p>I ran the following commands to create them. Each command printed out a created device name such as bridge0 and epair2a. Note that a single epair provides two pseudo interfaces (e.g. epair2a and epair2b). <code>ifconfig epair create</code> returns only the first one which is suffixed with &lsquo;a&rsquo; but there&rsquo;s also the one with &lsquo;b&rsquo; suffix.</p>
-
+</code></pre><h3 id="building-a-simple-network-manually">Building a Simple Network Manually</h3>
+<p>To grasp the basics of FreeBSD bridge's STP configuration, I tried first to manually build a simple loop topology with three bridges. All the tasks can be done using a single command, ifconfig(8).</p>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<p>This topology requires three bridges and three links. I used if_bridge(4) for the former and epair(4) for the latter. As I wrote in another article, I usually use ng_bridge(4) in the netgraph(4) framework but it doesn't support STP (it has its own loop-detection mechanism, though). Epair is something like a virtual direct attach cable (DAC), which is a network cable with a pluggable tranceiver on either end.</p>
+<p>I ran the following commands to create them. Each command printed out a created device name such as bridge0 and epair2a. Note that a single epair provides two pseudo interfaces (e.g. epair2a and epair2b). <code>ifconfig epair create</code> returns only the first one which is suffixed with &lsquo;a&rsquo; but there's also the one with &lsquo;b&rsquo; suffix.</p>
 <pre><code>$ sudo ifconfig bridge create
 bridge0
 $ sudo ifconfig bridge create
@@ -209,30 +167,18 @@ $ sudo ifconfig epair create
 epair1a
 $ sudo ifconfig epair create
 epair2a
-</code></pre>
-
-<p>As I didn&rsquo;t have any bridges and epairs before, now I have bridge0, bridge1, bridge2, epair0a, epair0b, epair1a, epair1b, epair2a and epair2b. Interfaces on a system can be listed by running ifconfig with -l flag.</p>
-
+</code></pre><p>As I didn't have any bridges and epairs before, now I have bridge0, bridge1, bridge2, epair0a, epair0b, epair1a, epair1b, epair2a and epair2b. Interfaces on a system can be listed by running ifconfig with -l flag.</p>
 <pre><code>$ ifconfig -l
 em0 lo0 bridge0 bridge1 bridge2 epair0a epair0b epair1a epair1b epair2a epair2b
-</code></pre>
-
-<p>Next, I connected those bridges with epairs. I used <code>ifconfig addm</code> to add member ports (epair pseudo ethernet interfaces) to the bridges.</p>
-
+</code></pre><p>Next, I connected those bridges with epairs. I used <code>ifconfig addm</code> to add member ports (epair pseudo ethernet interfaces) to the bridges.</p>
 <pre><code>$ sudo ifconfig bridge0 addm epair0a addm epair2b
 $ sudo ifconfig bridge1 addm epair1a addm epair0b
 $ sudo ifconfig bridge2 addm epair2a addm epair1b
-</code></pre>
-
-<p>By default, Spanning Tree Protocol is disabled on bridge member ports. So I used <code>ifconfig stp</code> to enable it.</p>
-
+</code></pre><p>By default, Spanning Tree Protocol is disabled on bridge member ports. So I used <code>ifconfig stp</code> to enable it.</p>
 <pre><code>$ sudo ifconfig bridge0 stp epair0a stp epair2b
 $ sudo ifconfig bridge1 stp epair1a stp epair0b
 $ sudo ifconfig bridge2 stp epair2a stp epair1b
-</code></pre>
-
-<p>Now bring up bridges and epairs to see how it goes.</p>
-
+</code></pre><p>Now bring up bridges and epairs to see how it goes.</p>
 <pre><code>$ sudo ifconfig bridge0 up
 $ sudo ifconfig bridge1 up
 $ sudo ifconfig bridge2 up
@@ -242,10 +188,7 @@ $ sudo ifconfig epair1a up
 $ sudo ifconfig epair1b up
 $ sudo ifconfig epair2a up
 $ sudo ifconfig epair2b up
-</code></pre>
-
-<p>I checked STP topology by running ifconfig for each bridge.</p>
-
+</code></pre><p>I checked STP topology by running ifconfig for each bridge.</p>
 <pre><code>$ ifconfig bridge0
 bridge0: flags=8843&lt;UP,BROADCAST,RUNNING,SIMPLEX,MULTICAST&gt; metric 0 mtu 1500
         ether 02:98:96:7c:39:00
@@ -290,46 +233,19 @@ bridge2: flags=8843&lt;UP,BROADCAST,RUNNING,SIMPLEX,MULTICAST&gt; metric 0 mtu 1
         member: epair2a flags=1c7&lt;LEARNING,DISCOVER,STP,AUTOEDGE,PTP,AUTOPTP&gt;
                 ifmaxaddr 0 port 10 priority 128 path cost 2000 proto rstp
                 role designated state forwarding
-</code></pre>
-
-<p>After struggling with those output, I understood the current topology looks like this.</p>
-
-<pre style="line-height: 10pt"><code style="font-size: 9pt">
-             Root Bridge
-     epair0b +---------+ epair1a       RSTP Port Roles
-        +-(D)| bridge1 |(D)-+             (D) Designated Port
-        |    +---------+    |             (R) Root Port
-        |                   |             (A) Alternate Port
-        |                   |
-        |                   |
-epair0a(R)   Discard       (R)epair1b
-   +---------+   |     +---------+
-   | bridge0 |(A)X--(D)| bridge2 |
-   +---------+   |     +---------+
-         epair2b      epair2a
-
-</code></pre>
-
-<p>Here, bridge1 had the smallest bridge id (priority/MAC address pair) and was elected as the root bridge. All its member ports became designated ports (D). On bridge0 and bridge2, port closest to the root bridge became root port (R). On the link between bridge0 and bridge2 (epair2), port on the smaller id bridge became designated port (D) and the other became alternate port (A). The alternate port (A) on bridge0 didn&rsquo;t go into forwarding state and discarded the traffic to prevent loop.</p>
-
+</code></pre><p>After struggling with those output, I understood the current topology looks like this.</p>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<p>Here, bridge1 had the smallest bridge id (priority/MAC address pair) and was elected as the root bridge. All its member ports became designated ports (D). On bridge0 and bridge2, port closest to the root bridge became root port (R). On the link between bridge0 and bridge2 (epair2), port on the smaller id bridge became designated port (D) and the other became alternate port (A). The alternate port (A) on bridge0 didn't go into forwarding state and discarded the traffic to prevent loop.</p>
 <p>Okay. I could successfully build a Spanning Tree network using command-line. But before going any further, I wanted to do some more preparation.</p>
-
-<p>As you can see, it&rsquo;s quite tedious to configure bridges with ifconfig. In addition, It&rsquo;s also hard to see how the physical and logical topologies look like.</p>
-
+<p>As you can see, it's quite tedious to configure bridges with ifconfig. In addition, It's also hard to see how the physical and logical topologies look like.</p>
 <p>To solve those issues, I decided to take some time to write a set of small programs. They are mostly shell scripts to run ifconfig commands in a batch, plus a tiny web application to show bridge topology on a web browser.</p>
-
 <h3 id="scripting-bridge-operations">Scripting Bridge Operations</h3>
-
-<p>The first program I wrote is a thoughtlessly named <code>bridge.sh</code>. It&rsquo;s just a shell script to run bridge-related operations such as building N-bridge ring or mesh topology, adding a link between bridge A and B, shutting down epairX and showing summary.</p>
-
+<p>The first program I wrote is a thoughtlessly named <code>bridge.sh</code>. It's just a shell script to run bridge-related operations such as building N-bridge ring or mesh topology, adding a link between bridge A and B, shutting down epairX and showing summary.</p>
 <p>With this tiny script, the previously mentioned ring topology can be created by just running a single command.</p>
-
 <pre><code>$ sudo ./bridge.sh ring 3
-</code></pre>
-
-<p>With the help of additional scripts written in perl, bridge.sh can also summarize the information nicely. This is far better than ifconfig output for this experiment.<br />
+</code></pre><p>With the help of additional scripts written in perl, bridge.sh can also summarize the information nicely. This is far better than ifconfig output for this experiment.<br>
 (I must confess again. Perl is my favorite scripting language.)</p>
-
 <pre><code>$ ./bridge.sh show
 bridge0 32768.02:00:80:00:0c:0b desig root 32768.02:00:80:00:08:0b cost 2000
   epair0a  proto rstp  id 128.7   cost   2000:       root / forwarding
@@ -342,109 +258,44 @@ bridge1 32768.02:00:80:00:08:0b [root]
 bridge2 32768.02:00:80:00:0a:0b desig root 32768.02:00:80:00:08:0b cost 2000
   epair1b  proto rstp  id 128.10  cost   2000:       root / forwarding
   epair2a  proto rstp  id 128.11  cost   2000: designated / forwarding
-</code></pre>
-
-<p>I got almost satisfied with those scripts. But I went on one step further.</p>
-
+</code></pre><p>I got almost satisfied with those scripts. But I went on one step further.</p>
 <h3 id="visualizing-topology">Visualizing Topology</h3>
-
-<p>Visualization has been a buzzword for a while. I&rsquo;ve heard a lot about various tools and frameworks to visualize data but I didn&rsquo;t have any idea where to start.</p>
-
+<p>Visualization has been a buzzword for a while. I've heard a lot about various tools and frameworks to visualize data but I didn't have any idea where to start.</p>
 <p>Long story short, I chose <a href="https://visjs.org/">vis.js</a> to visualize topology on web browser, after trying vanilla HTML5 canvas and <a href="https://svgjs.com/">SVG.js</a>. I also used <a href="https://mojolicious.org/">Mojolicious</a> to serve HTML/JavaScript and feed topology data in JSON to vis.js running on a web browser.</p>
-
 <p>To start the web application, just run the following script. The application starts listening on TCP port 3000.</p>
-
 <pre><code>$ ./run-app.sh
-</code></pre>
-
-<p>With the port forwarding configuration in Vagrantfile, I can access the application page from the host PC&rsquo;s web browser with the following URL.</p>
-
+</code></pre><p>With the port forwarding configuration in Vagrantfile, I can access the application page from the host PC's web browser with the following URL.</p>
 <pre><code>http://localhost:3000/index.html
-</code></pre>
-
-<p>Now everything is in place.</p>
-
+</code></pre><p>Now everything is in place.</p>
 <h2 id="seeing-how-rstp-works">Seeing How RSTP Works</h2>
-
 <h3 id="electing-a-root-bridge-in-a-network">Electing a Root Bridge in a Network</h3>
-
 <p>For each Spanning Tree network, a single bridge is elected as a root bridge. A root bridge is literally a root of a logical tree of network links, which is calculated by bridges in the network.</p>
-
-<p>As the root bridge operates in the core of a network, it&rsquo;s so important to configure the most appropriate bridge as the root bridge. But how?</p>
-
+<p>As the root bridge operates in the core of a network, it's so important to configure the most appropriate bridge as the root bridge. But how?</p>
 <p>In the Spanning Tree network, bridges exchange information using control messages (BPDUs) and automatically elect a bridge with the lowest bridge id value as a root bridge in the network.</p>
-
 <p>A bridge id is a 8 octets (= bytes) value and is made up of two components - a bridge priority and a bridge MAC address. In the previous example of three bridges, strings like &lsquo;32768.02:00:80:00:0c:0b&rsquo; are bridge ids. The first part (e.g. &lsquo;32768&rsquo;) is the bridge priority and the second part (e.g. &lsquo;02:00:80:00:0c:0b&rsquo;) is the bridge MAC address.</p>
-
-<style>
-.bl { color: blue; }
-.gr { color: green; }
-</style>
-
-<pre><code>$ ./bridge.sh show
-bridge0 <b class="gr">32768</b>.<b class="bl">02:00:80:00:0c:0b</b> desig root 32768.02:00:80:00:08:0b cost 2000
-  epair0a  proto rstp  id 128.7   cost   2000:       root / forwarding
-  epair2b  proto rstp  id 128.12  cost   2000:  alternate / discarding
-
-bridge1 <b class="gr">32768</b>.<b class="bl">02:00:80:00:08:0b</b> [root]
-  epair0b  proto rstp  id 128.8   cost   2000: designated / forwarding
-  epair1a  proto rstp  id 128.9   cost   2000: designated / forwarding
-
-bridge2 <b class="gr">32768</b>.<b class="bl">02:00:80:00:0a:0b</b> desig root 32768.02:00:80:00:08:0b cost 2000
-  epair1b  proto rstp  id 128.10  cost   2000:       root / forwarding
-  epair2a  proto rstp  id 128.11  cost   2000: designated / forwarding
-</code></pre>
-
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
 <p>While MAC address is normally unique and not user-configurable, bridge priority is to be configured by administrator.</p>
-
-<p>However, recommended default of the bridge priority is 32768 and FreeBSD&rsquo;s if_bridge is no exception. So without explicit configuration, bridge priorities could be the same across all bridges in a network. In that case, a bridge with the smallest MAC address is elected as a root bridge. This is effectively a random selection process.</p>
-
+<p>However, recommended default of the bridge priority is 32768 and FreeBSD's if_bridge is no exception. So without explicit configuration, bridge priorities could be the same across all bridges in a network. In that case, a bridge with the smallest MAC address is elected as a root bridge. This is effectively a random selection process.</p>
 <p>To avoid this unpredictable election process, it is said that network administrators should configure bridge priority of the root bridge candidate to be lower than other ordinary bridges.</p>
-
-<p>Because I didn&rsquo;t do that in the previous example, all bridges had the same priority value 32768 and bridge1, which happened to have the lowest MAC address among three became the root bridge.</p>
-
-<p><img src="https://genneko.github.io/images/learning-stp/rstp-3b-r1.jpg" alt="3-bridge topology. bridge1 became a root" /></p>
-
+<p>Because I didn't do that in the previous example, all bridges had the same priority value 32768 and bridge1, which happened to have the lowest MAC address among three became the root bridge.</p>
+<p><img src="https://genneko.github.io/images/learning-stp/rstp-3b-r1.jpg" alt="3-bridge topology. bridge1 became a root"></p>
 <p>Note that MAC addresses are shortened to 2-digit hexadecimal numbers on the visualization app for brevity. They only represent relative magnitude among the bridges. Actual MAC address can be seen in a popup which appears by putting mouse cursor over a bridge.</p>
-
-<p>Now let&rsquo;s try to make bridge0 a root bridge by configuring its bridge priority to a smaller value. Bridge priority can be changed with omnipotent ifconfig command. Here I set bridge0&rsquo;s priority to the smallest possible value, 0 <sup class="footnote-ref" id="fnref:3"><a href="#fn:3">4</a></sup>.</p>
-
+<p>Now let's try to make bridge0 a root bridge by configuring its bridge priority to a smaller value. Bridge priority can be changed with omnipotent ifconfig command. Here I set bridge0's priority to the smallest possible value, 0 <sup id="fnref:4"><a href="#fn:4" class="footnote-ref" role="doc-noteref">4</a></sup>.</p>
 <pre><code>$ sudo ifconfig bridge0 priority 0
-</code></pre>
-
-<p>Changeing bridge priority caused another election process and bridge0 became a new root bridge.</p>
-
-<p><img src="https://genneko.github.io/images/learning-stp/rstp-3b-r0.jpg" alt="3-bridge topology. bridge0 became a root" /></p>
-
-<pre><code>$ ./bridge.sh show
-bridge0 <b class="gr">0</b>.<b class="bl">02:00:80:00:0c:0b</b> [root]
-  epair0a  proto rstp  id 128.7   cost   2000: designated / forwarding
-  epair2b  proto rstp  id 128.12  cost   2000: designated / forwarding
-
-bridge1 <b class="gr">32768</b>.<b class="bl">02:00:80:00:08:0b</b> desig root 0.02:00:80:00:0c:0b cost 2000
-  epair0b  proto rstp  id 128.8   cost   2000:       root / forwarding
-  epair1a  proto rstp  id 128.9   cost   2000: designated / forwarding
-
-bridge2 <b class="gr">32768</b>.<b class="bl">02:00:80:00:0a:0b</b> desig root 0.02:00:80:00:0c:0b cost 2000
-  epair1b  proto rstp  id 128.10  cost   2000:  alternate / discarding
-  epair2a  proto rstp  id 128.11  cost   2000:       root / forwarding
-</code></pre>
-
-<p>It must be undesirable to change bridge priorities carelessly in a production network but it&rsquo;s okay in this experimental network. However, if you want to configure a specific bridge to be a root bridge when creating a topology, you can use bridge.sh script&rsquo;s -R (root) flag.</p>
-
-<p>For example, you can generate the same 3-bridge topology with the first bridge (e.g. bridge0) being a root bridge by running the following command. <code>-R 1</code> specifies that the first bridge to be a root bridge. The command sets its priority to 0 while leaving other bridge&rsquo;s priorities at default value of 32768. Without -R flag, all bridges will have default priority values.</p>
-
+</code></pre><p>Changeing bridge priority caused another election process and bridge0 became a new root bridge.</p>
+<p><img src="https://genneko.github.io/images/learning-stp/rstp-3b-r0.jpg" alt="3-bridge topology. bridge0 became a root"></p>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<p>It must be undesirable to change bridge priorities carelessly in a production network but it's okay in this experimental network. However, if you want to configure a specific bridge to be a root bridge when creating a topology, you can use bridge.sh script's -R (root) flag.</p>
+<p>For example, you can generate the same 3-bridge topology with the first bridge (e.g. bridge0) being a root bridge by running the following command. <code>-R 1</code> specifies that the first bridge to be a root bridge. The command sets its priority to 0 while leaving other bridge's priorities at default value of 32768. Without -R flag, all bridges will have default priority values.</p>
 <pre><code>$ sudo ./bridge.sh ring -R 1 3
-</code></pre>
-
-<h3 id="selecting-a-root-port-on-each-bridge">Selecting a Root Port on Each Bridge</h3>
-
+</code></pre><h3 id="selecting-a-root-port-on-each-bridge">Selecting a Root Port on Each Bridge</h3>
 <p>For each non-root bridge, a single root port is selected based on its distance (cost) to the root bridge. Basically, a port closest to the root bridge becomes the root port on a bridge.</p>
-
 <p>To calculate the distances, every RSTP-enabled port has a property called port pathcost. By default, it is automatically configured according to its link speed.</p>
-
 <p>In the previous example, all ports (epairs) have a cost of 2000, which is the default value for 10Gbps links! Running ifconfig on one of the epair interfaces let me confirm that they were configured as 10Gbase-T interfaces.</p>
-
 <pre><code>$ ifconfig epair0a
 epair0a: flags=8943&lt;UP,BROADCAST,RUNNING,PROMISC,SIMPLEX,MULTICAST&gt; metric 0 mtu 1500
         options=8&lt;VLAN_MTU&gt;
@@ -455,174 +306,130 @@ epair0a: flags=8943&lt;UP,BROADCAST,RUNNING,PROMISC,SIMPLEX,MULTICAST&gt; metric
         media: Ethernet 10Gbase-T (10Gbase-T &lt;full-duplex&gt;)
         status: active
         groups: epair
-</code></pre>
-
-<p>With this (all ports have pathcost 2000) in mind, let&rsquo;s look at each port&rsquo;s distance to the root bridge (it is called the port&rsquo;s root pathcost).</p>
-
-<p>On bridge1, epair0b&rsquo;s root pathcost is 2000 because bridge1 considers that the cost of the link attached to epair0b interface is 2000 and it is the only link required to reach the root bridge (bridge0). On the same bridge, epair1a&rsquo;s root pathcost is 4000 because there are two links (epair1 and epair2) between the interface and the root bridge thus the total root pathcost of epair1a is equal to 2000 + 2000. So, epair0b becomes the root port on bridge1 because it has the smallest root pathcost on the bridge.</p>
-
+</code></pre><p>With this (all ports have pathcost 2000) in mind, let's look at each port's distance to the root bridge (it is called the port's root pathcost).</p>
+<p>On bridge1, epair0b's root pathcost is 2000 because bridge1 considers that the cost of the link attached to epair0b interface is 2000 and it is the only link required to reach the root bridge (bridge0). On the same bridge, epair1a's root pathcost is 4000 because there are two links (epair1 and epair2) between the interface and the root bridge thus the total root pathcost of epair1a is equal to 2000 + 2000. So, epair0b becomes the root port on bridge1 because it has the smallest root pathcost on the bridge.</p>
 <p>On bridge2, epair2a is selected as the root port in the same way.</p>
-
-<p><img src="https://genneko.github.io/images/learning-stp/rstp-3b-r0.jpg" alt="Root Ports" /></p>
-
-<p>On each non-root bridge, a port closest to the root bridge becomes the root port on the bridge. Very simple.<br />
+<p><img src="https://genneko.github.io/images/learning-stp/rstp-3b-r0.jpg" alt="Root Ports"></p>
+<p>On each non-root bridge, a port closest to the root bridge becomes the root port on the bridge. Very simple.<br>
 But what if a bridge has more than one ports with the same root pathcost?</p>
-
 <p>There could be two cases for this. The first one is the case where a single bridge is connected to two or more other bridges and those bridges have the same root pathcost.</p>
-
 <p>Another case is that a single bridge has two or more links with the same pathcost to another bridge.</p>
-
-<p>There&rsquo;s no such situations in the previous example. So I tried to create them.</p>
-
+<p>There's no such situations in the previous example. So I tried to create them.</p>
 <p>The first case can be generated by adding a new bridge and connect it to both bridge1 and bridge2. To achieve this, I ran the follwoing commands.</p>
-
 <pre><code>sudo ./bridge.sh ring 1
 sudo ./bridge.sh connect bridge1 bridge3
 sudo ./bridge.sh connect bridge2 bridge3
-</code></pre>
-
-<p>Those commands added bridge3 and linked it to bridge2 and bridge3 with newly created epair3 and epair4 respectively. Here bridge3 has two ports, epair3b and epair4b, which have the same root pathcost of 4000.</p>
-
-<p>If a bridge has multiple ports with the same least root pathcost, it choose a port connected to a neighboring bridge with the lowest bridge id as the root port. In this case, bridge3&rsquo;s neighbors are bridge1 (shortened id: 32768.00)  and bridge2 (shortened id: 32768.01) and bridge1 has the lower bridge id. bridge3 chose epair3b as the root port because it is connected to the lowest id neighbor, bridge1.</p>
-
-<p><img src="https://genneko.github.io/images/learning-stp/rstp-4b-r0.jpg" alt="Root Port Selection with multiple equal-cost links 1" /></p>
-
+</code></pre><p>Those commands added bridge3 and linked it to bridge2 and bridge3 with newly created epair3 and epair4 respectively. Here bridge3 has two ports, epair3b and epair4b, which have the same root pathcost of 4000.</p>
+<p>If a bridge has multiple ports with the same least root pathcost, it choose a port connected to a neighboring bridge with the lowest bridge id as the root port. In this case, bridge3's neighbors are bridge1 (shortened id: 32768.00)  and bridge2 (shortened id: 32768.01) and bridge1 has the lower bridge id. bridge3 chose epair3b as the root port because it is connected to the lowest id neighbor, bridge1.</p>
+<p><img src="https://genneko.github.io/images/learning-stp/rstp-4b-r0.jpg" alt="Root Port Selection with multiple equal-cost links 1"></p>
 <p>The second case can be observed by adding a parallel link between bridge0 and bridge1. I ran the following command.</p>
-
 <pre><code>sudo ./bridge.sh connect bridge0 bridge1
-</code></pre>
-
-<p>This command added a new link epair5 between bridge0 and bridge1. Now bridge1 has two ports with the same least root pathcost, epair0b and epair5b. This time, both ports also has the same neighbor, bridge0.</p>
-
+</code></pre><p>This command added a new link epair5 between bridge0 and bridge1. Now bridge1 has two ports with the same least root pathcost, epair0b and epair5b. This time, both ports also has the same neighbor, bridge0.</p>
 <p>If a bridge has multiple ports with the same least root pathcost and the same neighbor, it choose a port whose neighbor port has the lowest port id. A port id is comprised of a port priority and a port index (number). As with the bridge id, port priority can be user-configurable while port index is determined by the system. Recommended default value of the port priority is 128. On the visualization app, port ids are shown like 128.7 where 128 is a priority and 7 is a port index.</p>
-
-<p>In this example, epair0b&rsquo;s neighbor epair0a&rsquo;s port id is 128.7 and epair5b&rsquo;s neighbor epair5a&rsquo;s port id is 128.18. Therefore, bridge1 continued to use epair0b as the root bridge even after epair5a was added as a parallel link to bridge0.</p>
-
-<p><img src="https://genneko.github.io/images/learning-stp/rstp-4b-r0a.jpg" alt="Root Port Selection with multiple equal-cost links 2" /></p>
-
-<p>If you want bridge1 to use epair5b as its root port, you can set its neighbor port&rsquo;s priority to lower value. I tried this by running the following command <sup class="footnote-ref" id="fnref:4"><a href="#fn:4">5</a></sup>.</p>
-
+<p>In this example, epair0b's neighbor epair0a's port id is 128.7 and epair5b's neighbor epair5a's port id is 128.18. Therefore, bridge1 continued to use epair0b as the root bridge even after epair5a was added as a parallel link to bridge0.</p>
+<p><img src="https://genneko.github.io/images/learning-stp/rstp-4b-r0a.jpg" alt="Root Port Selection with multiple equal-cost links 2"></p>
+<p>If you want bridge1 to use epair5b as its root port, you can set its neighbor port's priority to lower value. I tried this by running the following command <sup id="fnref:5"><a href="#fn:5" class="footnote-ref" role="doc-noteref">5</a></sup>.</p>
 <pre><code>sudo ifconfig bridge0 ifpriority epair5a 64
-</code></pre>
-
-<p>Now epair5b&rsquo;s neighbor epair5a&rsquo;s port id was changed to 64.18 while epair0b&rsquo;s neighbor epair0a&rsquo;s port id is unchanged at 128.7. So bridge1 changes its root port from epair0b to epair5b.</p>
-
-<p><img src="https://genneko.github.io/images/learning-stp/rstp-4b-r0b.jpg" alt="Root Port Selection with multiple equal-cost links 3" /></p>
-
+</code></pre><p>Now epair5b's neighbor epair5a's port id was changed to 64.18 while epair0b's neighbor epair0a's port id is unchanged at 128.7. So bridge1 changes its root port from epair0b to epair5b.</p>
+<p><img src="https://genneko.github.io/images/learning-stp/rstp-4b-r0b.jpg" alt="Root Port Selection with multiple equal-cost links 3"></p>
 <h3 id="determining-designated-and-alternate-ports">Determining Designated and Alternate Ports</h3>
-
 <p>After selecting root ports, each bridge selects designated ports out of the remaining ports. I think a designated port is somewhat like a gateway in IP terminology. That is, a designated port is a port on a link through which another port on the link can reach the root bridge with the minimum root pathcost. I was confused with the distinction between selection processes of root port and designated port but in summary:</p>
-
 <ul>
 <li>Root port is selected according to the distance out FROM the port.</li>
 <li>Designated port is selected according to the distance THROUGH the port and the bridge it belongs to.</li>
 </ul>
-
-<p>On each link, a port on a bridge whose root port has the lowest root pathcost becomes the designated port on that link. Then remaining ports which aren&rsquo;t selected as root or designated port become the alternate port <sup class="footnote-ref" id="fnref:5"><a href="#fn:5">6</a></sup> and block traffic to prevent loop.</p>
-
-<p>Let&rsquo;s look at an earlier example again.</p>
-
-<p><img src="https://genneko.github.io/images/learning-stp/rstp-3b-r0.jpg" alt="Designated and Alternate Ports" /></p>
-
+<p>On each link, a port on a bridge whose root port has the lowest root pathcost becomes the designated port on that link. Then remaining ports which aren't selected as root or designated port become the alternate port <sup id="fnref:6"><a href="#fn:6" class="footnote-ref" role="doc-noteref">6</a></sup> and block traffic to prevent loop.</p>
+<p>Let's look at an earlier example again.</p>
+<p><img src="https://genneko.github.io/images/learning-stp/rstp-3b-r0.jpg" alt="Designated and Alternate Ports"></p>
 <p>All ports on the root bridge (epair0a and epair2b) become designated ports because those ports are apparently closest to the root bridge on their links (epair0 and epair2).</p>
-
 <p>On the link between bridge1 and bridge2 (epair1), epair1a on bridge1 and epair1b on bridge2 have the same root pathcost of 2000. In this case, a port belonging to the bridge with the lowest bridge id becomes the designated port on the link.</p>
-
-<p>Here bridge1&rsquo;s (shortened) id is 32768.00 while bridge2&rsquo;s is 32768.01, thus on epair1 link epair1a on bridge1 became the designated port and epair1b on bridge2 became the alternate port.</p>
-
+<p>Here bridge1's (shortened) id is 32768.00 while bridge2's is 32768.01, thus on epair1 link epair1a on bridge1 became the designated port and epair1b on bridge2 became the alternate port.</p>
 <h3 id="reacting-to-topology-changes">Reacting to Topology Changes</h3>
-
 <p>Next I wanted to see how RSTP reacts to topology changes.</p>
-
 <p>For this, I wiped the previous topology and created 4-bridge full-mesh topology with the following commands.</p>
-
 <pre><code>$ sudo ./bridge.sh destroy-all
 $ sudo ./bridge.sh mesh -R 1 4
-</code></pre>
-
-<p><img src="https://genneko.github.io/images/learning-stp/rstp-4b-mesh-01.jpg" alt="4 Bridge Mesh Topology 1" /></p>
-
+</code></pre><p><img src="https://genneko.github.io/images/learning-stp/rstp-4b-mesh-01.jpg" alt="4 Bridge Mesh Topology 1"></p>
 <p>Here bridge0 became the root bridge. Other bridges selected their ports directly connected to the root bridge (epair0b on bridge1, epair1b on bridge2 and epair2b on bridge3) as the root ports.</p>
-
-<p>On each of the other links (epair3, epair4 and epair5), ports on both ends have the same pathcosts through its bridge&rsquo;s root port. So on each of those links, a port on the lowest id bridge became the designated port and another port became the alternate port.</p>
-
+<p>On each of the other links (epair3, epair4 and epair5), ports on both ends have the same pathcosts through its bridge's root port. So on each of those links, a port on the lowest id bridge became the designated port and another port became the alternate port.</p>
 <p>First, I brought down epair0 between bridge0 and bridge1.</p>
-
 <pre><code>$ sudo ./bridge.sh linkdown epair0
-</code></pre>
-
-<p>As bridge1&rsquo;s root port was changed from epair0b to epair3a, a path to the root bridge (bridge0) from bridge1 was now bridge1 - bridge2 - bridge0 and its pathcost was increased to 4000.</p>
-
-<p><img src="https://genneko.github.io/images/learning-stp/rstp-4b-mesh-02.jpg" alt="4 Bridge Mesh Topology 2" /></p>
-
+</code></pre><p>As bridge1's root port was changed from epair0b to epair3a, a path to the root bridge (bridge0) from bridge1 was now bridge1 - bridge2 - bridge0 and its pathcost was increased to 4000.</p>
+<p><img src="https://genneko.github.io/images/learning-stp/rstp-4b-mesh-02.jpg" alt="4 Bridge Mesh Topology 2"></p>
 <p>Bridge1 had two candidates for the new root port, epair3a and epair4a. Because both had the same root pathcost of 4000, neighbor bridge ids were used to determine the root port thus epair3a (neighbor bridge id was 32768.01) was selected over epair4a (neighbor bridge id was 32768.02).</p>
-
-<p>Now let&rsquo;s generate an exterme situation. I ran the following commands to do this.</p>
-
+<p>Now let's generate an exterme situation. I ran the following commands to do this.</p>
 <pre><code>$ sudo ./bridge.sh linkdown epair2
 $ sudo ./bridge.sh linkdown epair5
-</code></pre>
-
-<p><img src="https://genneko.github.io/images/learning-stp/rstp-4b-mesh-03.jpg" alt="4 Bridge Mesh Topology 3" /></p>
-
+</code></pre><p><img src="https://genneko.github.io/images/learning-stp/rstp-4b-mesh-03.jpg" alt="4 Bridge Mesh Topology 3"></p>
 <p>Three out of six links were down now and logically four bridges were connected in line like bridge0 (root) - bridge2 (cost 2000) - bridge1 (cost 4000) - bridge3 (cost 6000).</p>
-
 <h2 id="very-brief-conclusion">Very Brief Conclusion</h2>
-
-<p>I&rsquo;m sure that there&rsquo;s a lot more to learn, but visualizing FreeBSD&rsquo;s real bridge operations greatly helped me understand fundamentals. For a text-oriented UNIX user like me, this was a really great lesson!</p>
-
+<p>I'm sure that there's a lot more to learn, but visualizing FreeBSD's real bridge operations greatly helped me understand fundamentals. For a text-oriented UNIX user like me, this was a really great lesson!</p>
 <h2 id="references">References</h2>
-
 <ul>
-<li><p>Vagrant Cloud - Vagrant box bento/freebsd-11.2<br />
-<a href="https://app.vagrantup.com/bento/boxes/freebsd-11.2">https://app.vagrantup.com/bento/boxes/freebsd-11.2</a></p></li>
-
-<li><p>FreeBSD Manual: ifconfig(8)<br />
-<a href="https://www.freebsd.org/cgi/man.cgi?ifconfig(8)">https://www.freebsd.org/cgi/man.cgi?ifconfig(8)</a></p></li>
-
-<li><p>FreeBSD Manual: if_bridge(4)<br />
-<a href="https://www.freebsd.org/cgi/man.cgi?if_bridge(4)">https://www.freebsd.org/cgi/man.cgi?if_bridge(4)</a></p></li>
-
-<li><p>FreeBSD Manual: epair(4)<br />
-<a href="https://www.freebsd.org/cgi/man.cgi?epair(4)">https://www.freebsd.org/cgi/man.cgi?epair(4)</a></p></li>
-
-<li><p>FreeBSD Handbook: Advanced Networking / Bridging<br />
-<a href="https://www.freebsd.org/doc/en_US.ISO8859-1/books/handbook/network-bridging.html">https://www.freebsd.org/doc/en_US.ISO8859-1/books/handbook/network-bridging.html</a></p></li>
-
-<li><p>Cygwin<br />
-<a href="https://cygwin.com/">https://cygwin.com/</a></p></li>
-
-<li><p>vis.js - A dynamic, browser based visualization library<br />
-<a href="https://visjs.org/">https://visjs.org/</a></p></li>
-
-<li><p>SVG.js - The lightweight library for manipulating and animating SVG<br />
-<a href="https://svgjs.com/">https://svgjs.com/</a></p></li>
-
-<li><p>Mojolicious - Perl real-time web framework<br />
-<a href="https://mojolicious.org/">https://mojolicious.org/</a></p></li>
-
-<li><p>GitHub: genneko/learnstp - Small programs to help experiment Spanning Tree Protocol with FreeBSD if_bridge<br />
-<a href="https://github.com/genneko/learnstp">https://github.com/genneko/learnstp</a></p></li>
+<li>
+<p>Vagrant Cloud - Vagrant box bento/freebsd-11.2<br>
+<a href="https://app.vagrantup.com/bento/boxes/freebsd-11.2">https://app.vagrantup.com/bento/boxes/freebsd-11.2</a></p>
+</li>
+<li>
+<p>FreeBSD Manual: ifconfig(8)<br>
+<a href="https://www.freebsd.org/cgi/man.cgi?ifconfig(8)">https://www.freebsd.org/cgi/man.cgi?ifconfig(8)</a></p>
+</li>
+<li>
+<p>FreeBSD Manual: if_bridge(4)<br>
+<a href="https://www.freebsd.org/cgi/man.cgi?if_bridge(4)">https://www.freebsd.org/cgi/man.cgi?if_bridge(4)</a></p>
+</li>
+<li>
+<p>FreeBSD Manual: epair(4)<br>
+<a href="https://www.freebsd.org/cgi/man.cgi?epair(4)">https://www.freebsd.org/cgi/man.cgi?epair(4)</a></p>
+</li>
+<li>
+<p>FreeBSD Handbook: Advanced Networking / Bridging<br>
+<a href="https://www.freebsd.org/doc/en_US.ISO8859-1/books/handbook/network-bridging.html">https://www.freebsd.org/doc/en_US.ISO8859-1/books/handbook/network-bridging.html</a></p>
+</li>
+<li>
+<p>Cygwin<br>
+<a href="https://cygwin.com/">https://cygwin.com/</a></p>
+</li>
+<li>
+<p>vis.js - A dynamic, browser based visualization library<br>
+<a href="https://visjs.org/">https://visjs.org/</a></p>
+</li>
+<li>
+<p>SVG.js - The lightweight library for manipulating and animating SVG<br>
+<a href="https://svgjs.com/">https://svgjs.com/</a></p>
+</li>
+<li>
+<p>Mojolicious - Perl real-time web framework<br>
+<a href="https://mojolicious.org/">https://mojolicious.org/</a></p>
+</li>
+<li>
+<p>GitHub: genneko/learnstp - Small programs to help experiment Spanning Tree Protocol with FreeBSD if_bridge<br>
+<a href="https://github.com/genneko/learnstp">https://github.com/genneko/learnstp</a></p>
+</li>
 </ul>
-<div class="footnotes">
-
-<hr />
-
+<section class="footnotes" role="doc-endnotes">
+<hr>
 <ol>
-<li id="fn:0">I can clearly recall the excitement when I sent an email by directly talking to a SMTP server using telnet client for the first time.
- <a class="footnote-return" href="#fnref:0"><sup>[return]</sup></a></li>
-<li id="fn:1">It&rsquo;s also not specific to FreeBSD. The same experiment must be possible with any other operating system which supports STP bridges. I just used my favorite OS.
- <a class="footnote-return" href="#fnref:1"><sup>[return]</sup></a></li>
-<li id="fn:2">I&rsquo;m also testing WSL (Windows Subsystem for Linux). It&rsquo;s handy sometimes but it&rsquo;s not enough to be used as true UNIX/Linux environment. So I&rsquo;m still using cygwin as a primary command-line workspace on Windows.
- <a class="footnote-return" href="#fnref:2"><sup>[return]</sup></a></li>
-<li id="fn:3">Actually a bridge priority can be only a multiple of 4096 between 0 and 61440.
- <a class="footnote-return" href="#fnref:3"><sup>[return]</sup></a></li>
-<li id="fn:4">A port priority can be only a multiple of 16 between 0 and 240.
- <a class="footnote-return" href="#fnref:4"><sup>[return]</sup></a></li>
-<li id="fn:5">There&rsquo;s also a port role called &ldquo;backup port&rdquo;. It&rsquo;s only used when multiple ports on a bridge are connected to the same shared media like a repeater hub (non-switching hub). In such a case, ports with non-optimal port id become backup port. I could produced this situation by attaching both ends of a epair to the same bridge but I think it&rsquo;s rare to use such configuration so I didn&rsquo;t go deeper on this subject.
- <a class="footnote-return" href="#fnref:5"><sup>[return]</sup></a></li>
+<li id="fn:1" role="doc-endnote">
+<p>I can clearly recall the excitement when I sent an email by directly talking to a SMTP server using telnet client for the first time. <a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:2" role="doc-endnote">
+<p>It's also not specific to FreeBSD. The same experiment must be possible with any other operating system which supports STP bridges. I just used my favorite OS. <a href="#fnref:2" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:3" role="doc-endnote">
+<p>I'm also testing WSL (Windows Subsystem for Linux). It's handy sometimes but it's not enough to be used as true UNIX/Linux environment. So I'm still using cygwin as a primary command-line workspace on Windows. <a href="#fnref:3" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:4" role="doc-endnote">
+<p>Actually a bridge priority can be only a multiple of 4096 between 0 and 61440. <a href="#fnref:4" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:5" role="doc-endnote">
+<p>A port priority can be only a multiple of 16 between 0 and 240. <a href="#fnref:5" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:6" role="doc-endnote">
+<p>There's also a port role called &ldquo;backup port&rdquo;. It's only used when multiple ports on a bridge are connected to the same shared media like a repeater hub (non-switching hub). In such a case, ports with non-optimal port id become backup port. I could produced this situation by attaching both ends of a epair to the same bridge but I think it's rare to use such configuration so I didn't go deeper on this subject. <a href="#fnref:6" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
 </ol>
-</div>
+</section>
 
     </article>
 
@@ -641,7 +448,7 @@ $ sudo ./bridge.sh linkdown epair5
 
 
 <div class="site-footer">
-  <div class="copyright">&copy; Copyright 2018 - 2019 genneko</div>
+  <div class="copyright">&copy; Copyright 2017 - 2020 genneko</div>
   <ul class="site-footer-items">
     <li class="site-footer-item-about"><a href="https://genneko.github.io/about/" title="About">About</a></li>
   </ul>

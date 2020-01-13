@@ -6,20 +6,20 @@
   <title>Growing a ZFS Mirror Pool - genneko</title>
   <meta property="og:title" content="Growing a ZFS Mirror Pool - genneko" />
   <meta name="twitter:title" content="Growing a ZFS Mirror Pool - genneko" />
-  <meta name="description" content="I have a tiny home server for my family. It&rsquo;s based on Atom N2800 CPU and runs FreeBSD 11.2 with a two-disk ZFS mirror.
+  <meta name="description" content="I have a tiny home server for my family. It&#39;s based on Atom N2800 CPU and runs FreeBSD 11.2 with a two-disk ZFS mirror.
 Originally it had two 500GB disks, but now it has a 500GB and a 1TB ones because one of them was replaced due to a failure.
-As the Handbook says, the available space of a mirror pool is limited by the size of the smallest disk.">
-  <meta property="og:description" content="I have a tiny home server for my family. It&rsquo;s based on Atom N2800 CPU and runs FreeBSD 11.2 with a two-disk ZFS mirror.
+As the Handbook says, the available space of a mirror pool is limited by the size of the smallest disk. So my server can still get only 500GB from the total space of 1.">
+  <meta property="og:description" content="I have a tiny home server for my family. It&#39;s based on Atom N2800 CPU and runs FreeBSD 11.2 with a two-disk ZFS mirror.
 Originally it had two 500GB disks, but now it has a 500GB and a 1TB ones because one of them was replaced due to a failure.
-As the Handbook says, the available space of a mirror pool is limited by the size of the smallest disk.">
-  <meta name="twitter:description" content="I have a tiny home server for my family. It&rsquo;s based on Atom N2800 CPU and runs FreeBSD 11.2 with a two-disk ZFS mirror.
-Originally it had two 500GB disks, but now it has a 500GB and a 1TB ones …">
+As the Handbook says, the available space of a mirror pool is limited by the size of the smallest disk. So my server can still get only 500GB from the total space of 1.">
+  <meta name="twitter:description" content="I have a tiny home server for my family. It&#39;s based on Atom N2800 CPU and runs FreeBSD 11.2 with a two-disk ZFS mirror.
+Originally it had two 500GB disks, but now it has a 500GB and a 1TB ones because …">
   <meta name="author" content="genneko"/>
   <meta property="og:site_name" content="genneko" />
   <meta property="og:url" content="https://genneko.github.io/playing-with-bsd/storage/growing-a-zfs-mirror/" />
   <meta property="og:type" content="article" />
   <meta name="twitter:card" content="summary" />
-  <meta name="generator" content="Hugo 0.59.1" />
+  <meta name="generator" content="Hugo 0.62.1" />
 
   <link rel="stylesheet" href="https://genneko.github.io/css/style.css" media="all" />
   <link rel="stylesheet" href="https://genneko.github.io/css/syntax.css" media="all" />
@@ -80,56 +80,46 @@ Originally it had two 500GB disks, but now it has a 500GB and a 1TB ones …">
       
 <aside class="toc">
   <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#references">References</a></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#references">References</a></li>
+  </ul>
 </nav>
 </aside>
-      
-
-<p>I have a tiny home server for my family. It&rsquo;s based on Atom N2800 CPU and runs FreeBSD 11.2 with a two-disk ZFS mirror.</p>
-
+      <p>I have a tiny home server for my family. It's based on Atom N2800 CPU and runs FreeBSD 11.2 with a two-disk ZFS mirror.</p>
 <p>Originally it had two 500GB disks, but now it has a 500GB and a 1TB ones because one of them was replaced due to a failure.</p>
-
 <p>As the Handbook says, the available space of a mirror pool is limited by the size of the smallest disk. So my server can still get only 500GB from the total space of 1.5TB (500GB + 1TB).</p>
-
-<p>It was not a problem because we didn&rsquo;t have much data. But as I got a new FreeBSD laptop and wanted to take its backup on the server, I finally decided to replace the 500GB disk in the mirror with another 1TB one and double the capacity of the mirror.</p>
-
-<p>Here&rsquo;s what I did.</p>
-
+<p>It was not a problem because we didn't have much data. But as I got a new FreeBSD laptop and wanted to take its backup on the server, I finally decided to replace the 500GB disk in the mirror with another 1TB one and double the capacity of the mirror.</p>
+<p>Here's what I did.</p>
 <ol>
-<li><p>Check the current status.<br />
-I could see ada0(gpt/zfs1) is 1TB and ada1(gpt/zfs0) is 500GB.</p>
-
+<li>Check the current status.<br>
+I could see ada0(gpt/zfs1) is 1TB and ada1(gpt/zfs0) is 500GB.</li>
+</ol>
 <pre><code># camcontrol devlist
 &lt;TOSHIBA MQ01ABD100 AX001U&gt;        at scbus0 target 0 lun 0 (ada0,pass0)
 &lt;TOSHIBA MK5076GSX GS001A&gt;         at scbus1 target 0 lun 0 (ada1,pass1)
 
 # gpart show -l ada0 ada1
 =&gt;        40  1953525088  ada0  GPT  (932G)
-      40        1024     1  gptboot1  (512K)
-    1064         984        - free -  (492K)
-    2048  1953521664     2  zfs1  (932G)
-1953523712        1416        - free -  (708K)
+          40        1024     1  gptboot1  (512K)
+        1064         984        - free -  (492K)
+        2048  1953521664     2  zfs1  (932G)
+  1953523712        1416        - free -  (708K)
 
 =&gt;       40  976773088  ada1  GPT  (466G)
-     40       1024     1  gptboot0  (512K)
-   1064        984        - free -  (492K)
-   2048  976771072     2  zfs0      (466G)
-976773120          8        - free -  (4.0K)
+         40       1024     1  gptboot0  (512K)
+       1064        984        - free -  (492K)
+       2048  976771072     2  zfs0      (466G)
+  976773120          8        - free -  (4.0K)
 
 # zpool status
-pool: zroot
-state: ONLINE
+  pool: zroot
+ state: ONLINE
 status: Some supported features are not enabled on the pool. The pool can
 	still be used, but some features are unavailable.
 action: Enable all features using 'zpool upgrade'. Once this is done,
 	the pool may no longer be accessible by software that does not support
 	the features. See zpool-features(7) for details.
-scan: resilvered 341G in 2h24m with 0 errors on Mon Jul 16 14:23:09 2018
+  scan: resilvered 341G in 2h24m with 0 errors on Mon Jul 16 14:23:09 2018
 config:
 
 	NAME          STATE     READ WRITE CKSUM
@@ -143,36 +133,38 @@ errors: No known data errors
 $ zpool list
 NAME    SIZE  ALLOC   FREE  CKPOINT  EXPANDSZ   FRAG    CAP  DEDUP  HEALTH  ALTROOT
 zroot   464G   386G  78.2G        -         -    39%    83%  1.00x  ONLINE  -
-</code></pre></li>
-
-<li><p>Shutdown the server and replace the 500GB disk with a new 1TB one.</p></li>
-
-<li><p>Boot the server.</p></li>
-
-<li><p>See if the new 1TB disk (ada1) is detected.</p>
-
+</code></pre><ol start="2">
+<li>
+<p>Shutdown the server and replace the 500GB disk with a new 1TB one.</p>
+</li>
+<li>
+<p>Boot the server.</p>
+</li>
+<li>
+<p>See if the new 1TB disk (ada1) is detected.</p>
+</li>
+</ol>
 <pre><code># camcontrol devlist
 PASSWORD: 
 &lt;TOSHIBA MQ01ABD100 AX001U&gt;        at scbus0 target 0 lun 0 (ada0,pass0)
 &lt;TOSHIBA MQ01ABD100 AX101U&gt;        at scbus1 target 0 lun 0 (ada1,pass1)
-</code></pre></li>
-
-<li><p>Partition the new disk, label it and install bootcode on it.</p>
-
+</code></pre><ol start="5">
+<li>Partition the new disk, label it and install bootcode on it.</li>
+</ol>
 <pre><code># gpart backup ada0 | gpart restore -F ada1
 
 # gpart show -l ada0 ada1
 =&gt;        40  1953525088  ada0  GPT  (932G)
-      40        1024     1  gptboot1  (512K)
-    1064         984        - free -  (492K)
-    2048  1953521664     2  zfs1  (932G)
-1953523712        1416        - free -  (708K)
+          40        1024     1  gptboot1  (512K)
+        1064         984        - free -  (492K)
+        2048  1953521664     2  zfs1  (932G)
+  1953523712        1416        - free -  (708K)
 
 =&gt;        40  1953525088  ada1  GPT  (932G)
-      40        1024     1  (null)  (512K)
-    1064         984        - free -  (492K)
-    2048  1953521664     2  (null)  (932G)
-1953523712        1416        - free -  (708K)
+          40        1024     1  (null)  (512K)
+        1064         984        - free -  (492K)
+        2048  1953521664     2  (null)  (932G)
+  1953523712        1416        - free -  (708K)
 
 # gpart modify -i 1 -l gptboot0 ada1
 ada1p1 modified
@@ -186,28 +178,27 @@ bootcode written to ada1
 
 # gpart show -l ada0 ada1
 =&gt;        40  1953525088  ada0  GPT  (932G)
-      40        1024     1  gptboot1  (512K)
-    1064         984        - free -  (492K)
-    2048  1953521664     2  zfs1  (932G)
-1953523712        1416        - free -  (708K)
+          40        1024     1  gptboot1  (512K)
+        1064         984        - free -  (492K)
+        2048  1953521664     2  zfs1  (932G)
+  1953523712        1416        - free -  (708K)
 
 =&gt;        40  1953525088  ada1  GPT  (932G)
-      40        1024     1  gptboot0  (512K)
-    1064         984        - free -  (492K)
-    2048  1953521664     2  zfs0  (932G)
-1953523712        1416        - free -  (708K)
-</code></pre></li>
-
-<li><p>Replace the missing 500GB disk with the new 1TB one for the ZFS mirror pool.</p>
-
+          40        1024     1  gptboot0  (512K)
+        1064         984        - free -  (492K)
+        2048  1953521664     2  zfs0  (932G)
+  1953523712        1416        - free -  (708K)
+</code></pre><ol start="6">
+<li>Replace the missing 500GB disk with the new 1TB one for the ZFS mirror pool.</li>
+</ol>
 <pre><code># zpool status
-pool: zroot
-state: DEGRADED
+  pool: zroot
+ state: DEGRADED
 status: One or more devices could not be opened.  Sufficient replicas exist for
 	the pool to continue functioning in a degraded state.
 action: Attach the missing device and online it using 'zpool online'.
-see: http://illumos.org/msg/ZFS-8000-2Q
-scan: resilvered 341G in 2h24m with 0 errors on Mon Jul 16 14:23:09 2018
+   see: http://illumos.org/msg/ZFS-8000-2Q
+  scan: resilvered 341G in 2h24m with 0 errors on Mon Jul 16 14:23:09 2018
 config:
 
 	NAME                     STATE     READ WRITE CKSUM
@@ -228,19 +219,18 @@ Assuming you use GPT partitioning and 'da0' is your new boot disk
 you may use the following command:
 
 	gpart bootcode -b /boot/pmbr -p /boot/gptzfsboot -i 1 da0
-</code></pre></li>
-
-<li><p>Wait until resilvering completes.</p>
-
+</code></pre><ol start="7">
+<li>Wait until resilvering completes.</li>
+</ol>
 <pre><code># zpool status
-pool: zroot
-state: ONLINE
+  pool: zroot
+ state: ONLINE
 status: Some supported features are not enabled on the pool. The pool can
 	still be used, but some features are unavailable.
 action: Enable all features using 'zpool upgrade'. Once this is done,
 	the pool may no longer be accessible by software that does not support
 	the features. See zpool-features(7) for details.
-scan: resilvered 386G in 1h52m with 0 errors on Sat Aug 10 15:53:42 2019
+  scan: resilvered 386G in 1h52m with 0 errors on Sat Aug 10 15:53:42 2019
 config:
 
 	NAME          STATE     READ WRITE CKSUM
@@ -250,38 +240,37 @@ config:
 	    gpt/zfs1  ONLINE       0     0     0
 
 errors: No known data errors
-</code></pre></li>
-
-<li><p>As you can see, the pool size is not expanded yet.</p>
-
+</code></pre><ol start="8">
+<li>As you can see, the pool size is not expanded yet.</li>
+</ol>
 <pre><code># zpool list
 NAME    SIZE  ALLOC   FREE  CKPOINT  EXPANDSZ   FRAG    CAP  DEDUP  HEALTH  ALTROOT
 zroot   464G   386G  78.2G        -      464G    39%    83%  1.00x  ONLINE  -
-</code></pre></li>
-
-<li><p>Grow the pool.</p>
-
+</code></pre><ol start="9">
+<li>Grow the pool.</li>
+</ol>
 <pre><code># zpool online -e zroot gpt/zfs0 gpt/zfs1
 
 $ zpool list
 NAME    SIZE  ALLOC   FREE  CKPOINT  EXPANDSZ   FRAG    CAP  DEDUP  HEALTH  ALTROOT
 zroot   928G   386G   542G        -         -    19%    41%  1.00x  ONLINE  -
-</code></pre></li>
-
-<li><p>Done!</p></li>
+</code></pre><ol start="10">
+<li>Done!</li>
 </ol>
-
 <h2 id="references">References</h2>
-
 <ul>
-<li><p>FreeBSD Handbook: zpool Administration<br />
-<a href="https://www.freebsd.org/doc/handbook/zfs-zpool.html">https://www.freebsd.org/doc/handbook/zfs-zpool.html</a></p></li>
-
-<li><p>FreeBSD Manual: zpool(8)<br />
-<a href="https://www.freebsd.org/cgi/man.cgi?zpool(8)">https://www.freebsd.org/cgi/man.cgi?zpool(8)</a></p></li>
-
-<li><p>FreeBSD Mastery: ZFS by Michael W. Lucas and Allan Jude<br />
-<a href="https://mwl.io/nonfiction/os#fmzfs">https://mwl.io/nonfiction/os#fmzfs</a></p></li>
+<li>
+<p>FreeBSD Handbook: zpool Administration<br>
+<a href="https://www.freebsd.org/doc/handbook/zfs-zpool.html">https://www.freebsd.org/doc/handbook/zfs-zpool.html</a></p>
+</li>
+<li>
+<p>FreeBSD Manual: zpool(8)<br>
+<a href="https://www.freebsd.org/cgi/man.cgi?zpool(8)">https://www.freebsd.org/cgi/man.cgi?zpool(8)</a></p>
+</li>
+<li>
+<p>FreeBSD Mastery: ZFS by Michael W. Lucas and Allan Jude<br>
+<a href="https://mwl.io/nonfiction/os#fmzfs">https://mwl.io/nonfiction/os#fmzfs</a></p>
+</li>
 </ul>
 
     </article>
@@ -301,7 +290,7 @@ zroot   928G   386G   542G        -         -    19%    41%  1.00x  ONLINE  -
 
 
 <div class="site-footer">
-  <div class="copyright">&copy; Copyright 2018 - 2019 genneko</div>
+  <div class="copyright">&copy; Copyright 2017 - 2020 genneko</div>
   <ul class="site-footer-items">
     <li class="site-footer-item-about"><a href="https://genneko.github.io/about/" title="About">About</a></li>
   </ul>

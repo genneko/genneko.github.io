@@ -6,19 +6,19 @@
   <title>Encrypted Temporary Storage with GELI - genneko</title>
   <meta property="og:title" content="Encrypted Temporary Storage with GELI - genneko" />
   <meta name="twitter:title" content="Encrypted Temporary Storage with GELI - genneko" />
-  <meta name="description" content="Recently, I wanted an encrypted working directory on a running FreeBSD system. The system was running on a plain (unencrypted) ZFS pool and there&rsquo;s no plan to add disks to it. I needed the working directory only temporarily.
+  <meta name="description" content="Recently, I wanted an encrypted working directory on a running FreeBSD system. The system was running on a plain (unencrypted) ZFS pool and there&#39;s no plan to add disks to it. I needed the working directory only temporarily.
 I came up with the following options.
  Use GELI on a ZFS volume (zvol). Use GELI on a memory disk (md). Use PEFS on a directory.  I excluded PEFS because I had very little experience.">
-  <meta property="og:description" content="Recently, I wanted an encrypted working directory on a running FreeBSD system. The system was running on a plain (unencrypted) ZFS pool and there&rsquo;s no plan to add disks to it. I needed the working directory only temporarily.
+  <meta property="og:description" content="Recently, I wanted an encrypted working directory on a running FreeBSD system. The system was running on a plain (unencrypted) ZFS pool and there&#39;s no plan to add disks to it. I needed the working directory only temporarily.
 I came up with the following options.
  Use GELI on a ZFS volume (zvol). Use GELI on a memory disk (md). Use PEFS on a directory.  I excluded PEFS because I had very little experience.">
-  <meta name="twitter:description" content="Recently, I wanted an encrypted working directory on a running FreeBSD system. The system was running on a plain (unencrypted) ZFS pool and there&rsquo;s no plan to add disks to it. I needed the …">
+  <meta name="twitter:description" content="Recently, I wanted an encrypted working directory on a running FreeBSD system. The system was running on a plain (unencrypted) ZFS pool and there&#39;s no plan to add disks to it. I needed the working …">
   <meta name="author" content="genneko"/>
   <meta property="og:site_name" content="genneko" />
   <meta property="og:url" content="https://genneko.github.io/playing-with-bsd/storage/encrypted-temporary-storage/" />
   <meta property="og:type" content="article" />
   <meta name="twitter:card" content="summary" />
-  <meta name="generator" content="Hugo 0.59.1" />
+  <meta name="generator" content="Hugo 0.62.1" />
 
   <link rel="stylesheet" href="https://genneko.github.io/css/style.css" media="all" />
   <link rel="stylesheet" href="https://genneko.github.io/css/syntax.css" media="all" />
@@ -91,173 +91,162 @@ I came up with the following options.
       
 <aside class="toc">
   <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#geli-on-zfs-volume-zvol">GELI on ZFS Volume (zvol)</a></li>
-<li><a href="#geli-on-memory-disk-md">GELI on Memory Disk (md)</a></li>
-<li><a href="#references">References</a></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#geli-on-zfs-volume-zvol">GELI on ZFS Volume (zvol)</a></li>
+    <li><a href="#geli-on-memory-disk-md">GELI on Memory Disk (md)</a></li>
+    <li><a href="#references">References</a></li>
+  </ul>
 </nav>
 </aside>
-      
-
-<p>Recently, I wanted an encrypted working directory on a running FreeBSD system. The system was running on a plain (unencrypted) ZFS pool and there&rsquo;s no plan to add disks to it. I needed the working directory only temporarily.</p>
-
+      <p>Recently, I wanted an encrypted working directory on a running FreeBSD system. The system was running on a plain (unencrypted) ZFS pool and there's no plan to add disks to it. I needed the working directory only temporarily.</p>
 <p>I came up with the following options.</p>
-
 <ol>
 <li>Use GELI on a ZFS volume (zvol).</li>
 <li>Use GELI on a memory disk (md).</li>
 <li>Use PEFS on a directory.</li>
 </ol>
-
 <p>I excluded PEFS because I had very little experience. I just briefly played with it after hearing about it on an episode of &ldquo;BSD Now&rdquo; podcast.</p>
-
-<p>The remaining two have GELI in common, but each one seems to have different characteristics. While memory disk <sup class="footnote-ref" id="fnref:1"><a href="#fn:1">1</a></sup> is relatively small and just for temporary use, zvol is larger and can be used for longer period.</p>
-
+<p>The remaining two have GELI in common, but each one seems to have different characteristics. While memory disk <sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup> is relatively small and just for temporary use, zvol is larger and can be used for longer period.</p>
 <p>Here are the steps which I took for both methods.</p>
-
 <h2 id="geli-on-zfs-volume-zvol">GELI on ZFS Volume (zvol)</h2>
-
-<p>If you want to use an encrypted directory more than once or you need a large space, zvol might be the best choice <sup class="footnote-ref" id="fnref:2"><a href="#fn:2">2</a></sup>.</p>
-
+<p>If you want to use an encrypted directory more than once or you need a large space, zvol might be the best choice <sup id="fnref:2"><a href="#fn:2" class="footnote-ref" role="doc-noteref">2</a></sup>.</p>
 <ol>
-<li><p>Create a ZFS volume.<br />
+<li>
+<p>Create a ZFS volume.<br>
 You can access the newly created zvol through the device file /dev/zvol/zroot/workvol.</p>
-
 <pre><code>$ sudo zfs create -V 10g zroot/workvol
-</code></pre></li>
-
-<li><p>Encrypt the zvol with GELI.</p>
-
+</code></pre><p>``</p>
+</li>
+<li>
+<p>Encrypt the zvol with GELI.</p>
 <pre><code>$ sudo geli init -s 4096 /dev/zvol/zroot/workvol
 (Enter a passphrase to set)
-</code></pre></li>
-
-<li><p>Attach the GELI encrypted zvol.<br />
+</code></pre><p>``</p>
+</li>
+<li>
+<p>Attach the GELI encrypted zvol.<br>
 This creates the decrypted device node with .eli extension (<code>/dev/zvol/zroot/workvol.eli</code>).</p>
-
 <pre><code>$ sudo geli attach /dev/zvol/zroot/workvol
 (Enter the previously set passphrase)
-</code></pre></li>
-
-<li><p>Create a UFS filesystem on the attached GELI volume.</p>
-
+</code></pre><p>``</p>
+</li>
+<li>
+<p>Create a UFS filesystem on the attached GELI volume.</p>
 <pre><code>$ sudo newfs /dev/zvol/zroot/workvol.eli
-</code></pre></li>
-
-<li><p>Mount the filesystem.</p>
-
+</code></pre><p>``</p>
+</li>
+<li>
+<p>Mount the filesystem.</p>
 <pre><code>$ sudo mount /dev/zvol/zroot/workvol.eli /mnt
-</code></pre></li>
-
-<li><p>Do what you want on the mounted filesystem.</p>
-
+</code></pre><p>``</p>
+</li>
+<li>
+<p>Do what you want on the mounted filesystem.</p>
 <pre><code>(Do the job under /mnt)
-</code></pre></li>
-
-<li><p>Once you are done, unmount and detach the GELI volume.</p>
-
+</code></pre><p>``</p>
+</li>
+<li>
+<p>Once you are done, unmount and detach the GELI volume.</p>
 <pre><code>$ sudo umount /mnt
 $ sudo geli detach /dev/zvol/zroot/workvol
-</code></pre></li>
-
-<li><p>The encrypted zvol can be used later by performing step 3 and 5 again.</p>
-
+</code></pre><p>``</p>
+</li>
+<li>
+<p>The encrypted zvol can be used later by performing step 3 and 5 again.</p>
 <pre><code>$ sudo geli attach /dev/zvol/zroot/workvol
 (Enter the previously set passphrase)
 $ sudo mount /dev/zvol/zroot/workvol.eli /mnt
-</code></pre>
-
-<p>Or if you no longer need the space, destroy the zvol.</p>
-
+</code></pre><p>Or if you no longer need the space, destroy the zvol.</p>
 <pre><code>$ sudo zfs destroy zroot/workvol
-</code></pre></li>
+</code></pre><p>``</p>
+</li>
 </ol>
-
 <h2 id="geli-on-memory-disk-md">GELI on Memory Disk (md)</h2>
-
 <p>If you need a small encrypted storage only once and for a short period, a memory disk encrypted with an onetime key might be enough.</p>
-
 <ol>
-<li><p>Create a swap-backed memory disk.<br />
-If you omit <code>-u (unit number or device name)</code> option, the newly created device name will be printed.<br />
+<li>
+<p>Create a swap-backed memory disk.<br>
+If you omit <code>-u (unit number or device name)</code> option, the newly created device name will be printed.<br>
 In this example, you can access the memory disk through the device /dev/md0.</p>
-
 <pre><code>$ sudo mdconfig -s 500m
 md0
-</code></pre></li>
-
-<li><p>Encrypt and attach the memory disk with a randomly generated onetime key.<br />
+</code></pre><p>``</p>
+</li>
+<li>
+<p>Encrypt and attach the memory disk with a randomly generated onetime key.<br>
 This creates the decrypted device node with .eli extension (<code>/dev/md0.eli</code>).</p>
-
 <pre><code>$ sudo geli onetime -s 4096 /dev/md0
-</code></pre></li>
-
-<li><p>Create a UFS filesystem on the attached GELI volume.</p>
-
+</code></pre><p>``</p>
+</li>
+<li>
+<p>Create a UFS filesystem on the attached GELI volume.</p>
 <pre><code>$ sudo newfs /dev/md0.eli
-</code></pre></li>
-
-<li><p>Mount the filesystem.</p>
-
+</code></pre><p>``</p>
+</li>
+<li>
+<p>Mount the filesystem.</p>
 <pre><code>$ sudo mount /dev/md0.eli /mnt
-</code></pre></li>
-
-<li><p>Do what you want on the mounted filesystem.</p>
-
+</code></pre><p>``</p>
+</li>
+<li>
+<p>Do what you want on the mounted filesystem.</p>
 <pre><code>(Do the job under /mnt)
-</code></pre></li>
-
-<li><p>Once you are done, unmount and detach the GELI volume.</p>
-
+</code></pre><p>``</p>
+</li>
+<li>
+<p>Once you are done, unmount and detach the GELI volume.</p>
 <pre><code>$ sudo umount /mnt
 $ sudo geli detach /dev/md0
-</code></pre></li>
-
-<li><p>Lastly, detach the memory disk.</p>
-
+</code></pre><p>``</p>
+</li>
+<li>
+<p>Lastly, detach the memory disk.</p>
 <pre><code>$ sudo mdconfig -d -u md0
-</code></pre></li>
+</code></pre><p>``</p>
+</li>
 </ol>
-
 <h2 id="references">References</h2>
-
 <ul>
-<li><p>FreeBSD Handbook: Memory Disks<br />
-<a href="https://www.freebsd.org/doc/handbook/disks-virtual.html">https://www.freebsd.org/doc/handbook/disks-virtual.html</a></p></li>
-
-<li><p>FreeBSD Handbook: Encrypting Disk Partitions<br />
-<a href="https://www.freebsd.org/doc/handbook/disks-encrypting.html">https://www.freebsd.org/doc/handbook/disks-encrypting.html</a></p></li>
-
-<li><p>FreeBSD Handbook: zfs Administration<br />
-<a href="https://www.freebsd.org/doc/handbook/zfs-zfs.html">https://www.freebsd.org/doc/handbook/zfs-zfs.html</a></p></li>
-
-<li><p>PEFS - Private Encrypted File System<br />
-<a href="http://pefs.io/">http://pefs.io/</a></p></li>
-
-<li><p>BSD Now: Filesystem-based encryption with PEFS<br />
-<a href="https://www.bsdnow.tv/tutorials/pefs">https://www.bsdnow.tv/tutorials/pefs</a></p></li>
-
-<li><p>FreeBSD Mastery: Storage Essentials by Michael W. Lucas<br />
-<a href="https://mwl.io/nonfiction/os#fmse">https://mwl.io/nonfiction/os#fmse</a></p></li>
-
-<li><p>FreeBSD Mastery: Specialty Filesystems by Michael W. Lucas<br />
-<a href="https://mwl.io/nonfiction/os#fmsf">https://mwl.io/nonfiction/os#fmsf</a></p></li>
+<li>
+<p>FreeBSD Handbook: Memory Disks<br>
+<a href="https://www.freebsd.org/doc/handbook/disks-virtual.html">https://www.freebsd.org/doc/handbook/disks-virtual.html</a></p>
+</li>
+<li>
+<p>FreeBSD Handbook: Encrypting Disk Partitions<br>
+<a href="https://www.freebsd.org/doc/handbook/disks-encrypting.html">https://www.freebsd.org/doc/handbook/disks-encrypting.html</a></p>
+</li>
+<li>
+<p>FreeBSD Handbook: zfs Administration<br>
+<a href="https://www.freebsd.org/doc/handbook/zfs-zfs.html">https://www.freebsd.org/doc/handbook/zfs-zfs.html</a></p>
+</li>
+<li>
+<p>PEFS - Private Encrypted File System<br>
+<a href="http://pefs.io/">http://pefs.io/</a></p>
+</li>
+<li>
+<p>BSD Now: Filesystem-based encryption with PEFS<br>
+<a href="https://www.bsdnow.tv/tutorials/pefs">https://www.bsdnow.tv/tutorials/pefs</a></p>
+</li>
+<li>
+<p>FreeBSD Mastery: Storage Essentials by Michael W. Lucas<br>
+<a href="https://mwl.io/nonfiction/os#fmse">https://mwl.io/nonfiction/os#fmse</a></p>
+</li>
+<li>
+<p>FreeBSD Mastery: Specialty Filesystems by Michael W. Lucas<br>
+<a href="https://mwl.io/nonfiction/os#fmsf">https://mwl.io/nonfiction/os#fmsf</a></p>
+</li>
 </ul>
-<div class="footnotes">
-
-<hr />
-
+<section class="footnotes" role="doc-endnotes">
+<hr>
 <ol>
-<li id="fn:1">I mean swap-backed memory disk here. File-backed memory disk can be an alternative to zvol on a non-ZFS environment.
- <a class="footnote-return" href="#fnref:1"><sup>[return]</sup></a></li>
-<li id="fn:2">If your system is not using ZFS, you can still use a file-backed (type vnode) memory disk instead of zvol.
- <a class="footnote-return" href="#fnref:2"><sup>[return]</sup></a></li>
+<li id="fn:1" role="doc-endnote">
+<p>I mean swap-backed memory disk here. File-backed memory disk can be an alternative to zvol on a non-ZFS environment. <a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:2" role="doc-endnote">
+<p>If your system is not using ZFS, you can still use a file-backed (type vnode) memory disk instead of zvol. <a href="#fnref:2" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
 </ol>
-</div>
+</section>
 
     </article>
 
@@ -276,7 +265,7 @@ $ sudo geli detach /dev/md0
 
 
 <div class="site-footer">
-  <div class="copyright">&copy; Copyright 2018 - 2019 genneko</div>
+  <div class="copyright">&copy; Copyright 2017 - 2020 genneko</div>
   <ul class="site-footer-items">
     <li class="site-footer-item-about"><a href="https://genneko.github.io/about/" title="About">About</a></li>
   </ul>

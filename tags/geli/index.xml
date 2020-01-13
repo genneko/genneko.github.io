@@ -6,7 +6,7 @@
     <description>Recent content in geli on genneko</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <copyright>&amp;copy; Copyright 2018 - 2019 genneko</copyright>
+    <copyright>&amp;copy; Copyright 2017 - 2020 genneko</copyright>
     <lastBuildDate>Sun, 17 Nov 2019 19:37:00 +0900</lastBuildDate>
     
 	<atom:link href="https://genneko.github.io/tags/geli/index.xml" rel="self" type="application/rss+xml" />
@@ -19,7 +19,7 @@
       
       <guid>https://genneko.github.io/playing-with-bsd/storage/expanding-zfs-on-geli/</guid>
       <description>My personal FreeBSD 11.3 server (VPS) was running low on storage space.
-By using the VPS provider&amp;rsquo;s disk expansion option, I could easily grow the virtual disk.
+By using the VPS provider&#39;s disk expansion option, I could easily grow the virtual disk.
 But then I wondered how to expand the filesystem on it.
 In my case, the filesystem is on a GELI-encrypted ZFS storage pool.
 So I had to resize the following entities.
@@ -32,7 +32,7 @@ So I had to resize the following entities.
       <pubDate>Fri, 07 Sep 2018 07:13:08 +0000</pubDate>
       
       <guid>https://genneko.github.io/playing-with-bsd/storage/encrypted-temporary-storage/</guid>
-      <description>Recently, I wanted an encrypted working directory on a running FreeBSD system. The system was running on a plain (unencrypted) ZFS pool and there&amp;rsquo;s no plan to add disks to it. I needed the working directory only temporarily.
+      <description>Recently, I wanted an encrypted working directory on a running FreeBSD system. The system was running on a plain (unencrypted) ZFS pool and there&#39;s no plan to add disks to it. I needed the working directory only temporarily.
 I came up with the following options.
  Use GELI on a ZFS volume (zvol). Use GELI on a memory disk (md). Use PEFS on a directory.  I excluded PEFS because I had very little experience.</description>
     </item>

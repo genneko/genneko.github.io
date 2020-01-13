@@ -11,7 +11,7 @@
   <meta property="og:url" content="https://genneko.github.io/tags/freebsd/" />
   <meta property="og:type" content="website" />
   <meta name="twitter:card" content="summary" />
-  <meta name="generator" content="Hugo 0.59.1" />
+  <meta name="generator" content="Hugo 0.62.1" />
   <link href="https://genneko.github.io/tags/freebsd/index.xml" rel="alternate" type="application/rss+xml" title="genneko" />
   <link href="https://genneko.github.io/tags/freebsd/index.xml" rel="feed" type="application/rss+xml" title="genneko" />
 
@@ -87,7 +87,7 @@
           </li>
         </ul>
         <div class="article-content">
-          Recently, I wanted an encrypted working directory on a running FreeBSD system. The system was running on a plain (unencrypted) ZFS pool and there&rsquo;s no plan to add disks to it. I needed the working directory only temporarily.
+          Recently, I wanted an encrypted working directory on a running FreeBSD system. The system was running on a plain (unencrypted) ZFS pool and there's no plan to add disks to it. I needed the working directory only temporarily.
 I came up with the following options.
  Use GELI on a ZFS volume (zvol). Use GELI on a memory disk (md). Use PEFS on a directory.  I excluded PEFS because I had very little experience.
         </div>
@@ -167,8 +167,9 @@ Unfortunately, native IPv6 service is still unavailable for me.
         <div class="article-content">
           I had been wanting to migrate a FreeBSD system on a GEOM mirror (gmirror) to a ZFS mirror.
 After several rehearsals on a VM, I have finally achieved that goal with the following steps.
- Load ZFS-releated kernel modules and set a tunable to use 4K sector drives.
-sudo kldload zfs sudo sysctl vfs.zfs.min_auto_ashift=12  Remove one (da0) of the two disks (da0, da1) which make up the gmirror (gm0).
+  Load ZFS-releated kernel modules and set a tunable to use 4K sector drives.
+sudo kldload zfs sudo sysctl vfs.zfs.min_auto_ashift=12 ``
+  Remove one (da0) of the two disks (da0, da1) which make up the gmirror (gm0).
         </div>
         <div class="article-readmore"><a href="https://genneko.github.io/playing-with-bsd/storage/gmirror-to-zfs/">Read more...</a></div>
         <div class="article-floatclear"></div>
@@ -210,7 +211,7 @@ sudo kldload zfs sudo sysctl vfs.zfs.min_auto_ashift=12  Remove one (da0) of the
         <div class="article-content">
           I have managed to setup route-based IPsec VPN with FreeBSD-11.1 RC3, which had introduced ipsec virtual tunnel interface if_ipsec(4). Here is a record of my experiment just for your information.
 Prerequisite  FreeBSD-11.1-RC3/amd64 Generic kernel No special packages/ports (just added sudo and a few other must-have utilities)  Network configuration NOTE: The following text shows bsd1 configurations only.
- 10.0.0.1 10.0.0.2 192.168.10.0/24 --- [bsd1] ----- /// ----- [bsd2] --- 192.
+ 10.0.0.1 10.0.0.2 192.168.10.0/24 --- [bsd1] ----- /// ----- [bsd2] --- 192.168.20.0/24 172.
         </div>
         <div class="article-readmore"><a href="https://genneko.github.io/playing-with-bsd/networking/freebsd-vti-ipsec/">Read more...</a></div>
         <div class="article-floatclear"></div>
@@ -268,7 +269,7 @@ Prerequisite  FreeBSD-11.1-RC3/amd64 Generic kernel No special packages/ports (j
 
 
 <div class="site-footer">
-  <div class="copyright">&copy; Copyright 2018 - 2019 genneko</div>
+  <div class="copyright">&copy; Copyright 2017 - 2020 genneko</div>
   <ul class="site-footer-items">
     <li class="site-footer-item-rsslink">
       <a href="https://genneko.github.io/tags/freebsd/index.xml" type="application/rss+xml" target="_blank" title="RSS">

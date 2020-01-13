@@ -14,7 +14,7 @@
   <meta property="og:url" content="https://genneko.github.io/playing-with-bsd/" />
   <meta property="og:type" content="website" />
   <meta name="twitter:card" content="summary" />
-  <meta name="generator" content="Hugo 0.59.1" />
+  <meta name="generator" content="Hugo 0.62.1" />
   <link href="https://genneko.github.io/playing-with-bsd/index.xml" rel="alternate" type="application/rss+xml" title="genneko" />
   <link href="https://genneko.github.io/playing-with-bsd/index.xml" rel="feed" type="application/rss+xml" title="genneko" />
 
@@ -90,7 +90,7 @@
         </ul>
         <div class="article-content">
           My personal FreeBSD 11.3 server (VPS) was running low on storage space.
-By using the VPS provider&rsquo;s disk expansion option, I could easily grow the virtual disk.
+By using the VPS provider's disk expansion option, I could easily grow the virtual disk.
 But then I wondered how to expand the filesystem on it.
 In my case, the filesystem is on a GELI-encrypted ZFS storage pool.
 So I had to resize the following entities.
@@ -142,10 +142,10 @@ So I had to resize the following entities.
           </li>
         </ul>
         <div class="article-content">
-          I&rsquo;ve been using FreeBSD as my primary server OS for quite a long time.
+          I've been using FreeBSD as my primary server OS for quite a long time.
 But, for unknown reasons, I have never seriously used it on client workstations.
-Maybe it&rsquo;s partly because I&rsquo;m a CUI-oriented person who loves doing things on text terminals as much as possible.
-Actually, I have been pretty happy with any client OS as long as I could use a decent terminal on it, so that I could SSH into FreeBSD servers where I spent a lot of time doing jobs which didn&rsquo;t require graphical interface.
+Maybe it's partly because I'm a CUI-oriented person who loves doing things on text terminals as much as possible.
+Actually, I have been pretty happy with any client OS as long as I could use a decent terminal on it, so that I could SSH into FreeBSD servers where I spent a lot of time doing jobs which didn't require graphical interface.
         </div>
         <div class="article-readmore"><a href="https://genneko.github.io/playing-with-bsd/hardware/freebsd-on-thinkpad-t480/">Read more...</a></div>
         <div class="article-floatclear"></div>
@@ -179,9 +179,9 @@ Actually, I have been pretty happy with any client OS as long as I could use a d
           </li>
         </ul>
         <div class="article-content">
-          I have a tiny home server for my family. It&rsquo;s based on Atom N2800 CPU and runs FreeBSD 11.2 with a two-disk ZFS mirror.
+          I have a tiny home server for my family. It's based on Atom N2800 CPU and runs FreeBSD 11.2 with a two-disk ZFS mirror.
 Originally it had two 500GB disks, but now it has a 500GB and a 1TB ones because one of them was replaced due to a failure.
-As the Handbook says, the available space of a mirror pool is limited by the size of the smallest disk.
+As the Handbook says, the available space of a mirror pool is limited by the size of the smallest disk. So my server can still get only 500GB from the total space of 1.
         </div>
         <div class="article-readmore"><a href="https://genneko.github.io/playing-with-bsd/storage/growing-a-zfs-mirror/">Read more...</a></div>
         <div class="article-floatclear"></div>
@@ -228,7 +228,7 @@ As the Handbook says, the available space of a mirror pool is limited by the siz
         </ul>
         <div class="article-content">
           Last week, one of my FreeBSD 11.2 servers failed to boot with the following error after freebsd-update.
-Mounting from zfs:zroot/ROOT/default failed with error 6; retrying for 3 more seconds  It was the first time I encountered this type of error.
+Mounting from zfs:zroot/ROOT/default failed with error 6; retrying for 3 more seconds It was the first time I encountered this type of error.
 After struggling for some hours, I was able to boot the server by disconnecting an external USB harddrive, which I had prepared as a secondary backup storage. But since then, I had been wondering what the root cause was.
         </div>
         <div class="article-readmore"><a href="https://genneko.github.io/playing-with-bsd/storage/mounting-from-zfs-failed/">Read more...</a></div>
@@ -271,9 +271,9 @@ After struggling for some hours, I was able to boot the server by disconnecting 
           </li>
         </ul>
         <div class="article-content">
-          I&rsquo;ve been using Evernote since April 2011.
+          I've been using Evernote since April 2011.
 Although there were times the app got disappointing updates or the service was unexpectedly interrupted (or more often expectedly interrupted by regular maintenance), it had been a great app/service and hopefully it is and it will be.
-Looking at the sorted note list on its web application, I found my first note had a date of 2011-04-24 and it was about Android browser&rsquo;s local file handling.
+Looking at the sorted note list on its web application, I found my first note had a date of 2011-04-24 and it was about Android browser's local file handling.
         </div>
         <div class="article-readmore"><a href="https://genneko.github.io/playing-with-bsd/application/joplin-on-freebsd/">Read more...</a></div>
         <div class="article-floatclear"></div>
@@ -321,7 +321,7 @@ Looking at the sorted note list on its web application, I found my first note ha
         <div class="article-content">
           After playing briefly with WireGuard (See previous post) on FreeBSD VNET Jails, today I performed a quick test between a FreeBSD host and an Android device over the Internet.
 NOTE: WireGuard is still in early stage of development. Android app is clearly marked with beta and Go-implementation (wireguard-go) has no official release yet. This article just shows you what I did to take a look at it.
-Network Configuration  FreeBSD - WireGuard Server.
+Network Configuration   FreeBSD - WireGuard Server.
         </div>
         <div class="article-readmore"><a href="https://genneko.github.io/playing-with-bsd/networking/freebsd-wireguard-android/">Read more...</a></div>
         <div class="article-floatclear"></div>
@@ -393,9 +393,9 @@ This time I focused on site-to-site VPN setup. Maybe I will try remote-access VP
           </li>
         </ul>
         <div class="article-content">
-          I&rsquo;ve been so busy for the last month that I almost forgot about FreeBSD 12.0 which I had been looking forward to. Now it&rsquo;s just around the corner!
-Although it&rsquo;s quite late, I tried to install 12.0-RC3 on a host behind a HTTP proxy and found that using a bootonly installer in this environment was a bit tricky. The following are the steps I took.
- Boot the host with a bootonly installer.
+          I've been so busy for the last month that I almost forgot about FreeBSD 12.0 which I had been looking forward to. Now it's just around the corner!
+Although it's quite late, I tried to install 12.0-RC3 on a host behind a HTTP proxy and found that using a bootonly installer in this environment was a bit tricky. The following are the steps I took.
+  Boot the host with a bootonly installer.
         </div>
         <div class="article-readmore"><a href="https://genneko.github.io/playing-with-bsd/system/bootonly-install-behind-proxy/">Read more...</a></div>
         <div class="article-floatclear"></div>
@@ -437,7 +437,7 @@ Although it&rsquo;s quite late, I tried to install 12.0-RC3 on a host behind a H
         <div class="article-content">
           Spanning Tree Protocol is a standard protocol for network bridges (layer-two switches) to autonomously find a logical loop-free topology and provide redundancy to the network.
 Several variants have been developed since its birth, in which the most common standard is Rapid Spanning Tree Protocol (RSTP). Many managed switches implement the protocol and often enable it by default.
-Although it&rsquo;s quite common in the networking world where I&rsquo;m living in its perimeter, it&rsquo;s been something vague and unfamiliar to me for a long time.
+Although it's quite common in the networking world where I'm living in its perimeter, it's been something vague and unfamiliar to me for a long time.
         </div>
         <div class="article-readmore"><a href="https://genneko.github.io/playing-with-bsd/networking/learning-stp/">Read more...</a></div>
         <div class="article-floatclear"></div>
@@ -450,7 +450,7 @@ Although it&rsquo;s quite common in the networking world where I&rsquo;m living 
         <ul class="article-meta">
           <li class="article-meta-date"><time>2018-10-07</time>
           
-          <span class="updated">Update: 2019-10-25</span>
+          <span class="updated">Update: 2020-01-13</span>
           
           </li>
           <li class="article-meta-tags">
@@ -539,7 +539,7 @@ Assumptions  The host is running FreeBSD 11.2/amd64 on ZFS. Each jail has a sepa
 
 
 <div class="site-footer">
-  <div class="copyright">&copy; Copyright 2018 - 2019 genneko</div>
+  <div class="copyright">&copy; Copyright 2017 - 2020 genneko</div>
   <ul class="site-footer-items">
     <li class="site-footer-item-rsslink">
       <a href="https://genneko.github.io/playing-with-bsd/index.xml" type="application/rss+xml" target="_blank" title="RSS">

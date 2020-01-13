@@ -6,23 +6,23 @@
   <title>ThinkPad T480 is my new main laptop which runs FreeBSD - genneko</title>
   <meta property="og:title" content="ThinkPad T480 is my new main laptop which runs FreeBSD - genneko" />
   <meta name="twitter:title" content="ThinkPad T480 is my new main laptop which runs FreeBSD - genneko" />
-  <meta name="description" content="I&rsquo;ve been using FreeBSD as my primary server OS for quite a long time.
+  <meta name="description" content="I&#39;ve been using FreeBSD as my primary server OS for quite a long time.
 But, for unknown reasons, I have never seriously used it on client workstations.
-Maybe it&rsquo;s partly because I&rsquo;m a CUI-oriented person who loves doing things on text terminals as much as possible.
-Actually, I have been pretty happy with any client OS as long as I could use a decent terminal on it, so that I could SSH into FreeBSD servers where I spent a lot of time doing jobs which didn&rsquo;t require graphical interface.">
-  <meta property="og:description" content="I&rsquo;ve been using FreeBSD as my primary server OS for quite a long time.
+Maybe it&#39;s partly because I&#39;m a CUI-oriented person who loves doing things on text terminals as much as possible.
+Actually, I have been pretty happy with any client OS as long as I could use a decent terminal on it, so that I could SSH into FreeBSD servers where I spent a lot of time doing jobs which didn&#39;t require graphical interface.">
+  <meta property="og:description" content="I&#39;ve been using FreeBSD as my primary server OS for quite a long time.
 But, for unknown reasons, I have never seriously used it on client workstations.
-Maybe it&rsquo;s partly because I&rsquo;m a CUI-oriented person who loves doing things on text terminals as much as possible.
-Actually, I have been pretty happy with any client OS as long as I could use a decent terminal on it, so that I could SSH into FreeBSD servers where I spent a lot of time doing jobs which didn&rsquo;t require graphical interface.">
-  <meta name="twitter:description" content="I&rsquo;ve been using FreeBSD as my primary server OS for quite a long time.
+Maybe it&#39;s partly because I&#39;m a CUI-oriented person who loves doing things on text terminals as much as possible.
+Actually, I have been pretty happy with any client OS as long as I could use a decent terminal on it, so that I could SSH into FreeBSD servers where I spent a lot of time doing jobs which didn&#39;t require graphical interface.">
+  <meta name="twitter:description" content="I&#39;ve been using FreeBSD as my primary server OS for quite a long time.
 But, for unknown reasons, I have never seriously used it on client workstations.
-Maybe it&rsquo;s partly because I&rsquo;m …">
+Maybe it&#39;s partly because I&#39;m a CUI-oriented …">
   <meta name="author" content="genneko"/>
   <meta property="og:site_name" content="genneko" />
   <meta property="og:url" content="https://genneko.github.io/playing-with-bsd/hardware/freebsd-on-thinkpad-t480/" />
   <meta property="og:type" content="article" />
   <meta name="twitter:card" content="summary" />
-  <meta name="generator" content="Hugo 0.59.1" />
+  <meta name="generator" content="Hugo 0.62.1" />
 
   <link rel="stylesheet" href="https://genneko.github.io/css/style.css" media="all" />
   <link rel="stylesheet" href="https://genneko.github.io/css/syntax.css" media="all" />
@@ -97,78 +97,62 @@ Maybe it&rsquo;s partly because I&rsquo;m …">
       
 <aside class="toc">
   <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#laptop-specs">Laptop Specs</a></li>
-<li><a href="#what-works-and-what-does-not">What works and what does not</a></li>
-<li><a href="#initial-setup">Initial Setup</a>
-<ul>
-<li><a href="#disable-secure-boot-tpm-and-bluetooth">Disable Secure Boot, TPM and Bluetooth</a></li>
-<li><a href="#which-version-to-install">Which Version to Install?</a></li>
-<li><a href="#os-installation">OS Installation</a></li>
-<li><a href="#basic-configurations-after-the-first-boot">Basic Configurations After the First Boot</a></li>
-<li><a href="#setting-up-grahpical-desktop-environment">Setting up Grahpical Desktop Environment</a></li>
-</ul></li>
-<li><a href="#personal-notes-on-further-setup">Personal Notes on Further Setup</a>
-<ul>
-<li><a href="#touchpad-and-trackpoint">Touchpad and TrackPoint</a></li>
-<li><a href="#suspend-resume">Suspend/Resume</a></li>
-<li><a href="#screen-brightness">Screen Brightness</a></li>
-<li><a href="#beep-on-logout">Beep on Logout</a></li>
-<li><a href="#epson-ink-jet-printer-ep-802a">EPSON Ink-Jet Printer EP-802A</a></li>
-<li><a href="#audacity">Audacity</a></li>
-<li><a href="#joplin">Joplin</a></li>
-<li><a href="#onedrive">OneDrive</a></li>
-<li><a href="#wine">WINE</a></li>
-<li><a href="#bhyve">Bhyve</a></li>
-<li><a href="#failover-between-ethernet-and-wifi">Failover between Ethernet and WiFi</a></li>
-<li><a href="#burning-cds">Burning CDs</a></li>
-</ul></li>
-<li><a href="#references">References</a></li>
-<li><a href="#revision-history">Revision History</a></li>
-</ul></li>
-</ul>
+  <ul>
+    <li><a href="#laptop-specs">Laptop Specs</a></li>
+    <li><a href="#what-works-and-what-does-not">What works and what does not</a></li>
+    <li><a href="#initial-setup">Initial Setup</a>
+      <ul>
+        <li><a href="#disable-secure-boot-tpm-and-bluetooth">Disable Secure Boot, TPM and Bluetooth</a></li>
+        <li><a href="#which-version-to-install">Which Version to Install?</a></li>
+        <li><a href="#os-installation">OS Installation</a></li>
+        <li><a href="#basic-configurations-after-the-first-boot">Basic Configurations After the First Boot</a></li>
+        <li><a href="#setting-up-grahpical-desktop-environment">Setting up Grahpical Desktop Environment</a></li>
+      </ul>
+    </li>
+    <li><a href="#personal-notes-on-further-setup">Personal Notes on Further Setup</a>
+      <ul>
+        <li><a href="#touchpad-and-trackpoint">Touchpad and TrackPoint</a></li>
+        <li><a href="#suspendresume">Suspend/Resume</a></li>
+        <li><a href="#screen-brightness">Screen Brightness</a></li>
+        <li><a href="#beep-on-logout">Beep on Logout</a></li>
+        <li><a href="#epson-ink-jet-printer-ep-802a">EPSON Ink-Jet Printer EP-802A</a></li>
+        <li><a href="#audacity">Audacity</a></li>
+        <li><a href="#joplin">Joplin</a></li>
+        <li><a href="#onedrive">OneDrive</a></li>
+        <li><a href="#wine">WINE</a></li>
+        <li><a href="#bhyve">Bhyve</a></li>
+        <li><a href="#failover-between-ethernet-and-wifi">Failover between Ethernet and WiFi</a></li>
+        <li><a href="#burning-cds">Burning CDs</a></li>
+      </ul>
+    </li>
+    <li><a href="#references">References</a></li>
+    <li><a href="#revision-history">Revision History</a></li>
+  </ul>
 </nav>
 </aside>
-      
-
-<p>I&rsquo;ve been using FreeBSD as my primary server OS for quite a long time.<br />
+      <p>I've been using FreeBSD as my primary server OS for quite a long time.<br>
 But, for unknown reasons, I have never seriously used it on client workstations.</p>
-
-<p>Maybe it&rsquo;s partly because I&rsquo;m a CUI-oriented person who loves doing things on text terminals as much as possible.</p>
-
-<p>Actually, I have been pretty happy with any client OS as long as I could use a decent terminal on it, so that I could SSH into FreeBSD servers where I spent a lot of time doing jobs which didn&rsquo;t require graphical interface.</p>
-
-<p>However, it&rsquo;s also true that I have been wishing for a FreeBSD desktop which allows me to do everything from web browsing to text editing on a single machine.</p>
-
-<p>So I started a research on FreeBSD laptops in the midst of this year&rsquo;s longer-than-usual rainy season. After gathering information on the web, I tried various GUI setup on VMs and then I bought a new laptop, Lenovo ThinkPad T480.</p>
-
-<p>Experimenting for a while on the T480, finally I&rsquo;ve got a fully working FreeBSD laptop for daily use, just after the rainy season was over!</p>
-
+<p>Maybe it's partly because I'm a CUI-oriented person who loves doing things on text terminals as much as possible.</p>
+<p>Actually, I have been pretty happy with any client OS as long as I could use a decent terminal on it, so that I could SSH into FreeBSD servers where I spent a lot of time doing jobs which didn't require graphical interface.</p>
+<p>However, it's also true that I have been wishing for a FreeBSD desktop which allows me to do everything from web browsing to text editing on a single machine.</p>
+<p>So I started a research on FreeBSD laptops in the midst of this year's longer-than-usual rainy season. After gathering information on the web, I tried various GUI setup on VMs and then I bought a new laptop, Lenovo ThinkPad T480.</p>
+<p>Experimenting for a while on the T480, finally I've got a fully working FreeBSD laptop for daily use, just after the rainy season was over!</p>
 <p>Because it has proven to be a really great machine for running FreeBSD, I write this article to share something with anyone who looks for a similar experience.</p>
-
-<p><img src="https://genneko.github.io/images/freebsd-on-thinkpad-t480/T480_FreeBSD_And_Cat.jpg" alt="T480 FreeBSD Workstation" /></p>
-
+<p><img src="https://genneko.github.io/images/freebsd-on-thinkpad-t480/T480_FreeBSD_And_Cat.jpg" alt="T480 FreeBSD Workstation"></p>
 <h2 id="laptop-specs">Laptop Specs</h2>
-
 <p>Generally speaking, I love small machines with low power consumption. But this time, my goal is replacing my main desktop (running Windows) with a new laptop, so I invested on performance much more than usual.</p>
-
 <ul>
 <li>CPU: Core i7-8550U 1.8GHz (Boosted to 4.0GHz) (4 cores/8 threads, TDP 15W)</li>
 <li>RAM: 32GB (16GBx2) DDR4 2400MHz SODIMM</li>
-<li>Storage: SAMSUNG 860 EVO 1.0TB SATA SSD<br />
+<li>Storage: SAMSUNG 860 EVO 1.0TB SATA SSD<br>
 (originally the laptop came with a SEAGATE STL1000LM035 1.0TB (5400rpm) SATA)</li>
 <li>VGA: Integrated Intel UHD Graphics 620</li>
 <li>Ethernet: Intel Ethernet Connection I219-V (Onboard 1000BASE-T)</li>
 <li>WiFi: Intel Dual Band Wireless-AC 8265 (2x2 AC) + BT 4.1</li>
 <li>No Fingerprint and Smartcard readers</li>
 </ul>
-
 <h2 id="what-works-and-what-does-not">What works and what does not</h2>
-
 <p>With FreeBSD 12.0-RELEASE + Xorg + XFCE4, I can get the following stuff working on T480.</p>
-
 <ul>
 <li>Ethernet and WiFi work, although WiFi is a bit slow (only up to 802.11a?) compared to 802.11n/802.11ac capable OSes.</li>
 <li>Xorg works fine in full resolution (1920x1080) with i915kms.ko.</li>
@@ -180,136 +164,112 @@ But, for unknown reasons, I have never seriously used it on client workstations.
 <li>SD card reader seems to work. DOS-formatted SD card can be mounted and read as usual filesystems.</li>
 <li>Some Windows programs can be run on WINE.</li>
 <li>Windows 10 can be run on bhyve (to purchase MP3s on Amazon Music, etc).</li>
-<li>LAGG Failover between Ethernet and WiFi works (Use Ethernet if it&rsquo;s available. Otherwise use WiFi).</li>
+<li>LAGG Failover between Ethernet and WiFi works (Use Ethernet if it's available. Otherwise use WiFi).</li>
 </ul>
-
-<p>I haven&rsquo;t able to make those things work so far.</p>
-
+<p>I haven't able to make those things work so far.</p>
 <ul>
-<li>Webcam works on pwcview with webcamd and cuse.ko but isn&rsquo;t detected by Google Hangouts on Firefox/Chromium.</li>
+<li>Webcam works on pwcview with webcamd and cuse.ko but isn't detected by Google Hangouts on Firefox/Chromium.</li>
 </ul>
-
-<p>I haven&rsquo;t tested the following items.</p>
-
+<p>I haven't tested the following items.</p>
 <ul>
 <li>Bluetooth (disabled in BIOS to avoid hang on reboot)</li>
 </ul>
-
 <h2 id="initial-setup">Initial Setup</h2>
-
 <h3 id="disable-secure-boot-tpm-and-bluetooth">Disable Secure Boot, TPM and Bluetooth</h3>
-
-<p>To boot T480 from FreeBSD installation media, I had to enter the BIOS menu and disable Secure Boot and TPM.<br />
-It is also required to disable Bluetooth to avoid hangup on system reboot.<br />
+<p>To boot T480 from FreeBSD installation media, I had to enter the BIOS menu and disable Secure Boot and TPM.<br>
+It is also required to disable Bluetooth to avoid hangup on system reboot.<br>
 <a href="https://wiki.freebsd.org/Laptops/Thinkpad_X270">https://wiki.freebsd.org/Laptops/Thinkpad_X270</a></p>
-
 <p>To enter the setup menu on startup, press Enter at the Lenovo logo screen.
-A loud beep can be suppressed by turn Mute button on.<br />
+A loud beep can be suppressed by turn Mute button on.<br>
 <a href="https://forums.lenovo.com/t5/ThinkPad-11e-Windows-13-E-and/Loud-Beep-entering-bios-selecting-bootdevice-annoyance/td-p/2041295">https://forums.lenovo.com/t5/ThinkPad-11e-Windows-13-E-and/Loud-Beep-entering-bios-selecting-bootdevice-annoyance/td-p/2041295</a></p>
-
-<p>To enter the BIOS setup from the menu, press F1.<br />
+<p>To enter the BIOS setup from the menu, press F1.<br>
 Change the following settings and press F10 to save and exit.</p>
-
 <ul>
 <li>Security &gt; Secure Boot
-
 <ul>
 <li>Secure Boot: Enabled -&gt; Disabled</li>
-</ul></li>
+</ul>
+</li>
 <li>Security &gt; Security Chip
-
 <ul>
 <li>Security Chip: Enabled -&gt; Disabled</li>
-</ul></li>
+</ul>
+</li>
 <li>Security &gt; I/O Port Access
-
 <ul>
 <li>Bluetooth: Enabled -&gt; Disabled</li>
-</ul></li>
 </ul>
-
-<p>It looks like the memstick installer supports UEFI boot so I left &ldquo;Startup&rdquo; page&rsquo;s &ldquo;UEFI/Legacy Boot&rdquo; and &ldquo;CSM Support&rdquo; untouched (&ldquo;UEFI Only&rdquo; and &ldquo;NO&rdquo; respectively).</p>
-
+</li>
+</ul>
+<p>It looks like the memstick installer supports UEFI boot so I left &ldquo;Startup&rdquo; page's &ldquo;UEFI/Legacy Boot&rdquo; and &ldquo;CSM Support&rdquo; untouched (&ldquo;UEFI Only&rdquo; and &ldquo;NO&rdquo; respectively).</p>
 <h3 id="which-version-to-install">Which Version to Install?</h3>
-
 <p>At first, I selected the following FreeBSD versions as candidates.</p>
-
 <ul>
 <li>FreeBSD 12.0-RELEASE</li>
 <li>FreeBSD 12-STABLE</li>
 <li>FreeBSD 11.3-RELEASE</li>
 </ul>
-
 <p>With experts&rsquo; advices on Twitter and experiments on actual machine with installation media and RAM disk (Maybe on another post), I chose 12.0-RELEASE to start with. Now it turns out to be the right choice based on the right advices.</p>
-
 <h3 id="os-installation">OS Installation</h3>
-
-<p>There&rsquo;s almost nothing special about installation. But here&rsquo;s a few things to note.</p>
-
+<p>There's almost nothing special about installation. But here's a few things to note.</p>
 <ul>
-<li><p>To boot from a USB stick (memstick.img), press Enter &gt; F12 to enter the Boot Menu and select the USB HDD to boot.</p></li>
-
-<li><p>For distribution sets, I selected &lsquo;kernel-dbg&rsquo; and &lsquo;lib32&rsquo; in addition to implicit &lsquo;base&rsquo; and &lsquo;kernel&rsquo; (lib32 for WINE).</p></li>
-
-<li><p>For filesystem, of course I chose ZFS. Specify &ldquo;GPT (UEFI)&rdquo; for partitioning scheme. I created a 4g swap partition mostly for crash dump space.</p></li>
-
-<li><p>I setup WiFi interface iwm0.</p></li>
-
-<li><p>For system services, I enable moused, ntpd, powerd and disable sshd.</p></li>
-
-<li><p>I put my user account in secondary groups wheel, operator and video.</p></li>
-
-<li><p>Before exiting the installer, I manually renamed a ZFS dataset for home directories as usual.</p>
-
+<li>
+<p>To boot from a USB stick (memstick.img), press Enter &gt; F12 to enter the Boot Menu and select the USB HDD to boot.</p>
+</li>
+<li>
+<p>For distribution sets, I selected &lsquo;kernel-dbg&rsquo; and &lsquo;lib32&rsquo; in addition to implicit &lsquo;base&rsquo; and &lsquo;kernel&rsquo; (lib32 for WINE).</p>
+</li>
+<li>
+<p>For filesystem, of course I chose ZFS. Specify &ldquo;GPT (UEFI)&rdquo; for partitioning scheme. I created a 4g swap partition mostly for crash dump space.</p>
+</li>
+<li>
+<p>I setup WiFi interface iwm0.</p>
+</li>
+<li>
+<p>For system services, I enable moused, ntpd, powerd and disable sshd.</p>
+</li>
+<li>
+<p>I put my user account in secondary groups wheel, operator and video.</p>
+</li>
+<li>
+<p>Before exiting the installer, I manually renamed a ZFS dataset for home directories as usual.</p>
+</li>
+</ul>
 <pre><code>rm /home
 zfs rename zroot/usr/home zroot/home
 zfs set mountpoint=/home zroot/home
 exit
-</code></pre></li>
-</ul>
-
-<h3 id="basic-configurations-after-the-first-boot">Basic Configurations After the First Boot</h3>
-
+</code></pre><h3 id="basic-configurations-after-the-first-boot">Basic Configurations After the First Boot</h3>
 <p>After the first boot, I logged in and performed the following usual configurations.</p>
-
 <ul>
-<li><p>Update the OS.</p>
-
+<li>Update the OS.</li>
+</ul>
 <pre><code>su
 freebsd-update fetch install
 shutdown -r now
-</code></pre></li>
-
-<li><p>Install basic packages.
-I usually install non-X or lite versions if available but this time I selected full versions.</p>
-
+</code></pre><ul>
+<li>Install basic packages.
+I usually install non-X or lite versions if available but this time I selected full versions.</li>
+</ul>
 <pre><code>su
 pkg update
 pkg install git vim tmux bash sudo rsync perl5 ja-nkf zfs-stats portmaster gnupg1
-</code></pre></li>
-
-<li><p>Configure sudoers.</p>
-
-<pre><code>visudo
-</code></pre></li>
-
-<li><p>Configure user preferences such as dotfiles.</p></li>
+</code></pre><ul>
+<li>Configure sudoers.</li>
 </ul>
-
+<pre><code>visudo
+</code></pre><ul>
+<li>Configure user preferences such as dotfiles.</li>
+</ul>
 <h3 id="setting-up-grahpical-desktop-environment">Setting up Grahpical Desktop Environment</h3>
-
-<p>I&rsquo;m completely new to the graphical desktop world. So it&rsquo;s inevitable for me to learn things one by one through a lot of trial and error.</p>
-
+<p>I'm completely new to the graphical desktop world. So it's inevitable for me to learn things one by one through a lot of trial and error.</p>
 <p>Anyway, I use the following components to build my desktop.</p>
-
 <ul>
 <li>Xorg - Display Server</li>
 <li>SLiM - Login Manager</li>
 <li>Xfce - Desktop Environment</li>
 </ul>
-
 <p>Plus, here is the list of graphical applications for my daily use.</p>
-
 <ul>
 <li>Xfce4-Terminal - Terminal Emulator</li>
 <li>Firefox, Chromium - Web Browser</li>
@@ -323,30 +283,25 @@ pkg install git vim tmux bash sudo rsync perl5 ja-nkf zfs-stats portmaster gnupg
 <li>HandBrake - Video Transcoder</li>
 <li>Picasa3 (Windows Application) - Picture Organizer which runs on WINE.</li>
 </ul>
-
 <p>Setup process was as follows.</p>
-
 <ul>
-<li><p>Install Graphics Driver and reboot the system.</p>
-
+<li>Install Graphics Driver and reboot the system.</li>
+</ul>
 <pre><code>sudo pkg install drm-kmod
 sudo sysrc kld_list=&quot;/boot/modules/i915kms.ko&quot;
 shutdown -r now
-</code></pre></li>
-
-<li><p>Install Xorg and releated packages.</p>
-
+</code></pre><ul>
+<li>Install Xorg and releated packages.</li>
+</ul>
 <pre><code>sudo pkg install xorg xfce xfce4-goodies slim slim-themes
-</code></pre></li>
-
-<li><p>Install local language stuff</p>
-
+</code></pre><ul>
+<li>Install local language stuff</li>
+</ul>
 <pre><code>sudo pkg install japanese/font-std japanese/font-vlgothic japanese/font-takao ja-fcitx-mozc ja-fcitx-skk zh-fcitx-configtool
-</code></pre></li>
-
-<li><p>Create ~/.xinitrc.<br />
-There are a lot of language configurations. Please ignore them if you do not need them.</p>
-
+</code></pre><ul>
+<li>Create ~/.xinitrc.<br>
+There are a lot of language configurations. Please ignore them if you do not need them.</li>
+</ul>
 <pre><code>#!/bin/sh
 #
 # ~/.xinitrc for Xfce4
@@ -370,10 +325,9 @@ xset -b
 
 ## Start Xfce4
 exec startxfce4
-</code></pre></li>
-
-<li><p>Configure and start services. This brings up a graphical login manager.</p>
-
+</code></pre><ul>
+<li>Configure and start services. This brings up a graphical login manager.</li>
+</ul>
 <pre><code>sudo sysrc dbus_enable=YES
 sudo sysrc hald_enable=YES
 sudo sysrc polkitd_enable=YES
@@ -385,56 +339,37 @@ sudo service hald start
 sudo service avahi-daemon start
 sudo service avahi-dnsconfd start
 sudo service slim start
-</code></pre></li>
-
-<li><p>Install applications.</p>
-
+</code></pre><ul>
+<li>Install applications.</li>
+</ul>
 <pre><code>sudo pkg install firefox thunderbird chromium ...
-</code></pre></li>
-</ul>
-
-<h2 id="personal-notes-on-further-setup">Personal Notes on Further Setup</h2>
-
+</code></pre><h2 id="personal-notes-on-further-setup">Personal Notes on Further Setup</h2>
 <h3 id="touchpad-and-trackpoint">Touchpad and TrackPoint</h3>
-
 <p><a href="https://ben-rowan.github.io/post/disable_lenovo_trackpad/">https://ben-rowan.github.io/post/disable_lenovo_trackpad/</a></p>
-
 <ul>
-<li><p>As I use a wireless mouse (Logicool&rsquo;s Unifying one) most of the time, I disabled touchpad and enabled &ldquo;Virtual Scrolling&rdquo; with the TrackPoint and the middle button instead.<br />
-[/boot/loader.conf]</p>
-
+<li>As I use a wireless mouse (Logicool's Unifying one) most of the time, I disabled touchpad and enabled &ldquo;Virtual Scrolling&rdquo; with the TrackPoint and the middle button instead.<br>
+[/boot/loader.conf]</li>
+</ul>
 <pre><code>hw.psm.synaptics_support=&quot;1&quot;
-</code></pre>
-
-<p>[/etc/sysctl.conf]</p>
-
+</code></pre><p>[/etc/sysctl.conf]</p>
 <pre><code>hw.psm.synaptics.min_pressure=220
-</code></pre>
-
-<p>[/etc/rc.conf]</p>
-
+</code></pre><p>[/etc/rc.conf]</p>
 <pre><code>moused_flags=&quot;-V&quot;
-</code></pre></li>
-</ul>
-
-<h3 id="suspend-resume">Suspend/Resume</h3>
-
-<p>I was able to perform suspend/resume by running <code>acpiconf -s 3</code> or from the XFCE4&rsquo;s &ldquo;Logout&rdquo; dialog almost out of the box.<br />
+</code></pre><h3 id="suspendresume">Suspend/Resume</h3>
+<p>I was able to perform suspend/resume by running <code>acpiconf -s 3</code> or from the XFCE4's &ldquo;Logout&rdquo; dialog almost out of the box.<br>
 But at some point, I realized the following behaviors of the Logout dialog.</p>
-
 <ul>
-<li><p>When I login for the first time after the system boots, the dialog shows all of &ldquo;Logout&rdquo;, &ldquo;Reboot&rdquo;, &ldquo;Shutdown&rdquo;, &ldquo;Suspend&rdquo; and &ldquo;Hibernate&rdquo; and all work fine.<br />
-(I thought the last one was not supported by the OS and didn&rsquo;t tried it)</p></li>
-
-<li><p>When the suspended system resumes or I login to the system after logging out, the dialog only shows &ldquo;Logout&rdquo; in active state and other options are grayed out or not displayed at all.</p></li>
+<li>
+<p>When I login for the first time after the system boots, the dialog shows all of &ldquo;Logout&rdquo;, &ldquo;Reboot&rdquo;, &ldquo;Shutdown&rdquo;, &ldquo;Suspend&rdquo; and &ldquo;Hibernate&rdquo; and all work fine.<br>
+(I thought the last one was not supported by the OS and didn't tried it)</p>
+</li>
+<li>
+<p>When the suspended system resumes or I login to the system after logging out, the dialog only shows &ldquo;Logout&rdquo; in active state and other options are grayed out or not displayed at all.</p>
+</li>
 </ul>
-
 <p>After some struggle, those were solved by creating the following polkit rule file (e.g. 85-suspend.rules) in /usr/local/etc/polkit-1/rules.d directory.</p>
-
 <p><a href="https://forums.freebsd.org/threads/xfce4-power-manager-plugin-not-working-as-expected.67780/">https://forums.freebsd.org/threads/xfce4-power-manager-plugin-not-working-as-expected.67780/</a></p>
-
 <p><em>NOTE: To use this configuration, your user account have to be in operator group. I did this during installation as mentioned earlier.</em></p>
-
 <pre><code>// pkg info -D xfce4-session
 //
 // xfce4-session-4.12.1_6:
@@ -467,72 +402,48 @@ polkit.addRule(function (action, subject) {
     return polkit.Result.NO;
   }
 });
-</code></pre>
-
-<p>Now suspend/resume seems to work more reliably by command, lid close/open or from Logout dialog!</p>
-
+</code></pre><p>Now suspend/resume seems to work more reliably by command, lid close/open or from Logout dialog!</p>
 <h3 id="screen-brightness">Screen Brightness</h3>
-
 <ul>
-<li><p>XFCE4 Power Manager&rsquo;s Brightness Control sometimes shows weird behavior. When I switch the power between AC and battery, screen brightness initially changes as configured but gets back to the previous level when I move mouse cursor.<br />
-After struggling for a while, I found the following configurations with the XFCE4&rsquo;s brightness adjustment disabled allow me to automatically adjust brightness upon change of the power source (AC or battery).<br />
-[/boot/loader.conf]</p>
-
+<li>XFCE4 Power Manager's Brightness Control sometimes shows weird behavior. When I switch the power between AC and battery, screen brightness initially changes as configured but gets back to the previous level when I move mouse cursor.<br>
+After struggling for a while, I found the following configurations with the XFCE4's brightness adjustment disabled allow me to automatically adjust brightness upon change of the power source (AC or battery).<br>
+[/boot/loader.conf]</li>
+</ul>
 <pre><code>acpi_video_load=&quot;YES&quot;
-</code></pre>
-
-<p>[/etc/sysctl.conf]</p>
-
+</code></pre><p>[/etc/sysctl.conf]</p>
 <pre><code>hw.acpi.video.lcd0.economy=30
 hw.acpi.video.lcd0.fullpower=60
-</code></pre></li>
-</ul>
-
-<h3 id="beep-on-logout">Beep on Logout</h3>
-
+</code></pre><h3 id="beep-on-logout">Beep on Logout</h3>
 <ul>
-<li><p>When unmute, opening the logout dialog makes a loud beep. I added the following line to ~/.xinitrc to avoid it.</p>
-
+<li>When unmute, opening the logout dialog makes a loud beep. I added the following line to ~/.xinitrc to avoid it.</li>
+</ul>
 <pre><code>xset -b
-</code></pre></li>
-</ul>
-
-<h3 id="epson-ink-jet-printer-ep-802a">EPSON Ink-Jet Printer EP-802A</h3>
-
+</code></pre><h3 id="epson-ink-jet-printer-ep-802a">EPSON Ink-Jet Printer EP-802A</h3>
 <ul>
-<li><p>Install and configure CUPS as follows. Then point your web browser to localhost:631 and configure the printer.</p>
-
+<li>Install and configure CUPS as follows. Then point your web browser to localhost:631 and configure the printer.</li>
+</ul>
 <pre><code>sudo pkg install gutenprint
 sudo sysrc cupsd_enable=YES
 sudo service cupsd start
-</code></pre></li>
-
-<li><p>xfce4-print package doesn&rsquo;t seem to support CUPS (only supports LPD).</p></li>
+</code></pre><ul>
+<li>xfce4-print package doesn't seem to support CUPS (only supports LPD).</li>
 </ul>
-
 <h3 id="audacity">Audacity</h3>
-
 <ul>
-<li>To export MP3, install lame from ports.<br />
+<li>To export MP3, install lame from ports.<br>
 Audacity itself can be installed via binary package.</li>
 </ul>
-
 <h3 id="joplin">Joplin</h3>
-
 <p><a href="https://joplinapp.org/">https://joplinapp.org/</a></p>
-
 <ul>
 <li>See <a href="https://genneko.github.io/playing-with-bsd/application/joplin-on-freebsd">this article</a>.</li>
 </ul>
-
 <h3 id="onedrive">OneDrive</h3>
-
 <p><a href="https://github.com/abraunegg/onedrive">https://github.com/abraunegg/onedrive</a></p>
-
 <ul>
-<li><p>On the previous main PC (Windows 10), I used OneDrive to import photos taken and uploaded by smartphones.
-OneDrive Free Client allows me to achieve this on FreeBSD machine.</p>
-
+<li>On the previous main PC (Windows 10), I used OneDrive to import photos taken and uploaded by smartphones.
+OneDrive Free Client allows me to achieve this on FreeBSD machine.</li>
+</ul>
 <pre><code>sudo pkg install onedrive
 
 onedrive
@@ -545,201 +456,169 @@ onedrive --download-only --dry-run --synchronize
 
 # Real Run.
 onedrive --download-only --synchronize
-</code></pre></li>
-</ul>
-
-<h3 id="wine">WINE</h3>
-
-<p><a href="https://wiki.winehq.org/FreeBSD">https://wiki.winehq.org/FreeBSD</a><br />
-<a href="https://wiki.freebsd.org/i386-Wine">https://wiki.freebsd.org/i386-Wine</a><br />
+</code></pre><h3 id="wine">WINE</h3>
+<p><a href="https://wiki.winehq.org/FreeBSD">https://wiki.winehq.org/FreeBSD</a><br>
+<a href="https://wiki.freebsd.org/i386-Wine">https://wiki.freebsd.org/i386-Wine</a><br>
 <a href="https://forums.freebsd.org/threads/wine-wow64-and-winetricks-at-x64-wine.62634/">https://forums.freebsd.org/threads/wine-wow64-and-winetricks-at-x64-wine.62634/</a></p>
-
 <ul>
-<li><p>Install i386-wine-* (this time I chose &lsquo;devel&rsquo;).</p>
-
+<li>Install i386-wine-* (this time I chose &lsquo;devel&rsquo;).</li>
+</ul>
 <pre><code>sudo pkg install i386-wine-devel wine-gecko-devel wine-mono-devel winetricks
-</code></pre></li>
-
-<li><p>I can run IrfanView, Picasa3 and Yamaha&rsquo;s Mid Radio Player.</p></li>
+</code></pre><ul>
+<li>I can run IrfanView, Picasa3 and Yamaha's Mid Radio Player.</li>
 </ul>
-
 <h3 id="bhyve">Bhyve</h3>
-
 <p>Maybe in another post.</p>
-
 <h3 id="failover-between-ethernet-and-wifi">Failover between Ethernet and WiFi</h3>
-
 <p>With the advice on FreeBSD Forum and Twitter, I finally got &ldquo;lagg failover between Ethernet and Wireless interfaces&rdquo; working as in the FreeBSD Handbook.</p>
-
 <ul>
-<li>FreeBSD Handbook: 31.7 Link Aggregation and Failover<br />
-<a href="https://www.freebsd.org/doc/handbook/network-aggregation.html">https://www.freebsd.org/doc/handbook/network-aggregation.html</a><br />
-(Example 31.3. Failover Mode Between Ethernet and Wireless Interfaces).<br /></li>
+<li>FreeBSD Handbook: 31.7 Link Aggregation and Failover<br>
+<a href="https://www.freebsd.org/doc/handbook/network-aggregation.html">https://www.freebsd.org/doc/handbook/network-aggregation.html</a><br>
+(Example 31.3. Failover Mode Between Ethernet and Wireless Interfaces).</li>
 </ul>
-
 <p>My configuration (in /etc/rc.conf) is as follows.</p>
-
 <pre><code>ifconfig_em0=&quot;ether &lt;WiFi MAC Address&gt; up&quot;
 wlans_iwm0=&quot;wlan0&quot;
 ifconfig_wlan0=&quot;WPA up&quot;
 create_args_wlan0=&quot;country JP&quot;
 cloned_interfaces=&quot;lagg0&quot;
 ifconfig_lagg0=&quot;up laggproto failover laggport em0 laggport wlan0 DHCP&quot;
-</code></pre>
-
-<p>As opposed to the handbook&rsquo;s example, I use the WiFi MAC address on the Ethernet interface. Other than that, it&rsquo;s essentially the same as the handbook.<br />
-(I&rsquo;ve also tried &ldquo;Ethernet MAC on WiFi&rdquo; and it worked)</p>
-
+</code></pre><p>As opposed to the handbook's example, I use the WiFi MAC address on the Ethernet interface. Other than that, it's essentially the same as the handbook.<br>
+(I've also tried &ldquo;Ethernet MAC on WiFi&rdquo; and it worked)</p>
 <p>But at first I ran into a problem here.</p>
-
 <p>When I reboot my system with the above configuration, lagg0 has only Ethernet (em0) as its member port. WiFi interface was not in the lagg0 because it seemed to be created after the lagg was initially configured. By manually running &ldquo;service netif restart&rdquo;, the lagg failover begins to work but I wondered how to avoid this manual intervention.</p>
-
 <p>A discussion on the forum quickly solved the problem.</p>
-
 <ul>
-<li>FreeBSD Forum: lagg not working on cold boot<br />
+<li>FreeBSD Forum: lagg not working on cold boot<br>
 <a href="https://forums.freebsd.org/threads/lagg-not-working-on-cold-boot.71992/">https://forums.freebsd.org/threads/lagg-not-working-on-cold-boot.71992/</a></li>
 </ul>
-
-<p>It suggests loading WiFi-related kernel modueles by loader instead of devd.<br />
+<p>It suggests loading WiFi-related kernel modueles by loader instead of devd.<br>
 I achieved this by adding the following lines to /boot/loader.conf and reboot.</p>
-
 <pre><code>if_iwm_load=&quot;YES&quot;
 iwm8265fw_load=&quot;YES&quot;
-</code></pre>
-
-<p>This made iwm0 detected much earlier and lagg0 was successfully configured with both em0 and wlan0 as its members on boot.</p>
-
-<p>Then I got another suggestion on Twitter that it&rsquo;s better to load modules which are not required for boot from rc not loader.</p>
-
+</code></pre><p>This made iwm0 detected much earlier and lagg0 was successfully configured with both em0 and wlan0 as its members on boot.</p>
+<p>Then I got another suggestion on Twitter that it's better to load modules which are not required for boot from rc not loader.</p>
 <ul>
-<li>Twitter<br />
+<li>Twitter<br>
 <a href="https://twitter.com/debdrup/status/1166016787013689344">https://twitter.com/debdrup/status/1166016787013689344</a></li>
 </ul>
-
 <p>I moved them from /boot/loader.conf to /etc/rc.conf and confirmed that it also worked as expected.</p>
-
 <pre><code>kld_list=&quot;/boot/modules/i915kms.ko if_iwm iwm8265fw&quot;
-</code></pre>
-
-<p>(As I previously mentioned, i915kms.ko is for graphics.)</p>
-
+</code></pre><p>(As I previously mentioned, i915kms.ko is for graphics.)</p>
 <h3 id="burning-cds">Burning CDs</h3>
-
-<p>I hadn&rsquo;t burnt CDs for a long time but recently I was asked to create an audio CD. So I plugged in a USB CD-R/RW drive to my laptop and tried it on FreeBSD.</p>
-
+<p>I hadn't burnt CDs for a long time but recently I was asked to create an audio CD. So I plugged in a USB CD-R/RW drive to my laptop and tried it on FreeBSD.</p>
 <p>I found my system already had GUI-based Xfburn and Brasero in addition to cdrecord, a good old command-line burner program.</p>
-
 <p>At first I tried GUI-based ones but both said &lsquo;No burner found&rsquo;. Because I was in a hurry at the time, I used cdrecord (as root) for the first time in 15 years.</p>
-
 <ol>
-<li><p>Check the CD drive&rsquo;s device number.</p>
-
+<li>
+<p>Check the CD drive's device number.</p>
 <pre><code>sudo cdrecord -scanbus
 ...
-	1,0,0	100) 'BUFFALO ' 'Optical Drive   ' '2.00' Removable CD-ROM
+ 1,0,0	100) 'BUFFALO ' 'Optical Drive   ' '2.00' Removable CD-ROM
 ...
 </code></pre></li>
-
-<li><p>Burn it.</p>
-
+<li>
+<p>Burn it.</p>
 <pre><code>sudo cdrecord -v dev=1,0,0 -pad -dao music.wav 
 </code></pre></li>
 </ol>
-
 <p>Because running cdrecord with root privilege could burn CDs, it was obvious that device permissions kept the GUI burners run by a normal user from finding the burner.</p>
-
-<p>cd0 had the following owner/mode. As my user account (a normal user) was in operator group, I could read from the device but couldn&rsquo;t write to it.</p>
-
+<p>cd0 had the following owner/mode. As my user account (a normal user) was in operator group, I could read from the device but couldn't write to it.</p>
 <pre><code>crw-r-----  1 root  operator   0x7f Nov  9 10:16 cd0
-</code></pre>
-
-<p>I adjusted the device permissions with devfs.</p>
-
+</code></pre><p>I adjusted the device permissions with devfs.</p>
 <ol>
-<li><p>Add the following a devfs ruleset in /etc/devfs.rules.<br />
-I added pass and xpt because adding only cd0 didn&rsquo;t work.</p>
-
+<li>
+<p>Add the following a devfs ruleset in /etc/devfs.rules.<br>
+I added pass and xpt because adding only cd0 didn't work.</p>
 <pre><code>[devfsrules_cdwriter=20]
 add path cd0 group operator mode 0660
 add path pass1 group operator mode 0660
 add path xpt0 group operator mode 0660
-</code></pre>
-
-<p>Maybe &lsquo;cd0&rsquo;, &lsquo;pass1&rsquo; and &lsquo;xpt0&rsquo; could be &lsquo;cd*&rsquo;, &lsquo;pass*&rsquo; and &lsquo;xpt*&rsquo;.<br />
+</code></pre><p>Maybe &lsquo;cd0&rsquo;, &lsquo;pass1&rsquo; and &lsquo;xpt0&rsquo; could be &lsquo;cd*', &lsquo;pass*&rsquo; and &lsquo;xpt*'.<br>
 But for now I use the formers with the following output.</p>
-
 <pre><code>camcontrol devlist
 &lt;Samsung SSD 860 EVO 1TB RVT02B6Q&gt;  at scbus0 target 0 lun 0 (ada0,pass0)
 &lt;BUFFALO Optical Drive 2.00&gt;       at scbus1 target 0 lun 0 (pass1,cd0)
 &lt;Generic- SD/MMC 1.00&gt;             at scbus2 target 0 lun 0 (da0,pass2)
 </code></pre></li>
-
-<li><p>Add a line to /etc/rc.conf to use the devfs ruleset.</p>
-
+<li>
+<p>Add a line to /etc/rc.conf to use the devfs ruleset.</p>
 <pre><code>devfs_system_ruleset=&quot;devfsrules_cdwriter&quot;
 </code></pre></li>
-
-<li><p>Reboot the system.</p></li>
-
-<li><p>Now I can burn CDs with GUI programs too.</p></li>
+<li>
+<p>Reboot the system.</p>
+</li>
+<li>
+<p>Now I can burn CDs with GUI programs too.</p>
+</li>
 </ol>
-
 <h2 id="references">References</h2>
-
 <ul>
-<li><p>FreeBSD wiki: Laptops running FreeBSD<br />
-<a href="https://wiki.freebsd.org/Laptops">https://wiki.freebsd.org/Laptops</a></p></li>
-
-<li><p>FreeBSD wiki: Thinkpad T480<br />
-<a href="https://wiki.freebsd.org/Laptops/Thinkpad_T480">https://wiki.freebsd.org/Laptops/Thinkpad_T480</a></p></li>
-
-<li><p>Running FreeBSD on the Lenovo T470s ThinkPad<br />
-<a href="https://blog.grem.de/pages/t470s.html">https://blog.grem.de/pages/t470s.html</a></p></li>
-
-<li><p>FreeBSD on a Laptop (12-Current on T530)<br />
-<a href="https://www.c0ffee.net/blog/freebsd-on-a-laptop/">https://www.c0ffee.net/blog/freebsd-on-a-laptop/</a></p></li>
-
-<li><p>The Power to Serve – FreeBSD Power Management<br />
-<a href="https://vermaden.wordpress.com/2018/11/28/the-power-to-serve-freebsd-power-management/">https://vermaden.wordpress.com/2018/11/28/the-power-to-serve-freebsd-power-management/</a></p></li>
-
-<li><p>FreeBSD Desktop<br />
-<a href="https://vermaden.wordpress.com/freebsd-desktop/">https://vermaden.wordpress.com/freebsd-desktop/</a></p></li>
-
-<li><p>Getting Started With drm-kmod<br />
-<a href="https://freebsddesktop.github.io/2018/12/08/drm-kmod-primer.html">https://freebsddesktop.github.io/2018/12/08/drm-kmod-primer.html</a></p></li>
-
-<li><p>FreeBSD wiki: Suspend/Resume<br />
-<a href="https://wiki.freebsd.org/SuspendResume">https://wiki.freebsd.org/SuspendResume</a></p></li>
-
-<li><p>FreeBSD Handbook: Wireless Networking<br />
-<a href="https://www.freebsd.org/doc/handbook/network-wireless.html">https://www.freebsd.org/doc/handbook/network-wireless.html</a></p></li>
-
-<li><p>FreeBSD Wireless Quickstart<br />
-<a href="http://srobb.net/fbsdquickwireless.html">http://srobb.net/fbsdquickwireless.html</a></p></li>
-
-<li><p>FreeBSD wiki: Synaptics Touchpad<br />
-<a href="https://wiki.freebsd.org/SynapticsTouchpad">https://wiki.freebsd.org/SynapticsTouchpad</a></p></li>
-
-<li><p>FreeBSD Forum &amp; Bugzilla: Two-finger Scroll<br />
-<a href="https://forums.freebsd.org/threads/touchpad-envy.58739/">https://forums.freebsd.org/threads/touchpad-envy.58739/</a><br />
-<a href="https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=228875">https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=228875</a><br />
-<a href="https://forums.freebsd.org/threads/synaptics-two-finger-scroll.53720/">https://forums.freebsd.org/threads/synaptics-two-finger-scroll.53720/</a></p></li>
-
-<li><p>FreeBSD: Disable Your Lenovo Trackpad<br />
-<a href="https://ben-rowan.github.io/post/disable_lenovo_trackpad/">https://ben-rowan.github.io/post/disable_lenovo_trackpad/</a></p></li>
-
-<li><p>FreeBSD Forum: How to disable mousepad tapping ?<br />
-<a href="https://forums.freebsd.org/threads/how-to-disable-mousepad-tapping.17370/">https://forums.freebsd.org/threads/how-to-disable-mousepad-tapping.17370/</a></p></li>
+<li>
+<p>FreeBSD wiki: Laptops running FreeBSD<br>
+<a href="https://wiki.freebsd.org/Laptops">https://wiki.freebsd.org/Laptops</a></p>
+</li>
+<li>
+<p>FreeBSD wiki: Thinkpad T480<br>
+<a href="https://wiki.freebsd.org/Laptops/Thinkpad_T480">https://wiki.freebsd.org/Laptops/Thinkpad_T480</a></p>
+</li>
+<li>
+<p>Running FreeBSD on the Lenovo T470s ThinkPad<br>
+<a href="https://blog.grem.de/pages/t470s.html">https://blog.grem.de/pages/t470s.html</a></p>
+</li>
+<li>
+<p>FreeBSD on a Laptop (12-Current on T530)<br>
+<a href="https://www.c0ffee.net/blog/freebsd-on-a-laptop/">https://www.c0ffee.net/blog/freebsd-on-a-laptop/</a></p>
+</li>
+<li>
+<p>The Power to Serve – FreeBSD Power Management<br>
+<a href="https://vermaden.wordpress.com/2018/11/28/the-power-to-serve-freebsd-power-management/">https://vermaden.wordpress.com/2018/11/28/the-power-to-serve-freebsd-power-management/</a></p>
+</li>
+<li>
+<p>FreeBSD Desktop<br>
+<a href="https://vermaden.wordpress.com/freebsd-desktop/">https://vermaden.wordpress.com/freebsd-desktop/</a></p>
+</li>
+<li>
+<p>Getting Started With drm-kmod<br>
+<a href="https://freebsddesktop.github.io/2018/12/08/drm-kmod-primer.html">https://freebsddesktop.github.io/2018/12/08/drm-kmod-primer.html</a></p>
+</li>
+<li>
+<p>FreeBSD wiki: Suspend/Resume<br>
+<a href="https://wiki.freebsd.org/SuspendResume">https://wiki.freebsd.org/SuspendResume</a></p>
+</li>
+<li>
+<p>FreeBSD Handbook: Wireless Networking<br>
+<a href="https://www.freebsd.org/doc/handbook/network-wireless.html">https://www.freebsd.org/doc/handbook/network-wireless.html</a></p>
+</li>
+<li>
+<p>FreeBSD Wireless Quickstart<br>
+<a href="http://srobb.net/fbsdquickwireless.html">http://srobb.net/fbsdquickwireless.html</a></p>
+</li>
+<li>
+<p>FreeBSD wiki: Synaptics Touchpad<br>
+<a href="https://wiki.freebsd.org/SynapticsTouchpad">https://wiki.freebsd.org/SynapticsTouchpad</a></p>
+</li>
+<li>
+<p>FreeBSD Forum &amp; Bugzilla: Two-finger Scroll<br>
+<a href="https://forums.freebsd.org/threads/touchpad-envy.58739/">https://forums.freebsd.org/threads/touchpad-envy.58739/</a><br>
+<a href="https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=228875">https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=228875</a><br>
+<a href="https://forums.freebsd.org/threads/synaptics-two-finger-scroll.53720/">https://forums.freebsd.org/threads/synaptics-two-finger-scroll.53720/</a></p>
+</li>
+<li>
+<p>FreeBSD: Disable Your Lenovo Trackpad<br>
+<a href="https://ben-rowan.github.io/post/disable_lenovo_trackpad/">https://ben-rowan.github.io/post/disable_lenovo_trackpad/</a></p>
+</li>
+<li>
+<p>FreeBSD Forum: How to disable mousepad tapping ?<br>
+<a href="https://forums.freebsd.org/threads/how-to-disable-mousepad-tapping.17370/">https://forums.freebsd.org/threads/how-to-disable-mousepad-tapping.17370/</a></p>
+</li>
 </ul>
-
 <h2 id="revision-history">Revision History</h2>
-
 <ul>
 <li>2019-08-22: Created</li>
 <li>2019-08-27: Added &ldquo;Failover between Ethernet and WiFi&rdquo;</li>
 <li>2019-09-15: Added &ldquo;Suspend/Resume&rdquo;</li>
-<li>2019-09-22: Updated the OneDrive Free Client&rsquo;s URL</li>
+<li>2019-09-22: Updated the OneDrive Free Client's URL</li>
 <li>2019-11-09: Added &ldquo;Burning CDs&rdquo;</li>
 </ul>
 
@@ -760,7 +639,7 @@ But for now I use the formers with the following output.</p>
 
 
 <div class="site-footer">
-  <div class="copyright">&copy; Copyright 2018 - 2019 genneko</div>
+  <div class="copyright">&copy; Copyright 2017 - 2020 genneko</div>
   <ul class="site-footer-items">
     <li class="site-footer-item-about"><a href="https://genneko.github.io/about/" title="About">About</a></li>
   </ul>
