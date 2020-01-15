@@ -3,17 +3,22 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-  <title>Using Joplin (Terminal and Desktop) and Web Clipper on FreeBSD - genneko</title>
-  <meta property="og:title" content="Using Joplin (Terminal and Desktop) and Web Clipper on FreeBSD - genneko" />
-  <meta name="twitter:title" content="Using Joplin (Terminal and Desktop) and Web Clipper on FreeBSD - …" />
-  <meta name="description" content="I&#39;ve been using Evernote since April 2011.
-Although there were times the app got disappointing updates or the service was unexpectedly interrupted (or more often expectedly interrupted by regular maintenance), it had been a great app/service and hopefully it is and it will be.
-Looking at the sorted note list on its web application, I found my first note had a date of 2011-04-24 and it was about Android browser&#39;s local file handling.">
-  <meta property="og:description" content="I&#39;ve been using Evernote since April 2011.
-Although there were times the app got disappointing updates or the service was unexpectedly interrupted (or more often expectedly interrupted by regular maintenance), it had been a great app/service and hopefully it is and it will be.
-Looking at the sorted note list on its web application, I found my first note had a date of 2011-04-24 and it was about Android browser&#39;s local file handling.">
-  <meta name="twitter:description" content="I&#39;ve been using Evernote since April 2011.
-Although there were times the app got disappointing updates or the service was unexpectedly interrupted (or more often expectedly interrupted by regular …">
+  <title>Testing Joplin (Terminal and Desktop) and Web Clipper on FreeBSD - genneko</title>
+  <meta property="og:title" content="Testing Joplin (Terminal and Desktop) and Web Clipper on FreeBSD - genneko" />
+  <meta name="twitter:title" content="Testing Joplin (Terminal and Desktop) and Web Clipper on FreeBSD - …" />
+  <meta name="description" content="TL;DR (2020-01-15)
+This article describes my initial exploration of Joplin in June 2019. It&#39;s not intended to be a tutorial/howto and it&#39;s not necessarily up to date.
+Please refer to the newer post for more up-to-date and concise description on how to use Joplin on FreeBSD.
+I&#39;ve been using Evernote since April 2011.
+Although there were times the app got disappointing updates or the service was unexpectedly interrupted (or more often expectedly interrupted by regular maintenance), it had been a great app/service and hopefully it is and it will be.">
+  <meta property="og:description" content="TL;DR (2020-01-15)
+This article describes my initial exploration of Joplin in June 2019. It&#39;s not intended to be a tutorial/howto and it&#39;s not necessarily up to date.
+Please refer to the newer post for more up-to-date and concise description on how to use Joplin on FreeBSD.
+I&#39;ve been using Evernote since April 2011.
+Although there were times the app got disappointing updates or the service was unexpectedly interrupted (or more often expectedly interrupted by regular maintenance), it had been a great app/service and hopefully it is and it will be.">
+  <meta name="twitter:description" content="TL;DR (2020-01-15)
+This article describes my initial exploration of Joplin in June 2019. It&#39;s not intended to be a tutorial/howto and it&#39;s not necessarily up to date.
+Please refer to the newer post …">
   <meta name="author" content="genneko"/>
   <meta property="og:site_name" content="genneko" />
   <meta property="og:url" content="https://genneko.github.io/playing-with-bsd/application/joplin-on-freebsd/" />
@@ -51,13 +56,13 @@ Although there were times the app got disappointing updates or the service was u
     <article class="article">
       
       
-      <h1 class="article-title">Using Joplin (Terminal and Desktop) and Web Clipper on FreeBSD</h1>
+      <h1 class="article-title">Testing Joplin (Terminal and Desktop) and Web Clipper on FreeBSD</h1>
       
       <hr class="article-title-bottom">
       <ul class="article-meta">
         <li class="article-meta-date"><time>2019-06-21</time>
         
-        <span class="updated">Update: 2019-09-10</span>
+        <span class="updated">Update: 2020-01-15</span>
         
         </li>
         <li class="article-meta-tags">
@@ -110,7 +115,10 @@ Although there were times the app got disappointing updates or the service was u
   </ul>
 </nav>
 </aside>
-      <p>I've been using Evernote since April 2011.<br>
+      <p><em><strong>TL;DR (2020-01-15)</strong></em><br>
+<em>This article describes my initial exploration of Joplin in June 2019. It's not intended to be a tutorial/howto and it's not necessarily up to date.<br>
+Please refer to the <a href="https://genneko.github.io/playing-with-bsd/application/howto-use-joplin-on-freebsd">newer post</a> for more up-to-date and concise description on how to use Joplin on FreeBSD.</em></p>
+<p>I've been using Evernote since April 2011.<br>
 Although there were times the app got disappointing updates or the service was unexpectedly interrupted (or more often expectedly interrupted by regular maintenance), it had been a great app/service and hopefully it is and it will be.</p>
 <p>Looking at the sorted note list on its web application, I found my first note had a date of 2011-04-24 and it was about Android browser's local file handling. That was exactly when I bought my first smartphone and played with Android 2.x on it, I remember.</p>
 <p>Since then, the number of notes has grown up to around 20000 and without doubt, it had been one of the most frequently used applications along with web browsers, email clients and UNIX tools such as shells, ssh, rsync and vim &hellip; until last week.</p>
@@ -474,6 +482,7 @@ Welcome! (CLI): 69a54d3a9b3541d291c75d429e707e02
 (on the FreeBSD pkg repo &ldquo;quarterly&rdquo; and my forked joplin repo/branches including a patch to build desktop app on FreeBSD)</li>
 <li>2019-09-10: Updated a note on my fork.<br>
 (I've abandoned headless_proxy in favor of electron_freebsd_proxy branch because upstream/master now seems to include beta headless support.)</li>
+<li>2020-01-15: Added a &ldquo;TL;DR&rdquo; note.</li>
 </ul>
 
     </article>

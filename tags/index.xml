@@ -7,17 +7,44 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>&amp;copy; Copyright 2017 - 2020 genneko</copyright>
-    <lastBuildDate>Sun, 17 Nov 2019 19:37:00 +0900</lastBuildDate>
+    <lastBuildDate>Wed, 15 Jan 2020 20:26:00 +0900</lastBuildDate>
     
 	<atom:link href="https://genneko.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
+      <title>application</title>
+      <link>https://genneko.github.io/tags/application/</link>
+      <pubDate>Wed, 15 Jan 2020 20:26:00 +0900</pubDate>
+      
+      <guid>https://genneko.github.io/tags/application/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>font</title>
+      <link>https://genneko.github.io/tags/font/</link>
+      <pubDate>Wed, 15 Jan 2020 20:26:00 +0900</pubDate>
+      
+      <guid>https://genneko.github.io/tags/font/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>freebsd</title>
       <link>https://genneko.github.io/tags/freebsd/</link>
-      <pubDate>Sun, 17 Nov 2019 19:37:00 +0900</pubDate>
+      <pubDate>Wed, 15 Jan 2020 20:26:00 +0900</pubDate>
       
       <guid>https://genneko.github.io/tags/freebsd/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>installation</title>
+      <link>https://genneko.github.io/tags/installation/</link>
+      <pubDate>Wed, 15 Jan 2020 20:26:00 +0900</pubDate>
+      
+      <guid>https://genneko.github.io/tags/installation/</guid>
       <description></description>
     </item>
     
@@ -58,15 +85,6 @@
     </item>
     
     <item>
-      <title>installation</title>
-      <link>https://genneko.github.io/tags/installation/</link>
-      <pubDate>Thu, 22 Aug 2019 00:50:00 +0900</pubDate>
-      
-      <guid>https://genneko.github.io/tags/installation/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>laptop</title>
       <link>https://genneko.github.io/tags/laptop/</link>
       <pubDate>Thu, 22 Aug 2019 00:50:00 +0900</pubDate>
@@ -99,15 +117,6 @@
       <pubDate>Thu, 18 Jul 2019 19:08:00 +0900</pubDate>
       
       <guid>https://genneko.github.io/tags/usb/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>application</title>
-      <link>https://genneko.github.io/tags/application/</link>
-      <pubDate>Fri, 21 Jun 2019 23:20:00 +0900</pubDate>
-      
-      <guid>https://genneko.github.io/tags/application/</guid>
       <description></description>
     </item>
     

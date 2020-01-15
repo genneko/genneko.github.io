@@ -13,14 +13,16 @@
     
     
     <item>
-      <title>Using Joplin (Terminal and Desktop) and Web Clipper on FreeBSD</title>
+      <title>Testing Joplin (Terminal and Desktop) and Web Clipper on FreeBSD</title>
       <link>https://genneko.github.io/playing-with-bsd/application/joplin-on-freebsd/</link>
       <pubDate>Fri, 21 Jun 2019 23:20:00 +0900</pubDate>
       
       <guid>https://genneko.github.io/playing-with-bsd/application/joplin-on-freebsd/</guid>
-      <description>I&#39;ve been using Evernote since April 2011.
-Although there were times the app got disappointing updates or the service was unexpectedly interrupted (or more often expectedly interrupted by regular maintenance), it had been a great app/service and hopefully it is and it will be.
-Looking at the sorted note list on its web application, I found my first note had a date of 2011-04-24 and it was about Android browser&#39;s local file handling.</description>
+      <description>TL;DR (2020-01-15)
+This article describes my initial exploration of Joplin in June 2019. It&#39;s not intended to be a tutorial/howto and it&#39;s not necessarily up to date.
+Please refer to the newer post for more up-to-date and concise description on how to use Joplin on FreeBSD.
+I&#39;ve been using Evernote since April 2011.
+Although there were times the app got disappointing updates or the service was unexpectedly interrupted (or more often expectedly interrupted by regular maintenance), it had been a great app/service and hopefully it is and it will be.</description>
     </item>
     
   </channel>

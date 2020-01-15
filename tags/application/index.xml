@@ -7,20 +7,34 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>&amp;copy; Copyright 2017 - 2020 genneko</copyright>
-    <lastBuildDate>Fri, 21 Jun 2019 23:20:00 +0900</lastBuildDate>
+    <lastBuildDate>Wed, 15 Jan 2020 20:26:00 +0900</lastBuildDate>
     
 	<atom:link href="https://genneko.github.io/tags/application/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
-      <title>Using Joplin (Terminal and Desktop) and Web Clipper on FreeBSD</title>
+      <title>How to use Joplin desktop app on FreeBSD</title>
+      <link>https://genneko.github.io/playing-with-bsd/application/howto-use-joplin-on-freebsd/</link>
+      <pubDate>Wed, 15 Jan 2020 20:26:00 +0900</pubDate>
+      
+      <guid>https://genneko.github.io/playing-with-bsd/application/howto-use-joplin-on-freebsd/</guid>
+      <description>This is a quick note on how I build and use the latest Joplin desktop app on FreeBSD.
+For my initial exploration of Joplin on FreeBSD, please refer to the previous post.
+Target Version The current target version of this article is Joplin Electron (pre-)release v1.0.177 (Dec 2019). Building Joplin I take the following steps to build Joplin desktop on my FreeBSD 12.1-RELEASE system (with XFCE4 desktop).
+ Install dependencies such as Electron and Nodejs.</description>
+    </item>
+    
+    <item>
+      <title>Testing Joplin (Terminal and Desktop) and Web Clipper on FreeBSD</title>
       <link>https://genneko.github.io/playing-with-bsd/application/joplin-on-freebsd/</link>
       <pubDate>Fri, 21 Jun 2019 23:20:00 +0900</pubDate>
       
       <guid>https://genneko.github.io/playing-with-bsd/application/joplin-on-freebsd/</guid>
-      <description>I&#39;ve been using Evernote since April 2011.
-Although there were times the app got disappointing updates or the service was unexpectedly interrupted (or more often expectedly interrupted by regular maintenance), it had been a great app/service and hopefully it is and it will be.
-Looking at the sorted note list on its web application, I found my first note had a date of 2011-04-24 and it was about Android browser&#39;s local file handling.</description>
+      <description>TL;DR (2020-01-15)
+This article describes my initial exploration of Joplin in June 2019. It&#39;s not intended to be a tutorial/howto and it&#39;s not necessarily up to date.
+Please refer to the newer post for more up-to-date and concise description on how to use Joplin on FreeBSD.
+I&#39;ve been using Evernote since April 2011.
+Although there were times the app got disappointing updates or the service was unexpectedly interrupted (or more often expectedly interrupted by regular maintenance), it had been a great app/service and hopefully it is and it will be.</description>
     </item>
     
   </channel>
