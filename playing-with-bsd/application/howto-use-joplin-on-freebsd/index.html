@@ -154,10 +154,10 @@ But for users who have to use some &ldquo;input method&rdquo; for entering text,
 The weird character will be suppressed because it will be shown with the zero-width glyph in the specified font while other characters will be displayed with the default monospace font because they are not included in the special font.</p>
 </li>
 <li>
-<p>If you are using a custom editor font, you cannot specify the special font in &ldquo;Editor font family&rdquo; because it can take only a single font name thus overrides your custom choice.<br>
+<p>If you are using a custom editor font, you cannot specify the special font in &ldquo;Editor font family&rdquo; because it can take only a single font name thus overrides the custom font.<br>
 But if you have Joplin <a href="https://github.com/laurent22/joplin/releases/tag/v1.0.176">v1.0.176</a> or later<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup>, you can use the Joplin-wide stylesheet to work around this issue while you continue to use the custom editor font.<br>
 Just store the special font file somewhere and create Joplin-wide stylesheet from Tools &gt; Options &gt; Appearance &gt; Custom stylesheet for Joplin-wide app styles<sup id="fnref:2"><a href="#fn:2" class="footnote-ref" role="doc-noteref">2</a></sup>.<br>
-For example, if you saved the special font as /home/username/share/fonts/NoLSEP.ttf and want to use IPAGothic as the custom editor font, the stylesheet should look like this.</p>
+For example, if you saved the special font as /home/username/share/fonts/NoLSEP.ttf and want to use IPAGothic as the custom editor font, the stylesheet should look like this<sup id="fnref:3"><a href="#fn:3" class="footnote-ref" role="doc-noteref">3</a></sup>.</p>
 <pre><code>@font-face {
     font-family: NoLSEP;
     src: url(file:///home/username/share/fonts/NoLSEP.ttf);
@@ -212,10 +212,13 @@ I changed selector from &lsquo;.ace_editor&rsquo; to &lsquo;div.ace_editor&rsquo
 <hr>
 <ol>
 <li id="fn:1" role="doc-endnote">
-<p>Before the Joplin-wide stylesheet was implemented in v1.0.176, I had been using a <a href="https://genneko.github.io/misc/joplin_multi_editor_fonts.patch">small patch</a> to make &ldquo;Editor font family&rdquo; accept multiple fonts separated by comma. <a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+<p>Before the Joplin-wide stylesheet was implemented in v1.0.176, I had been using a <a href="https://genneko.github.io/misc/joplin_multi_editor_fonts.patch">small patch</a> to make &ldquo;Editor font family&rdquo; accept multiple fonts separated by comma, just for this purpose. <a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
 </li>
 <li id="fn:2" role="doc-endnote">
 <p>The menu creates and edits ~/.config/joplin-desktop/userchrome.css. <a href="#fnref:2" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:3" role="doc-endnote">
+<p>As NoLSEP font is used only for this specific purpose, I didn't want to install it in the system-wide directory such as /usr/local/share/fonts/TTF. So I put it under my home directory and defined @font-face rule to use it. <a href="#fnref:3" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
 </li>
 </ol>
 </section>
