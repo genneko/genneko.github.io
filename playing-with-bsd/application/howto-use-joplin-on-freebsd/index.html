@@ -155,8 +155,8 @@ The weird character will be suppressed because it will be shown with the zero-wi
 </li>
 <li>
 <p>If you are using a custom editor font, you cannot specify the special font in &ldquo;Editor font family&rdquo; because it can take only a single font name thus overrides your custom choice.<br>
-But if you have Joplin <a href="https://github.com/laurent22/joplin/releases/tag/v1.0.176">v1.0.176</a> or later, you can use the Joplin-wide stylesheet to work around this issue while you continue to use the custom editor font.<br>
-Just store the special font file somewhere and create Joplin-wide stylesheet from Tools &gt; Options &gt; Appearance &gt; Custom stylesheet for Joplin-wide app styles<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup>.<br>
+But if you have Joplin <a href="https://github.com/laurent22/joplin/releases/tag/v1.0.176">v1.0.176</a> or later<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup>, you can use the Joplin-wide stylesheet to work around this issue while you continue to use the custom editor font.<br>
+Just store the special font file somewhere and create Joplin-wide stylesheet from Tools &gt; Options &gt; Appearance &gt; Custom stylesheet for Joplin-wide app styles<sup id="fnref:2"><a href="#fn:2" class="footnote-ref" role="doc-noteref">2</a></sup>.<br>
 For example, if you saved the special font as /home/username/share/fonts/NoLSEP.ttf and want to use IPAGothic as the custom editor font, the stylesheet should look like this.</p>
 <pre><code>@font-face {
     font-family: NoLSEP;
@@ -195,6 +195,14 @@ I changed selector from &lsquo;.ace_editor&rsquo; to &lsquo;div.ace_editor&rsquo
 <p>GitHub: genneko/joplin<br>
 <a href="https://github.com/genneko/joplin">https://github.com/genneko/joplin</a></p>
 </li>
+<li>
+<p>anopara: Ace EditorでL SEPという文字が出る<br>
+<a href="https://anopara.net/2018/01/19/ace-editor%E3%81%A7l-sep%E3%81%A8%E3%81%84%E3%81%86%E6%96%87%E5%AD%97%E3%81%8C%E5%87%BA%E3%82%8B/">https://anopara.net/2018/01/19/ace-editor%E3%81%A7l-sep%E3%81%A8%E3%81%84%E3%81%86%E6%96%87%E5%AD%97%E3%81%8C%E5%87%BA%E3%82%8B/</a></p>
+</li>
+<li>
+<p>RAWSEQ: Aceエディタ で日本語入力時のちらつきを解消する<br>
+<a href="https://qiita.com/RAWSEQ/items/7f9fc0fd4b3d572856ed">https://qiita.com/RAWSEQ/items/7f9fc0fd4b3d572856ed</a></p>
+</li>
 </ul>
 <h2 id="revision-history">Revision History</h2>
 <ul>
@@ -204,7 +212,10 @@ I changed selector from &lsquo;.ace_editor&rsquo; to &lsquo;div.ace_editor&rsquo
 <hr>
 <ol>
 <li id="fn:1" role="doc-endnote">
-<p>The menu creates and edits ~/.config/joplin-desktop/userchrome.css. <a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+<p>Before the Joplin-wide stylesheet was implemented in v1.0.176, I had been using a <a href="https://genneko.github.io/misc/joplin_multi_editor_fonts.patch">small patch</a> to make &ldquo;Editor font family&rdquo; accept multiple fonts separated by comma. <a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:2" role="doc-endnote">
+<p>The menu creates and edits ~/.config/joplin-desktop/userchrome.css. <a href="#fnref:2" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
 </li>
 </ol>
 </section>
