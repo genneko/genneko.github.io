@@ -6,20 +6,20 @@
   <title>Growing a ZFS Mirror Pool - genneko</title>
   <meta property="og:title" content="Growing a ZFS Mirror Pool - genneko" />
   <meta name="twitter:title" content="Growing a ZFS Mirror Pool - genneko" />
-  <meta name="description" content="I have a tiny home server for my family. It&#39;s based on Atom N2800 CPU and runs FreeBSD 11.2 with a two-disk ZFS mirror.
+  <meta name="description" content="I have a tiny home server for my family. It&rsquo;s based on Atom N2800 CPU and runs FreeBSD 11.2 with a two-disk ZFS mirror.
 Originally it had two 500GB disks, but now it has a 500GB and a 1TB ones because one of them was replaced due to a failure.
 As the Handbook says, the available space of a mirror pool is limited by the size of the smallest disk. So my server can still get only 500GB from the total space of 1.">
-  <meta property="og:description" content="I have a tiny home server for my family. It&#39;s based on Atom N2800 CPU and runs FreeBSD 11.2 with a two-disk ZFS mirror.
+  <meta property="og:description" content="I have a tiny home server for my family. It&rsquo;s based on Atom N2800 CPU and runs FreeBSD 11.2 with a two-disk ZFS mirror.
 Originally it had two 500GB disks, but now it has a 500GB and a 1TB ones because one of them was replaced due to a failure.
 As the Handbook says, the available space of a mirror pool is limited by the size of the smallest disk. So my server can still get only 500GB from the total space of 1.">
-  <meta name="twitter:description" content="I have a tiny home server for my family. It&#39;s based on Atom N2800 CPU and runs FreeBSD 11.2 with a two-disk ZFS mirror.
-Originally it had two 500GB disks, but now it has a 500GB and a 1TB ones because …">
+  <meta name="twitter:description" content="I have a tiny home server for my family. It&rsquo;s based on Atom N2800 CPU and runs FreeBSD 11.2 with a two-disk ZFS mirror.
+Originally it had two 500GB disks, but now it has a 500GB and a 1TB ones …">
   <meta name="author" content="genneko"/>
   <meta property="og:site_name" content="genneko" />
   <meta property="og:url" content="https://genneko.github.io/playing-with-bsd/storage/growing-a-zfs-mirror/" />
   <meta property="og:type" content="article" />
   <meta name="twitter:card" content="summary" />
-  <meta name="generator" content="Hugo 0.62.2" />
+  <meta name="generator" content="Hugo 0.63.1" />
 
   <link rel="stylesheet" href="https://genneko.github.io/css/style.css" media="all" />
   <link rel="stylesheet" href="https://genneko.github.io/css/syntax.css" media="all" />
@@ -85,11 +85,11 @@ Originally it had two 500GB disks, but now it has a 500GB and a 1TB ones because
   </ul>
 </nav>
 </aside>
-      <p>I have a tiny home server for my family. It's based on Atom N2800 CPU and runs FreeBSD 11.2 with a two-disk ZFS mirror.</p>
+      <p>I have a tiny home server for my family. It&rsquo;s based on Atom N2800 CPU and runs FreeBSD 11.2 with a two-disk ZFS mirror.</p>
 <p>Originally it had two 500GB disks, but now it has a 500GB and a 1TB ones because one of them was replaced due to a failure.</p>
 <p>As the Handbook says, the available space of a mirror pool is limited by the size of the smallest disk. So my server can still get only 500GB from the total space of 1.5TB (500GB + 1TB).</p>
-<p>It was not a problem because we didn't have much data. But as I got a new FreeBSD laptop and wanted to take its backup on the server, I finally decided to replace the 500GB disk in the mirror with another 1TB one and double the capacity of the mirror.</p>
-<p>Here's what I did.</p>
+<p>It was not a problem because we didn&rsquo;t have much data. But as I got a new FreeBSD laptop and wanted to take its backup on the server, I finally decided to replace the 500GB disk in the mirror with another 1TB one and double the capacity of the mirror.</p>
+<p>Here&rsquo;s what I did.</p>
 <ol>
 <li>Check the current status.<br>
 I could see ada0(gpt/zfs1) is 1TB and ada1(gpt/zfs0) is 500GB.</li>

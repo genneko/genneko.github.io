@@ -19,7 +19,7 @@ NOTE: WireGuard is still …">
   <meta property="og:url" content="https://genneko.github.io/playing-with-bsd/networking/freebsd-wireguard-android/" />
   <meta property="og:type" content="article" />
   <meta name="twitter:card" content="summary" />
-  <meta name="generator" content="Hugo 0.62.2" />
+  <meta name="generator" content="Hugo 0.63.1" />
 
   <link rel="stylesheet" href="https://genneko.github.io/css/style.css" media="all" />
   <link rel="stylesheet" href="https://genneko.github.io/css/syntax.css" media="all" />
@@ -131,8 +131,22 @@ Android 8.0 Phone with WireGuard App (Beta) and ConnectBot installed.<br>
 Roaming between home WiFi and 4G network.</p>
 </li>
 </ul>
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
+<pre style="line-height: 10pt"><code style="font-size: 9pt">                  Server [FreeBSD]
+                             o vtnet0
+                             | wg.example.com (xxx.xxx.xxx.xxx)
+                             |
+                         ///////////
+                      /// Internet ///
+                         ///////////-------+
+                             |              \
+                             |               \
+             zzz.zzz.zzz.zzz o                \
+        Performing NAT [Home Router]           \
+                             o                  \
+                             | WiFi              \ 4G
+                             o                    o yyy.yyy.yyy.yyy
+                  Client [Android]<--Roaming-->[Android]
+</code></pre>
 <h2 id="install-wireguard">Install WireGuard</h2>
 <h3 id="freebsd">FreeBSD</h3>
 <p>I also installed libqrencode package to pass configuration to Android.</p>
@@ -201,7 +215,7 @@ service wireguard start
 <li>Start WireGuard app.</li>
 <li>Tap [+] button.</li>
 <li>Select &ldquo;Create from QR code&rdquo;.</li>
-<li>Scan the QR code displayed on the FreeBSD's terminal.</li>
+<li>Scan the QR code displayed on the FreeBSD&rsquo;s terminal.</li>
 <li>Input an arbitrary string for &ldquo;Tunnel Name&rdquo;.</li>
 <li>Tap &ldquo;CREATE TUNNEL&rdquo;.</li>
 <li>Enable the tunnel.</li>
@@ -209,12 +223,12 @@ service wireguard start
 <h2 id="test-with-ping">Test with Ping</h2>
 <h3 id="android-on-4g">Android on 4G</h3>
 <p>At this stage, the Android phone was connected to 4G network.</p>
-<p>I observed packets on the FreeBSD's external and WireGuard interfaces while I ran ping from the Android to the FreeBSD's internal address.</p>
+<p>I observed packets on the FreeBSD&rsquo;s external and WireGuard interfaces while I ran ping from the Android to the FreeBSD&rsquo;s internal address.</p>
 <p>[Android] Using Local Shell on ConnectBot<br>
 I got ping replys successfully.</p>
 <pre><code>ping 192.168.222.1
 </code></pre><p>[FreeBSD] External Interface<br>
-I saw WireGuard's UDP packets between the Android and FreeBSD's external addresses. Contents of the packets looked encrypted.</p>
+I saw WireGuard&rsquo;s UDP packets between the Android and FreeBSD&rsquo;s external addresses. Contents of the packets looked encrypted.</p>
 <pre><code>sudo tcpdump -vln -X -i vtnet0
 ...
 14:14:55.589817 IP (tos 0x0, ttl 51, id 11367, offset 0, flags [DF], proto UDP (17), length 156)
@@ -242,7 +256,7 @@ I saw WireGuard's UDP packets between the Android and FreeBSD's external address
         0x0080: 268a b4ec 3f1b b049 7c4b bb61 b007 fe16 &amp;...?..I|K.a....
         0x0090: e372 9a33 9a9f f30f e5bc ee91 .r.3........
 </code></pre><p>[FreeBSD] WireGuard Interface<br>
-I could see plain ping packets between the Android and FreeBSD's internal addresses.</p>
+I could see plain ping packets between the Android and FreeBSD&rsquo;s internal addresses.</p>
 <pre><code>sudo tcpdump -vln -X -i wg0
 ...
 14:14:54.590165 IP (tos 0x0, ttl 64, id 51967, offset 0, flags [DF], proto ICMP (1), length 84)
@@ -262,7 +276,7 @@ I could see plain ping packets between the Android and FreeBSD's internal addres
         0x0040: 2425 2627 2829 2a2b 2c2d 2e2f 3031 3233 $%&amp;'()*+,-./0123
         0x0050: 3435 3637 4567
 </code></pre><p>[FreeBSD] WireGuard status<br>
-Peer's endpoint was the one for 4G network.</p>
+Peer&rsquo;s endpoint was the one for 4G network.</p>
 <pre><code>wg show
 interface: wg0
   public key: ZnytpGElvUA1yxcdjhIqZ4L3NxZmbMJBdC9IvI5giUA=
@@ -275,11 +289,11 @@ peer: DFrE6f3TM1mVhFE8WLCgcEjCJHwfcj2T6xUt/Rzk6VY=
   latest handshake: 15 seconds ago
   transfer: 7.96 KiB received, 12.12 KiB sent
 </code></pre><h3 id="android-moved-to-wifi">Android Moved to WiFi</h3>
-<p>Then I turned on the Android's WiFi and saw what happened.</p>
-<p>[Android] Using ConnectBot's Local Shell<br>
+<p>Then I turned on the Android&rsquo;s WiFi and saw what happened.</p>
+<p>[Android] Using ConnectBot&rsquo;s Local Shell<br>
 Surprisingly, ping replys continued without break.</p>
 <p>[FreeBSD] External Interface<br>
-Client's IP address was changed to the home router's external address because the Android phone was now connected to the home WiFi and its private address was NATed by the router.</p>
+Client&rsquo;s IP address was changed to the home router&rsquo;s external address because the Android phone was now connected to the home WiFi and its private address was NATed by the router.</p>
 <pre><code>14:14:57.551820 IP (tos 0x0, ttl 45, id 47299, offset 0, flags [DF], proto UDP (17), length 156)
     zzz.zzz.zzz.zzz.60259 &gt; xxx.xxx.xxx.xxx.51820: UDP, length 128
         0x0000: 4500 009c b8c3 4000 2d11 41bb ZZZZ ZZZZ E.....@.-.A.....
@@ -323,7 +337,7 @@ On the WireGuard interface, plain ping packets kept flowing as if nothing happen
         0x0040: 2425 2627 2829 2a2b 2c2d 2e2f 3031 3233 $%&amp;'()*+,-./0123
         0x0050: 3435 3637 4567
 </code></pre><p>[FreeBSD] WireGuard status<br>
-Peer's endpoint was updated.</p>
+Peer&rsquo;s endpoint was updated.</p>
 <pre><code>wg show
 interface: wg0
   public key: ZnytpGElvUA1yxcdjhIqZ4L3NxZmbMJBdC9IvI5giUA=

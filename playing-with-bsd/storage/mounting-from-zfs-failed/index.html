@@ -19,7 +19,7 @@ Mounting from zfs:zroot/ROOT/default failed with error 6; retrying for 3 more se
   <meta property="og:url" content="https://genneko.github.io/playing-with-bsd/storage/mounting-from-zfs-failed/" />
   <meta property="og:type" content="article" />
   <meta name="twitter:card" content="summary" />
-  <meta name="generator" content="Hugo 0.62.2" />
+  <meta name="generator" content="Hugo 0.63.1" />
 
   <link rel="stylesheet" href="https://genneko.github.io/css/style.css" media="all" />
   <link rel="stylesheet" href="https://genneko.github.io/css/syntax.css" media="all" />
@@ -105,8 +105,8 @@ Mounting from zfs:zroot/ROOT/default failed with error 6; retrying for 3 more se
 </code></pre><p>It was the first time I encountered this type of error.</p>
 <p>After struggling for some hours, I was able to boot the server by disconnecting an external USB harddrive, which I had prepared as a secondary backup storage.
 But since then, I had been wondering what the root cause was.</p>
-<p>And today, I've finally found that the USB harddrive had ZFS label information in its UFS partition.<br>
-Did this cause the error? Not sure because I haven't reboot the server yet.<br>
+<p>And today, I&rsquo;ve finally found that the USB harddrive had ZFS label information in its UFS partition.<br>
+Did this cause the error? Not sure because I haven&rsquo;t reboot the server yet.<br>
 But anyway, here is what I did to fight the problem.</p>
 <h2 id="investigating-the-root-cause">Investigating the Root Cause</h2>
 <ol>
@@ -120,7 +120,7 @@ Once it was detected as da4, I ran <code>gpart show</code> and confirmed there w
   2930276352         776       - free -  (388K)
 </code></pre></li>
 <li>
-<p>Next I checked if there's any ZFS pool available for import.<br>
+<p>Next I checked if there&rsquo;s any ZFS pool available for import.<br>
 I did this because similar problems were reported on the web and they seem to have something to do with ZFS pools on USB storage.<br>
 Oh wait! Another zroot? Where does it come from?</p>
 <pre><code>$ sudo zpool import
@@ -140,9 +140,9 @@ Oh wait! Another zroot? Where does it come from?</p>
         15874716908755608597  UNAVAIL  corrupted data
 </code></pre></li>
 <li>
-<p>The previous command doesn't tell me where the pool resides.<br>
+<p>The previous command doesn&rsquo;t tell me where the pool resides.<br>
 I disconnect the USB disk and ran <code>zpool import</code> again.<br>
-This time it didn't show any pool. So the pool must be on the disk (da4).</p>
+This time it didn&rsquo;t show any pool. So the pool must be on the disk (da4).</p>
 </li>
 </ol>
 <pre><code>$ sudo zpool import
@@ -228,7 +228,7 @@ LABEL 3
 failed to unpack label 3
 </code></pre></li>
 <li>
-<p>I cleared the label with <code>zpool labelclear</code> on the partition after I took a backup of its contents and confirmed <code>zpool import</code> didn't list the pool any more.</p>
+<p>I cleared the label with <code>zpool labelclear</code> on the partition after I took a backup of its contents and confirmed <code>zpool import</code> didn&rsquo;t list the pool any more.</p>
 <pre><code>$ sudo mount /dev/da4p1 /mnt
 (backup data in /mnt to somewhere)
 $ sudo umount /mnt
@@ -252,7 +252,7 @@ sudo newfs -S 4096 /dev/da4p1
 The poolname &lsquo;zroot&rsquo; indicates it has a standard ZFS root disk layout with 3 partitions of type freebsd-boot, freebsd-swap and freebsd-zfs, or 2 partitions of freebsd-boot and freebsd-zfs.<br>
 The pool might be in a ZFS partition at the end of the disk and the partitions might be aligned with 1M boundary.</p>
 <p>If my guesses are correct, the end of the UFS partition is on the same place as the former ZFS partition which it replaced.<br>
-So there's no wonder if one of four ZFS labels were intact after being reused as a UFS partition.</p>
+So there&rsquo;s no wonder if one of four ZFS labels were intact after being reused as a UFS partition.</p>
 <h2 id="lesson-learned">Lesson Learned</h2>
 <p>Before reusing a disk on FreeBSD systems, run <code>zpool labelclear</code> on a whole disk and each partition.</p>
 <pre><code>zpool labelclear -f da4

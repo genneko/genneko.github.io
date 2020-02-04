@@ -6,20 +6,20 @@
   <title>Using FreeBSD&#39;s Bootonly Installer Behind a Proxy - genneko</title>
   <meta property="og:title" content="Using FreeBSD&#39;s Bootonly Installer Behind a Proxy - genneko" />
   <meta name="twitter:title" content="Using FreeBSD&#39;s Bootonly Installer Behind a Proxy - genneko" />
-  <meta name="description" content="I&#39;ve been so busy for the last month that I almost forgot about FreeBSD 12.0 which I had been looking forward to. Now it&#39;s just around the corner!
-Although it&#39;s quite late, I tried to install 12.0-RC3 on a host behind a HTTP proxy and found that using a bootonly installer in this environment was a bit tricky. The following are the steps I took.
+  <meta name="description" content="I&rsquo;ve been so busy for the last month that I almost forgot about FreeBSD 12.0 which I had been looking forward to. Now it&rsquo;s just around the corner!
+Although it&rsquo;s quite late, I tried to install 12.0-RC3 on a host behind a HTTP proxy and found that using a bootonly installer in this environment was a bit tricky. The following are the steps I took.
   Boot the host with a bootonly installer.">
-  <meta property="og:description" content="I&#39;ve been so busy for the last month that I almost forgot about FreeBSD 12.0 which I had been looking forward to. Now it&#39;s just around the corner!
-Although it&#39;s quite late, I tried to install 12.0-RC3 on a host behind a HTTP proxy and found that using a bootonly installer in this environment was a bit tricky. The following are the steps I took.
+  <meta property="og:description" content="I&rsquo;ve been so busy for the last month that I almost forgot about FreeBSD 12.0 which I had been looking forward to. Now it&rsquo;s just around the corner!
+Although it&rsquo;s quite late, I tried to install 12.0-RC3 on a host behind a HTTP proxy and found that using a bootonly installer in this environment was a bit tricky. The following are the steps I took.
   Boot the host with a bootonly installer.">
-  <meta name="twitter:description" content="I&#39;ve been so busy for the last month that I almost forgot about FreeBSD 12.0 which I had been looking forward to. Now it&#39;s just around the corner!
-Although it&#39;s quite late, I tried to install 12.0-RC3 …">
+  <meta name="twitter:description" content="I&rsquo;ve been so busy for the last month that I almost forgot about FreeBSD 12.0 which I had been looking forward to. Now it&rsquo;s just around the corner!
+Although it&rsquo;s quite late, I tried …">
   <meta name="author" content="genneko"/>
   <meta property="og:site_name" content="genneko" />
   <meta property="og:url" content="https://genneko.github.io/playing-with-bsd/system/bootonly-install-behind-proxy/" />
   <meta property="og:type" content="article" />
   <meta name="twitter:card" content="summary" />
-  <meta name="generator" content="Hugo 0.62.2" />
+  <meta name="generator" content="Hugo 0.63.1" />
 
   <link rel="stylesheet" href="https://genneko.github.io/css/style.css" media="all" />
   <link rel="stylesheet" href="https://genneko.github.io/css/syntax.css" media="all" />
@@ -75,8 +75,8 @@ Although it&#39;s quite late, I tried to install 12.0-RC3 …">
 <aside class="toc">
   <nav id="TableOfContents"></nav>
 </aside>
-      <p>I've been so busy for the last month that I almost forgot about FreeBSD 12.0 which I had been looking forward to. Now it's just around the corner!<br>
-Although it's quite late, I tried to install 12.0-RC3 on a host behind a HTTP proxy and found that using a bootonly installer in this environment was a bit tricky. The following are the steps I took.</p>
+      <p>I&rsquo;ve been so busy for the last month that I almost forgot about FreeBSD 12.0 which I had been looking forward to. Now it&rsquo;s just around the corner!<br>
+Although it&rsquo;s quite late, I tried to install 12.0-RC3 on a host behind a HTTP proxy and found that using a bootonly installer in this environment was a bit tricky. The following are the steps I took.</p>
 <ol>
 <li>
 <p>Boot the host with a bootonly installer.</p>
@@ -103,7 +103,7 @@ If a DHCP server is available, the easiest way is to run the following command.<
 </ol>
 <pre><code>dhclient em0
 </code></pre><p>If not, manually configure IP address with ifconfig and add nameserver lines to /tmp/bsdinstall_etc/resolv.conf (symlinked to /etc/resolv.conf).
-It's might be something like:</p>
+It&rsquo;s might be something like:</p>
 <pre><code>ifconfig em0 inet 10.0.2.15/24
 route add default 10.0.2.2
 echo nameserver 192.168.10.1 &gt; /tmp/bsdinstall_etc/resolv.conf

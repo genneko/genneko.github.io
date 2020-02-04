@@ -18,7 +18,7 @@ This time I focused on site-to-site VPN setup. Maybe I will try remote-access VP
   <meta property="og:url" content="https://genneko.github.io/playing-with-bsd/networking/freebsd-wireguard-quicklook/" />
   <meta property="og:type" content="article" />
   <meta name="twitter:card" content="summary" />
-  <meta name="generator" content="Hugo 0.62.2" />
+  <meta name="generator" content="Hugo 0.63.1" />
 
   <link rel="stylesheet" href="https://genneko.github.io/css/style.css" media="all" />
   <link rel="stylesheet" href="https://genneko.github.io/css/syntax.css" media="all" />
@@ -137,8 +137,31 @@ This time I focused on site-to-site VPN setup. Maybe I will try remote-access VP
 <li>vpnh1 (Host on the site 1)</li>
 <li>vpnh2 (Host on the site 2)</li>
 </ul>
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
+<pre style="line-height: 10pt"><code style="font-size: 9pt">                                 Site 1
+
+                      vri1_vpnr1      vri1_vpnh1
+       [Router(vpnr1)]o ------ (vri1br) ------ o[Host (vpnh1)]
+     vi1_vpnr1 o |    192.168.1.1   192.168.1.11
+   172.31.1.11 | o wg0
+               |  \  192.168.222.1
+            (vi1br)\
+               |    \
+   172.31.1.1  |     \
+        vi1_r1 o      \
+         [Router(r1)]  | WireGuard tunnel
+        vi2_r1 o      /
+   172.31.2.1  |     /
+               |    /
+            (vi2br)/
+               |  /
+   172.31.2.11 | /   192.168.222.2
+               | o wg0
+     vi2_vpnr2 o |    192.168.2.1   192.168.2.11
+       [Router(vpnr2)]o ------ (vri2br) ------ o[Host (vpnh2)]
+                      vri2_vpnr2      vri2_vpnh2
+
+                                 Site 2
+</code></pre>
 <p>In this configuration,  jail r1 acts as a central router which crudely emulates a public network and is to be used as a monitoring post running tcpdump, while jail vpnr1 and vpnr2 are routers on private sites and remaining two (vpnh1 and vpnh2) are hosts on the private sites.</p>
 <p>I planned to run WireGuard on vpnr1 and vpnr2 and build a VPN tunnel between site1 and site2.</p>
 <p>For details on jails configuration, please refer to <a href="https://genneko.github.io/playing-with-bsd/system/learning-notes-on-jails/#separate-network-configuration">another post</a>.<br>
@@ -148,14 +171,14 @@ The following sections assume that all five jails are up and running.</p>
 <ol>
 <li>Download package files on the host.<br>
 With -d option, <code>pkg fetch</code> downloads the specified package plus its dependencies.<br>
-Downloaded files are stored in the host's /var/cache/pkg.</li>
+Downloaded files are stored in the host&rsquo;s /var/cache/pkg.</li>
 </ol>
 <pre><code>sudo pkg fetch -d wireguard
 </code></pre><ol start="2">
 <li>Make the downloaded package files available to jails.<br>
 Although you can simply copy the files to jails&rsquo; filesystem, nullfs mount /var/cache/pkg on jails looks much easier.<br>
 The following line in /etc/jail.conf achieves this.<br>
-When you start jails, the host's /var/cache/pkg is mounted on each jail's /mnt directory.<br>
+When you start jails, the host&rsquo;s /var/cache/pkg is mounted on each jail&rsquo;s /mnt directory.<br>
 [/etc/jail.conf]</li>
 </ol>
 <pre><code>...
@@ -233,8 +256,8 @@ route add 192.168.1.0/24 -interface wg0
 wg setconf wg0 ~/wg/wg0.conf
 ifconfig wg0 down up
 </code></pre><p><strong>NOTE</strong><br>
-In my environment, wg0 interface didn't work without <code>ifconfig wg0 down</code> before <code>ifconfig wg0 up</code>.<br>
-By &ldquo;didn't work&rdquo;, I mean that UDP sockets were not created.</p>
+In my environment, wg0 interface didn&rsquo;t work without <code>ifconfig wg0 down</code> before <code>ifconfig wg0 up</code>.<br>
+By &ldquo;didn&rsquo;t work&rdquo;, I mean that UDP sockets were not created.</p>
 <ol start="4">
 <li>Confirm configurations.<br>
 [vpnr1]
@@ -389,7 +412,7 @@ tcpdump -vln -X -i vri2_vpnr2
 <h3 id="configure-wireguard-service-with-rcd">Configure WireGuard Service with rc.d</h3>
 <p>Now I know how to configure WireGuard on FreeBSD systems.<br>
 But to use it in the real world, I had to script the procedures in some way for automatic startup/shutdown of the tunnel.</p>
-<p>Then I realized that there's already an rc.d script /usr/local/etc/rc.d/wireguard which came with the wireguard package.</p>
+<p>Then I realized that there&rsquo;s already an rc.d script /usr/local/etc/rc.d/wireguard which came with the wireguard package.</p>
 <p>The script uses wg-quick bash script to setup/shutdown tunnels. Its configuration is simple as follows. I only added Address parameter which specifies the IP address set on the WireGuard interface.</p>
 <p>wg-quick script reads the configutation and automatically creates a WireGuard interface, assign IP address (Address) on the interface and adds routes to remote network (AllowedIPs) through the interface.</p>
 <p>vpnr1 [/usr/local/etc/wireguard/wg0.conf]</p>
@@ -419,8 +442,31 @@ service wireguard start
 </code></pre><h2 id="remote-access-host-to-site-configuration">Remote Access (Host-to-Site) Configuration</h2>
 <p>A few days later I also tried a remote access VPN configuration where the host vpnh2 connected to the router vpnr1 and its inner network (192.168.1.0/24).</p>
 <p>The router vpnr2 ran WireGuard in the previous site-to-site example, but in the modified configuration it became an ordinary router/NAT box.</p>
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
+<pre style="line-height: 10pt"><code style="font-size: 9pt">                                 Site 1
+
+                      vri1_vpnr1      vri1_vpnh1
+       [Router(vpnr1)]o ------ (vri1br) ------ o[Host (vpnh1)]
+     vi1_vpnr1 o |    192.168.1.1   192.168.1.11
+   172.31.1.11 | o wg0
+               |  \  192.168.222.1
+            (vi1br)\
+               |    \
+   172.31.1.1  |     \
+        vi1_r1 o      \
+         [Router(r1)]  WireGuard
+        vi2_r1 o         tunnel
+   172.31.2.1  |                \
+               |                 \
+            (vi2br)               \
+               |                   \                     192.168.222.211
+   172.31.2.11 |                    \----------------o wg0
+               |                                     |
+     vi2_vpnr2 o      192.168.2.1   192.168.2.11     |
+       [Router(vpnr2)]o ------ (vri2br) ------ o[Host (vpnh2)]
+                      vri2_vpnr2      vri2_vpnh2
+
+                                 Site 2
+</code></pre>
 <p>NOTE: I also tested remote-access configuration using the WireGuard Android app. See [this article] (/playing-with-bsd/networking/freebsd-wireguard-android) on this.</p>
 <h3 id="change-settings">Change Settings</h3>
 <p>Here is a summary of changes which I made to the site-to-site configuration.</p>
@@ -448,7 +494,7 @@ vi wg0.conf
 ```
 [Interface]
 Address = 192.168.222.211/32
-PrivateKey = content of <!-- raw HTML omitted --></p>
+PrivateKey = content of <private></p>
 <pre><code>[Peer]
 PublicKey = uoYkPm6lHnxF5T31lD5LB3OGM8/a4eKyUEYcJm5SXXQ=
 AllowedIPs = 192.168.222.1/32, 192.168.1.0/24
@@ -477,7 +523,7 @@ AllowedIPs = 192.168.222.211/32
 <pre><code>service wireguard stop
 service wireguard start
 </code></pre><h3 id="test-and-monitor">Test and Monitor</h3>
-<p>Let's test connectivity with ping from vpnh2 to vpnh1.</p>
+<p>Let&rsquo;s test connectivity with ping from vpnh2 to vpnh1.</p>
 <ol>
 <li>Start tcpdump on the intermediate router r1 to monitor WireGuard packets.<br>
 [r1]</li>
@@ -493,8 +539,8 @@ PING 192.168.1.11 (192.168.1.11): 56 data bytes
 64 bytes from 192.168.1.11: icmp_seq=1 ttl=63 time=0.903 ms
 ...
 </code></pre><ol start="3">
-<li>Check r1's console.<br>
-You can see WireGuard's UDP packets between vpnr1 and vpnr2.<br>
+<li>Check r1&rsquo;s console.<br>
+You can see WireGuard&rsquo;s UDP packets between vpnr1 and vpnr2.<br>
 [r1]</li>
 </ol>
 <pre><code>08:08:42.810690 IP 172.31.2.11.60574 &gt; 172.31.1.11.51820: UDP, length 128
@@ -502,13 +548,13 @@ You can see WireGuard's UDP packets between vpnr1 and vpnr2.<br>
 08:08:43.838714 IP 172.31.2.11.60574 &gt; 172.31.1.11.51820: UDP, length 128
 08:08:43.840446 IP 172.31.1.11.51820 &gt; 172.31.2.11.60574: UDP, length 128
 ...
-</code></pre><p>Why vnpr2? Isn't it vpnh2?<br>
-It's because vpnh2's address (192.168.2.11) is tranlated to the external address of vpnr2 (172.31.2.11) by vpnr2's NAT function.<br>
-This can be confirmed by running tcpdump on vpnr2's external and internal interfaces.</p>
+</code></pre><p>Why vnpr2? Isn&rsquo;t it vpnh2?<br>
+It&rsquo;s because vpnh2&rsquo;s address (192.168.2.11) is tranlated to the external address of vpnr2 (172.31.2.11) by vpnr2&rsquo;s NAT function.<br>
+This can be confirmed by running tcpdump on vpnr2&rsquo;s external and internal interfaces.</p>
 <ol start="4">
 <li>Monitor WireGuard packets on NAT box vpnr2.<br>
-On the internal vri2_vpnr2 interface, WireGuard packets have vpnh2's address 192.168.2.11 for its source or destination.<br>
-But on the external vi2_vpnr2 interface, the vpnh2's address is tranlated to vi2_vpnr2 interface's adddress.<br>
+On the internal vri2_vpnr2 interface, WireGuard packets have vpnh2&rsquo;s address 192.168.2.11 for its source or destination.<br>
+But on the external vi2_vpnr2 interface, the vpnh2&rsquo;s address is tranlated to vi2_vpnr2 interface&rsquo;s adddress.<br>
 [vpnr2]</li>
 </ol>
 <pre><code>tcpdump -ln -i vri2_vpnr2
@@ -605,7 +651,7 @@ Source of WireGuard packets were changed back to 172.31.2.11 but ping continued 
 </code></pre><h2 id="caveats">Caveats</h2>
 <h3 id="on-vnet-jails-wgx-cannot-be-destroyed-fixed">On VNET Jails, wgX cannot be destroyed (Fixed)</h3>
 <p><em>2019-02-13:<br>
-I reported this issue on FreeBSD Bugzilla. It's the first bug report to any OSS in my life! To be honest, it was a bit scary for a non-developer like me to submit a report about high-quality software like FreeBSD. But anyway it is now in the database.</em>
+I reported this issue on FreeBSD Bugzilla. It&rsquo;s the first bug report to any OSS in my life! To be honest, it was a bit scary for a non-developer like me to submit a report about high-quality software like FreeBSD. But anyway it is now in the database.</em>
 <a href="https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=235704">https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=235704</a></p>
 <p><em>2019-04-23:<br>
 This issue was fixed in March and MFC to 12-STABLE and 11-STABLE.</em></p>
@@ -617,11 +663,11 @@ ifconfig: SIOCIFDESTROY: Invalid argument
 </code></pre><p>I found that renaming the interface from wgX to tunX lets you destroy it but this operation sometimes caused reboot on my system.</p>
 <pre><code>ifconfig wg0 name tun0
 ifconfig tun0 destroy
-</code></pre><p>wireguard-go initially creates a tun interface then renames it to the one specified on command-line. I could workaround this can't-destroy problem by using tunX (e.g. tun1) as a WireGuard interface name from the beginning, but specifying tun0 failed with the following message.</p>
+</code></pre><p>wireguard-go initially creates a tun interface then renames it to the one specified on command-line. I could workaround this can&rsquo;t-destroy problem by using tunX (e.g. tun1) as a WireGuard interface name from the beginning, but specifying tun0 failed with the following message.</p>
 <pre><code>ERROR: (tun0) 2019/01/20 05:51:29 Failed to create TUN device: failed to rename tun0 to tun0: file exists
-</code></pre><p>I think this can be fixed by adding a simple check to wireguard-go's CreateTUN() function in tun/tun_freebsd.go.</p>
-<p>For the fact that wg0 cannot be destroyed in jails, I'm not sure what the root cause is. But I noticed some weirdness in tun interface's unit number assignment.</p>
-<p>When I created tun0 on one jail, I couldn't create tun0 on other jails nor the host.</p>
+</code></pre><p>I think this can be fixed by adding a simple check to wireguard-go&rsquo;s CreateTUN() function in tun/tun_freebsd.go.</p>
+<p>For the fact that wg0 cannot be destroyed in jails, I&rsquo;m not sure what the root cause is. But I noticed some weirdness in tun interface&rsquo;s unit number assignment.</p>
+<p>When I created tun0 on one jail, I couldn&rsquo;t create tun0 on other jails nor the host.</p>
 <pre><code>vpnr1# ifconfig tun create
 tun0
 ---
@@ -636,18 +682,18 @@ host# ifconfig tun1 create
 ifconfig: SIOCIFCREATE2: File exists
 host# ifconfig tun create
 tun2
-</code></pre><p>I wonder if it means that if_tun's unit number is assigned sequentially across all jails and host?<br>
+</code></pre><p>I wonder if it means that if_tun&rsquo;s unit number is assigned sequentially across all jails and host?<br>
 As far as I know, other interface types such as lo and gif seems to have separate unit number namespace for each jail thus I can create those types of interfaces with the same name on multiple jails and host.</p>
 <h3 id="kernel-panics-on-shutdown-seems-to-be-fixed-on-113-beta">Kernel panics on shutdown (Seems to be fixed on 11.3 BETA)</h3>
 <p><em>2019-04-23:<br>
 Workaround was implemented in WireGuard mainstream and FreeBSD ports of wireguard and wireguard-go were also updated.<br>
 Occasional hang of &ldquo;wg-quick down&rdquo; was also worked around.<br>
-I tested the workarounds and didn't see any panic nor process hang during 50000 restarts.</em><br>
+I tested the workarounds and didn&rsquo;t see any panic nor process hang during 50000 restarts.</em><br>
 <a href="https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=233955">https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=233955</a></p>
 <p><em>2019-04-24:<br>
 Kernel fixes also came in! One is already committed to head and the other is being reviewed.</em></p>
 <p><em>2019-05-29:<br>
-It appears that the issue has been resolved on FreeBSD 11.3-BETA1 which incorporated recent kernel fixes. It's great to be able to run wireguard on upcoming RELEASE version.</em></p>
+It appears that the issue has been resolved on FreeBSD 11.3-BETA1 which incorporated recent kernel fixes. It&rsquo;s great to be able to run wireguard on upcoming RELEASE version.</em></p>
 <p>There are reports that shutting down WireGuard tunnel interface causes a kernel panic. I also noticed that &ldquo;wg-quick down&rdquo; process occasionally hangs when it waits for the interface to be removed. Those issues seem to be in the kernel and WireGuard only hits them.</p>
 <h3 id="rcd-script-leaves-two-processes-after-shutdown">rc.d script leaves two processes after shutdown</h3>
 <p>This is not specific to jails.</p>
@@ -658,7 +704,7 @@ UID  PID PPID CPU PRI NI   VSZ  RSS MWCHAN STAT TT     TIME COMMAND
   0 6805    1   0  52  0 13004 3944 wait   IJ    1  0:00.00 /usr/local/bin/bash
   0 6806 6805   0  20  0 10956 2308 sbwait IJ    1  0:00.00 route -n monitor
 ...
-</code></pre><p>I guess this can be fixed by adding code for shutting down the processes by their PIDs to wg-quick but I'm not sure what is the best way.</p>
+</code></pre><p>I guess this can be fixed by adding code for shutting down the processes by their PIDs to wg-quick but I&rsquo;m not sure what is the best way.</p>
 <h2 id="references">References</h2>
 <ul>
 <li>

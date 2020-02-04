@@ -6,23 +6,23 @@
   <title>ThinkPad T480 is my new main laptop which runs FreeBSD - genneko</title>
   <meta property="og:title" content="ThinkPad T480 is my new main laptop which runs FreeBSD - genneko" />
   <meta name="twitter:title" content="ThinkPad T480 is my new main laptop which runs FreeBSD - genneko" />
-  <meta name="description" content="I&#39;ve been using FreeBSD as my primary server OS for quite a long time.
+  <meta name="description" content="I&rsquo;ve been using FreeBSD as my primary server OS for quite a long time.
 But, for unknown reasons, I have never seriously used it on client workstations.
-Maybe it&#39;s partly because I&#39;m a CUI-oriented person who loves doing things on text terminals as much as possible.
-Actually, I have been pretty happy with any client OS as long as I could use a decent terminal on it, so that I could SSH into FreeBSD servers where I spent a lot of time doing jobs which didn&#39;t require graphical interface.">
-  <meta property="og:description" content="I&#39;ve been using FreeBSD as my primary server OS for quite a long time.
+Maybe it&rsquo;s partly because I&rsquo;m a CUI-oriented person who loves doing things on text terminals as much as possible.
+Actually, I have been pretty happy with any client OS as long as I could use a decent terminal on it, so that I could SSH into FreeBSD servers where I spent a lot of time doing jobs which didn&rsquo;t require graphical interface.">
+  <meta property="og:description" content="I&rsquo;ve been using FreeBSD as my primary server OS for quite a long time.
 But, for unknown reasons, I have never seriously used it on client workstations.
-Maybe it&#39;s partly because I&#39;m a CUI-oriented person who loves doing things on text terminals as much as possible.
-Actually, I have been pretty happy with any client OS as long as I could use a decent terminal on it, so that I could SSH into FreeBSD servers where I spent a lot of time doing jobs which didn&#39;t require graphical interface.">
-  <meta name="twitter:description" content="I&#39;ve been using FreeBSD as my primary server OS for quite a long time.
+Maybe it&rsquo;s partly because I&rsquo;m a CUI-oriented person who loves doing things on text terminals as much as possible.
+Actually, I have been pretty happy with any client OS as long as I could use a decent terminal on it, so that I could SSH into FreeBSD servers where I spent a lot of time doing jobs which didn&rsquo;t require graphical interface.">
+  <meta name="twitter:description" content="I&rsquo;ve been using FreeBSD as my primary server OS for quite a long time.
 But, for unknown reasons, I have never seriously used it on client workstations.
-Maybe it&#39;s partly because I&#39;m a CUI-oriented …">
+Maybe it&rsquo;s partly because I&rsquo;m …">
   <meta name="author" content="genneko"/>
   <meta property="og:site_name" content="genneko" />
   <meta property="og:url" content="https://genneko.github.io/playing-with-bsd/hardware/freebsd-on-thinkpad-t480/" />
   <meta property="og:type" content="article" />
   <meta name="twitter:card" content="summary" />
-  <meta name="generator" content="Hugo 0.62.2" />
+  <meta name="generator" content="Hugo 0.63.1" />
 
   <link rel="stylesheet" href="https://genneko.github.io/css/style.css" media="all" />
   <link rel="stylesheet" href="https://genneko.github.io/css/syntax.css" media="all" />
@@ -130,13 +130,13 @@ Maybe it&#39;s partly because I&#39;m a CUI-oriented …">
   </ul>
 </nav>
 </aside>
-      <p>I've been using FreeBSD as my primary server OS for quite a long time.<br>
+      <p>I&rsquo;ve been using FreeBSD as my primary server OS for quite a long time.<br>
 But, for unknown reasons, I have never seriously used it on client workstations.</p>
-<p>Maybe it's partly because I'm a CUI-oriented person who loves doing things on text terminals as much as possible.</p>
-<p>Actually, I have been pretty happy with any client OS as long as I could use a decent terminal on it, so that I could SSH into FreeBSD servers where I spent a lot of time doing jobs which didn't require graphical interface.</p>
-<p>However, it's also true that I have been wishing for a FreeBSD desktop which allows me to do everything from web browsing to text editing on a single machine.</p>
-<p>So I started a research on FreeBSD laptops in the midst of this year's longer-than-usual rainy season. After gathering information on the web, I tried various GUI setup on VMs and then I bought a new laptop, Lenovo ThinkPad T480.</p>
-<p>Experimenting for a while on the T480, finally I've got a fully working FreeBSD laptop for daily use, just after the rainy season was over!</p>
+<p>Maybe it&rsquo;s partly because I&rsquo;m a CUI-oriented person who loves doing things on text terminals as much as possible.</p>
+<p>Actually, I have been pretty happy with any client OS as long as I could use a decent terminal on it, so that I could SSH into FreeBSD servers where I spent a lot of time doing jobs which didn&rsquo;t require graphical interface.</p>
+<p>However, it&rsquo;s also true that I have been wishing for a FreeBSD desktop which allows me to do everything from web browsing to text editing on a single machine.</p>
+<p>So I started a research on FreeBSD laptops in the midst of this year&rsquo;s longer-than-usual rainy season. After gathering information on the web, I tried various GUI setup on VMs and then I bought a new laptop, Lenovo ThinkPad T480.</p>
+<p>Experimenting for a while on the T480, finally I&rsquo;ve got a fully working FreeBSD laptop for daily use, just after the rainy season was over!</p>
 <p>Because it has proven to be a really great machine for running FreeBSD, I write this article to share something with anyone who looks for a similar experience.</p>
 <p><img src="https://genneko.github.io/images/freebsd-on-thinkpad-t480/T480_FreeBSD_And_Cat.jpg" alt="T480 FreeBSD Workstation"></p>
 <h2 id="laptop-specs">Laptop Specs</h2>
@@ -164,13 +164,13 @@ But, for unknown reasons, I have never seriously used it on client workstations.
 <li>SD card reader seems to work. DOS-formatted SD card can be mounted and read as usual filesystems.</li>
 <li>Some Windows programs can be run on WINE.</li>
 <li>Windows 10 can be run on bhyve (to purchase MP3s on Amazon Music, etc).</li>
-<li>LAGG Failover between Ethernet and WiFi works (Use Ethernet if it's available. Otherwise use WiFi).</li>
+<li>LAGG Failover between Ethernet and WiFi works (Use Ethernet if it&rsquo;s available. Otherwise use WiFi).</li>
 </ul>
-<p>I haven't able to make those things work so far.</p>
+<p>I haven&rsquo;t able to make those things work so far.</p>
 <ul>
-<li>Webcam works on pwcview with webcamd and cuse.ko but isn't detected by Google Hangouts on Firefox/Chromium.</li>
+<li>Webcam works on pwcview with webcamd and cuse.ko but isn&rsquo;t detected by Google Hangouts on Firefox/Chromium.</li>
 </ul>
-<p>I haven't tested the following items.</p>
+<p>I haven&rsquo;t tested the following items.</p>
 <ul>
 <li>Bluetooth (disabled in BIOS to avoid hang on reboot)</li>
 </ul>
@@ -201,7 +201,7 @@ Change the following settings and press F10 to save and exit.</p>
 </ul>
 </li>
 </ul>
-<p>It looks like the memstick installer supports UEFI boot so I left &ldquo;Startup&rdquo; page's &ldquo;UEFI/Legacy Boot&rdquo; and &ldquo;CSM Support&rdquo; untouched (&ldquo;UEFI Only&rdquo; and &ldquo;NO&rdquo; respectively).</p>
+<p>It looks like the memstick installer supports UEFI boot so I left &ldquo;Startup&rdquo; page&rsquo;s &ldquo;UEFI/Legacy Boot&rdquo; and &ldquo;CSM Support&rdquo; untouched (&ldquo;UEFI Only&rdquo; and &ldquo;NO&rdquo; respectively).</p>
 <h3 id="which-version-to-install">Which Version to Install?</h3>
 <p>At first, I selected the following FreeBSD versions as candidates.</p>
 <ul>
@@ -211,7 +211,7 @@ Change the following settings and press F10 to save and exit.</p>
 </ul>
 <p>With experts&rsquo; advices on Twitter and experiments on actual machine with installation media and RAM disk (Maybe on another post), I chose 12.0-RELEASE to start with. Now it turns out to be the right choice based on the right advices.</p>
 <h3 id="os-installation">OS Installation</h3>
-<p>There's almost nothing special about installation. But here's a few things to note.</p>
+<p>There&rsquo;s almost nothing special about installation. But here&rsquo;s a few things to note.</p>
 <ul>
 <li>
 <p>To boot from a USB stick (memstick.img), press Enter &gt; F12 to enter the Boot Menu and select the USB HDD to boot.</p>
@@ -262,7 +262,7 @@ pkg install git vim tmux bash sudo rsync perl5 ja-nkf zfs-stats portmaster gnupg
 <li>Configure user preferences such as dotfiles.</li>
 </ul>
 <h3 id="setting-up-grahpical-desktop-environment">Setting up Grahpical Desktop Environment</h3>
-<p>I'm completely new to the graphical desktop world. So it's inevitable for me to learn things one by one through a lot of trial and error.</p>
+<p>I&rsquo;m completely new to the graphical desktop world. So it&rsquo;s inevitable for me to learn things one by one through a lot of trial and error.</p>
 <p>Anyway, I use the following components to build my desktop.</p>
 <ul>
 <li>Xorg - Display Server</li>
@@ -347,7 +347,7 @@ sudo service slim start
 <h3 id="touchpad-and-trackpoint">Touchpad and TrackPoint</h3>
 <p><a href="https://ben-rowan.github.io/post/disable_lenovo_trackpad/">https://ben-rowan.github.io/post/disable_lenovo_trackpad/</a></p>
 <ul>
-<li>As I use a wireless mouse (Logicool's Unifying one) most of the time, I disabled touchpad and enabled &ldquo;Virtual Scrolling&rdquo; with the TrackPoint and the middle button instead.<br>
+<li>As I use a wireless mouse (Logicool&rsquo;s Unifying one) most of the time, I disabled touchpad and enabled &ldquo;Virtual Scrolling&rdquo; with the TrackPoint and the middle button instead.<br>
 [/boot/loader.conf]</li>
 </ul>
 <pre><code>hw.psm.synaptics_support=&quot;1&quot;
@@ -356,12 +356,12 @@ sudo service slim start
 </code></pre><p>[/etc/rc.conf]</p>
 <pre><code>moused_flags=&quot;-V&quot;
 </code></pre><h3 id="suspendresume">Suspend/Resume</h3>
-<p>I was able to perform suspend/resume by running <code>acpiconf -s 3</code> or from the XFCE4's &ldquo;Logout&rdquo; dialog almost out of the box.<br>
+<p>I was able to perform suspend/resume by running <code>acpiconf -s 3</code> or from the XFCE4&rsquo;s &ldquo;Logout&rdquo; dialog almost out of the box.<br>
 But at some point, I realized the following behaviors of the Logout dialog.</p>
 <ul>
 <li>
 <p>When I login for the first time after the system boots, the dialog shows all of &ldquo;Logout&rdquo;, &ldquo;Reboot&rdquo;, &ldquo;Shutdown&rdquo;, &ldquo;Suspend&rdquo; and &ldquo;Hibernate&rdquo; and all work fine.<br>
-(I thought the last one was not supported by the OS and didn't tried it)</p>
+(I thought the last one was not supported by the OS and didn&rsquo;t tried it)</p>
 </li>
 <li>
 <p>When the suspended system resumes or I login to the system after logging out, the dialog only shows &ldquo;Logout&rdquo; in active state and other options are grayed out or not displayed at all.</p>
@@ -405,8 +405,8 @@ polkit.addRule(function (action, subject) {
 </code></pre><p>Now suspend/resume seems to work more reliably by command, lid close/open or from Logout dialog!</p>
 <h3 id="screen-brightness">Screen Brightness</h3>
 <ul>
-<li>XFCE4 Power Manager's Brightness Control sometimes shows weird behavior. When I switch the power between AC and battery, screen brightness initially changes as configured but gets back to the previous level when I move mouse cursor.<br>
-After struggling for a while, I found the following configurations with the XFCE4's brightness adjustment disabled allow me to automatically adjust brightness upon change of the power source (AC or battery).<br>
+<li>XFCE4 Power Manager&rsquo;s Brightness Control sometimes shows weird behavior. When I switch the power between AC and battery, screen brightness initially changes as configured but gets back to the previous level when I move mouse cursor.<br>
+After struggling for a while, I found the following configurations with the XFCE4&rsquo;s brightness adjustment disabled allow me to automatically adjust brightness upon change of the power source (AC or battery).<br>
 [/boot/loader.conf]</li>
 </ul>
 <pre><code>acpi_video_load=&quot;YES&quot;
@@ -426,7 +426,7 @@ hw.acpi.video.lcd0.fullpower=60
 sudo sysrc cupsd_enable=YES
 sudo service cupsd start
 </code></pre><ul>
-<li>xfce4-print package doesn't seem to support CUPS (only supports LPD).</li>
+<li>xfce4-print package doesn&rsquo;t seem to support CUPS (only supports LPD).</li>
 </ul>
 <h3 id="audacity">Audacity</h3>
 <ul>
@@ -465,7 +465,7 @@ onedrive --download-only --synchronize
 </ul>
 <pre><code>sudo pkg install i386-wine-devel wine-gecko-devel wine-mono-devel winetricks
 </code></pre><ul>
-<li>I can run IrfanView, Picasa3 and Yamaha's Mid Radio Player.</li>
+<li>I can run IrfanView, Picasa3 and Yamaha&rsquo;s Mid Radio Player.</li>
 </ul>
 <h3 id="bhyve">Bhyve</h3>
 <p>Maybe in another post.</p>
@@ -483,8 +483,8 @@ ifconfig_wlan0=&quot;WPA up&quot;
 create_args_wlan0=&quot;country JP&quot;
 cloned_interfaces=&quot;lagg0&quot;
 ifconfig_lagg0=&quot;up laggproto failover laggport em0 laggport wlan0 DHCP&quot;
-</code></pre><p>As opposed to the handbook's example, I use the WiFi MAC address on the Ethernet interface. Other than that, it's essentially the same as the handbook.<br>
-(I've also tried &ldquo;Ethernet MAC on WiFi&rdquo; and it worked)</p>
+</code></pre><p>As opposed to the handbook&rsquo;s example, I use the WiFi MAC address on the Ethernet interface. Other than that, it&rsquo;s essentially the same as the handbook.<br>
+(I&rsquo;ve also tried &ldquo;Ethernet MAC on WiFi&rdquo; and it worked)</p>
 <p>But at first I ran into a problem here.</p>
 <p>When I reboot my system with the above configuration, lagg0 has only Ethernet (em0) as its member port. WiFi interface was not in the lagg0 because it seemed to be created after the lagg was initially configured. By manually running &ldquo;service netif restart&rdquo;, the lagg failover begins to work but I wondered how to avoid this manual intervention.</p>
 <p>A discussion on the forum quickly solved the problem.</p>
@@ -497,7 +497,7 @@ I achieved this by adding the following lines to /boot/loader.conf and reboot.</
 <pre><code>if_iwm_load=&quot;YES&quot;
 iwm8265fw_load=&quot;YES&quot;
 </code></pre><p>This made iwm0 detected much earlier and lagg0 was successfully configured with both em0 and wlan0 as its members on boot.</p>
-<p>Then I got another suggestion on Twitter that it's better to load modules which are not required for boot from rc not loader.</p>
+<p>Then I got another suggestion on Twitter that it&rsquo;s better to load modules which are not required for boot from rc not loader.</p>
 <ul>
 <li>Twitter<br>
 <a href="https://twitter.com/debdrup/status/1166016787013689344">https://twitter.com/debdrup/status/1166016787013689344</a></li>
@@ -506,12 +506,12 @@ iwm8265fw_load=&quot;YES&quot;
 <pre><code>kld_list=&quot;/boot/modules/i915kms.ko if_iwm iwm8265fw&quot;
 </code></pre><p>(As I previously mentioned, i915kms.ko is for graphics.)</p>
 <h3 id="burning-cds">Burning CDs</h3>
-<p>I hadn't burnt CDs for a long time but recently I was asked to create an audio CD. So I plugged in a USB CD-R/RW drive to my laptop and tried it on FreeBSD.</p>
+<p>I hadn&rsquo;t burnt CDs for a long time but recently I was asked to create an audio CD. So I plugged in a USB CD-R/RW drive to my laptop and tried it on FreeBSD.</p>
 <p>I found my system already had GUI-based Xfburn and Brasero in addition to cdrecord, a good old command-line burner program.</p>
 <p>At first I tried GUI-based ones but both said &lsquo;No burner found&rsquo;. Because I was in a hurry at the time, I used cdrecord (as root) for the first time in 15 years.</p>
 <ol>
 <li>
-<p>Check the CD drive's device number.</p>
+<p>Check the CD drive&rsquo;s device number.</p>
 <pre><code>sudo cdrecord -scanbus
 ...
  1,0,0	100) 'BUFFALO ' 'Optical Drive   ' '2.00' Removable CD-ROM
@@ -523,13 +523,13 @@ iwm8265fw_load=&quot;YES&quot;
 </code></pre></li>
 </ol>
 <p>Because running cdrecord with root privilege could burn CDs, it was obvious that device permissions kept the GUI burners run by a normal user from finding the burner.</p>
-<p>cd0 had the following owner/mode. As my user account (a normal user) was in operator group, I could read from the device but couldn't write to it.</p>
+<p>cd0 had the following owner/mode. As my user account (a normal user) was in operator group, I could read from the device but couldn&rsquo;t write to it.</p>
 <pre><code>crw-r-----  1 root  operator   0x7f Nov  9 10:16 cd0
 </code></pre><p>I adjusted the device permissions with devfs.</p>
 <ol>
 <li>
 <p>Add the following a devfs ruleset in /etc/devfs.rules.<br>
-I added pass and xpt because adding only cd0 didn't work.</p>
+I added pass and xpt because adding only cd0 didn&rsquo;t work.</p>
 <pre><code>[devfsrules_cdwriter=20]
 add path cd0 group operator mode 0660
 add path pass1 group operator mode 0660
@@ -618,7 +618,7 @@ But for now I use the formers with the following output.</p>
 <li>2019-08-22: Created</li>
 <li>2019-08-27: Added &ldquo;Failover between Ethernet and WiFi&rdquo;</li>
 <li>2019-09-15: Added &ldquo;Suspend/Resume&rdquo;</li>
-<li>2019-09-22: Updated the OneDrive Free Client's URL</li>
+<li>2019-09-22: Updated the OneDrive Free Client&rsquo;s URL</li>
 <li>2019-11-09: Added &ldquo;Burning CDs&rdquo;</li>
 </ul>
 

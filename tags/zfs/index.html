@@ -11,7 +11,7 @@
   <meta property="og:url" content="https://genneko.github.io/tags/zfs/" />
   <meta property="og:type" content="website" />
   <meta name="twitter:card" content="summary" />
-  <meta name="generator" content="Hugo 0.62.2" />
+  <meta name="generator" content="Hugo 0.63.1" />
   <link href="https://genneko.github.io/tags/zfs/index.xml" rel="alternate" type="application/rss+xml" title="genneko" />
   <link href="https://genneko.github.io/tags/zfs/index.xml" rel="feed" type="application/rss+xml" title="genneko" />
 
@@ -82,7 +82,7 @@
         </ul>
         <div class="article-content">
           My personal FreeBSD 11.3 server (VPS) was running low on storage space.
-By using the VPS provider's disk expansion option, I could easily grow the virtual disk.
+By using the VPS provider&rsquo;s disk expansion option, I could easily grow the virtual disk.
 But then I wondered how to expand the filesystem on it.
 In my case, the filesystem is on a GELI-encrypted ZFS storage pool.
 So I had to resize the following entities.
@@ -120,7 +120,7 @@ So I had to resize the following entities.
           </li>
         </ul>
         <div class="article-content">
-          I have a tiny home server for my family. It's based on Atom N2800 CPU and runs FreeBSD 11.2 with a two-disk ZFS mirror.
+          I have a tiny home server for my family. It&rsquo;s based on Atom N2800 CPU and runs FreeBSD 11.2 with a two-disk ZFS mirror.
 Originally it had two 500GB disks, but now it has a 500GB and a 1TB ones because one of them was replaced due to a failure.
 As the Handbook says, the available space of a mirror pool is limited by the size of the smallest disk. So my server can still get only 500GB from the total space of 1.
         </div>
@@ -216,7 +216,7 @@ After struggling for some hours, I was able to boot the server by disconnecting 
           </li>
         </ul>
         <div class="article-content">
-          Recently, I wanted an encrypted working directory on a running FreeBSD system. The system was running on a plain (unencrypted) ZFS pool and there's no plan to add disks to it. I needed the working directory only temporarily.
+          Recently, I wanted an encrypted working directory on a running FreeBSD system. The system was running on a plain (unencrypted) ZFS pool and there&rsquo;s no plan to add disks to it. I needed the working directory only temporarily.
 I came up with the following options.
  Use GELI on a ZFS volume (zvol). Use GELI on a memory disk (md). Use PEFS on a directory.  I excluded PEFS because I had very little experience.
         </div>

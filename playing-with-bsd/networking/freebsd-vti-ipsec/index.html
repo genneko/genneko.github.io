@@ -18,7 +18,7 @@ Prerequisite  FreeBSD-11.1-RC3/amd64 Generic kernel No special packages/ports (j
   <meta property="og:url" content="https://genneko.github.io/playing-with-bsd/networking/freebsd-vti-ipsec/" />
   <meta property="og:type" content="article" />
   <meta name="twitter:card" content="summary" />
-  <meta name="generator" content="Hugo 0.62.2" />
+  <meta name="generator" content="Hugo 0.63.1" />
 
   <link rel="stylesheet" href="https://genneko.github.io/css/style.css" media="all" />
   <link rel="stylesheet" href="https://genneko.github.io/css/syntax.css" media="all" />
@@ -170,7 +170,7 @@ $ sudo route add 172.16.20.0/24 169.254.1.2
 $ sudo setkey -D
 $ sudo setkey -DP
 </code></pre><h3 id="make-them-all-persistent">Make them all persistent</h3>
-<p>At the time of 11.1-RC3, I couldn't find a way to fully setup ipsec interface only with the rc.conf. So I hesitantly use /etc/rc.local.</p>
+<p>At the time of 11.1-RC3, I couldn&rsquo;t find a way to fully setup ipsec interface only with the rc.conf. So I hesitantly use /etc/rc.local.</p>
 <p>Maybe /etc/network.subr (clone_up?) will be updated to support it in near future.</p>
 <h4 id="etcrcconf">/etc/rc.conf</h4>
 <pre><code>gateway_enable=&quot;YES&quot;

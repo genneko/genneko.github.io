@@ -18,7 +18,7 @@ Unfortunately, native IPv6 service is still unavailable for me.">
   <meta property="og:url" content="https://genneko.github.io/playing-with-bsd/networking/freebsd-tunnelv6-he/" />
   <meta property="og:type" content="article" />
   <meta name="twitter:card" content="summary" />
-  <meta name="generator" content="Hugo 0.62.2" />
+  <meta name="generator" content="Hugo 0.63.1" />
 
   <link rel="stylesheet" href="https://genneko.github.io/css/style.css" media="all" />
   <link rel="stylesheet" href="https://genneko.github.io/css/syntax.css" media="all" />
@@ -92,9 +92,9 @@ Unfortunately, native IPv6 service is still unavailable for me.">
       <p>I had been playing with IPv6 on various systems in early 2000s. They were mostly NetBSD (1.x) and FreeBSD (4.x) plus Windows XP. My home network had been connected to the IPv6 Internet with a router running NetBSD/hpcmips which was installed on a Windows CE handheld PC.</p>
 <p>After a decade and a half, I decided to reconnect my home network to the IPv6 Internet.</p>
 <p>Unfortunately, native IPv6 service is still unavailable for me. So I chose Hurricane Electric(HE)&lsquo;s <a href="https://tunnelbroker.net/">TunnelBroker</a> service, which I was using 15 years ago.</p>
-<p>Another option is to build a tunnel to the VPS which is assigned a single IPv6 address and perform NAT66 there. Although IPv6 NAT sounds somewhat evil, it's interesting enough so I might also give it a try in future and hopefully write up another post.</p>
+<p>Another option is to build a tunnel to the VPS which is assigned a single IPv6 address and perform NAT66 there. Although IPv6 NAT sounds somewhat evil, it&rsquo;s interesting enough so I might also give it a try in future and hopefully write up another post.</p>
 <h2 id="starting-point">Starting Point</h2>
-<p>My home network is connected to the IPv4 Internet with ASUS RT-AC65U broadband router. The router's WAN interface gets a global IPv4 address via DHCP. The LAN segment is using an ordinary private address block 192.168.1.0/24 and the router is performing NAT.</p>
+<p>My home network is connected to the IPv4 Internet with ASUS RT-AC65U broadband router. The router&rsquo;s WAN interface gets a global IPv4 address via DHCP. The LAN segment is using an ordinary private address block 192.168.1.0/24 and the router is performing NAT.</p>
 <p>On the LAN segment, there are two FreeBSD 11.1 boxes, three Windows 10 PCs and several Android devices. One of the FreeBSD boxes is an Atom-based file server using ZFS mirrored pool. The other is a Raspberry Pi Model B+ (RPI-B) which is being used as DHCP/DNS server.</p>
 <h2 id="goals">Goals</h2>
 <p>My goals are as follows.</p>
@@ -105,9 +105,9 @@ Unfortunately, native IPv6 service is still unavailable for me.">
 </ol>
 <h2 id="considerations">Considerations</h2>
 <p>The first thing to consider is which host to use as the IPv6 router. The existing IPv4 router (ASUS RT-AC65U) has 6in4 tunnel capability so it seems natural to make it IPv4/IPv6 dual-stack gateway.</p>
-<p>But there is the one thing about the router which is against the 2nd goal. The router can send RA (Router Advertisement) as an IPv6 gateway but there's no configuration options other than enable/disable it. If I enabled RA on the router, every host on the home network would get LAN's prefix information and auto-configure its IPv6 address and default gateway.</p>
-<p>Because I want only the selected hosts to use IPv6 as the goal#2 says, at least in this early stage of my experiment, I have to fine-tune RA contents but the ASUS router doesn't allow it. So I decided to use RPI-B running FreeBSD as the IPv6 router.</p>
-<p>For the third goal, there's nothing difficult because the existing DNS servers are using dnsmasq, which is already listening on IPv6 and supports IPv6 address (AAAA) records.</p>
+<p>But there is the one thing about the router which is against the 2nd goal. The router can send RA (Router Advertisement) as an IPv6 gateway but there&rsquo;s no configuration options other than enable/disable it. If I enabled RA on the router, every host on the home network would get LAN&rsquo;s prefix information and auto-configure its IPv6 address and default gateway.</p>
+<p>Because I want only the selected hosts to use IPv6 as the goal#2 says, at least in this early stage of my experiment, I have to fine-tune RA contents but the ASUS router doesn&rsquo;t allow it. So I decided to use RPI-B running FreeBSD as the IPv6 router.</p>
+<p>For the third goal, there&rsquo;s nothing difficult because the existing DNS servers are using dnsmasq, which is already listening on IPv6 and supports IPv6 address (AAAA) records.</p>
 <h2 id="building-a-tunnel">Building a Tunnel</h2>
 <p>After creating a new account for the HE TunnelBroker service, I took the following steps to build a 6in4 tunnel.</p>
 <p>As I mentioned earlier, the tunnel local endpoint is my RPI-B. Its Ethernet interface is named &lsquo;ue0&rsquo; on FreeBSD 11.1 and assigined a private address 192.168.1.3. The IPv4 default gateway is the ASUS router and its address is 192.168.1.1.</p>
@@ -188,7 +188,7 @@ ue0:\
 </ol>
 <p><code>raflags=&quot;mo&quot;</code> sets Managed Configuration(M) and Other Configuration(O) flags in RA. Those flags notify receiving hosts that they may be able to get address and other information from DHCPv6 server.<br>
 <code>noifprefix</code>, <code>addr=&quot;2001:db8:2:beef::</code> and <code>prefixlen#64</code> explicitly instruct rtadvd to advertise the routed/64 prefix &lsquo;2001:db8:2:beef::/64&rsquo;.<br>
-<code>pinfoflags=&quot;l&quot;</code> tells rtadvd to set only On-Link(L) flag in prefix information's flags field. By default, Autonomous(A) flag is also set but I remove it because I don't want hosts to autoconfigure their IPv6 address with RA.</p>
+<code>pinfoflags=&quot;l&quot;</code> tells rtadvd to set only On-Link(L) flag in prefix information&rsquo;s flags field. By default, Autonomous(A) flag is also set but I remove it because I don&rsquo;t want hosts to autoconfigure their IPv6 address with RA.</p>
 <ol start="2">
 <li>
 <p>Install the ISC-DSCP-Server and create /usr/local/etc/dhcpd6.conf.<br>
@@ -228,7 +228,7 @@ $ sudo service isc-dhcpd6 start
 <a href="https://tunnelbroker.net/">https://tunnelbroker.net/</a></p>
 </li>
 <li>
-<p>Hurricane Electric's IPv6 Tunnel Broker Forums<br>
+<p>Hurricane Electric&rsquo;s IPv6 Tunnel Broker Forums<br>
 <a href="https://forums.he.net/">https://forums.he.net/</a></p>
 </li>
 <li>
