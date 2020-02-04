@@ -175,9 +175,7 @@ This is because the GPT secondary metadata is no longer located at the end of th
        1064        984         - free -  (492K)
        2048  419426304      2  freebsd-zfs  (200G)
   419428352       2008         - free -  (1.0M)
-</code></pre></li>
-</ol>
-<p>Run the following command to fix this by using the primary metadata at the beginning of the disk.</p>
+</code></pre><p>Run the following command to fix this by using the primary metadata at the beginning of the disk.</p>
 <pre><code># gpart recover vtbd0
 # gpart show
 =&gt;       40  838860720  vtbd0  GPT  (400G)
@@ -185,7 +183,7 @@ This is because the GPT secondary metadata is no longer located at the end of th
        1064        984         - free -  (492K)
        2048  419426304      2  freebsd-zfs  (200G)
   419428352  419432408         - free -  (200G)
-</code></pre><ol start="5">
+</code></pre></li>
 <li>
 <p>Resize the FreeBSD ZFS partition (vtbd0p2) to make it use all the increased space.</p>
 <pre><code># gpart resize -i 2 -a 1m vtbd0

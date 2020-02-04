@@ -9,13 +9,11 @@
   <meta name="description" content="I had been wanting to migrate a FreeBSD system on a GEOM mirror (gmirror) to a ZFS mirror.
 After several rehearsals on a VM, I have finally achieved that goal with the following steps.
   Load ZFS-releated kernel modules and set a tunable to use 4K sector drives.
-sudo kldload zfs sudo sysctl vfs.zfs.min_auto_ashift=12 ``
-  Remove one (da0) of the two disks (da0, da1) which make up the gmirror (gm0).">
+sudo kldload zfs sudo sysctl vfs.zfs.min_auto_ashift=12   Remove one (da0) of the two disks (da0, da1) which make up the gmirror (gm0).">
   <meta property="og:description" content="I had been wanting to migrate a FreeBSD system on a GEOM mirror (gmirror) to a ZFS mirror.
 After several rehearsals on a VM, I have finally achieved that goal with the following steps.
   Load ZFS-releated kernel modules and set a tunable to use 4K sector drives.
-sudo kldload zfs sudo sysctl vfs.zfs.min_auto_ashift=12 ``
-  Remove one (da0) of the two disks (da0, da1) which make up the gmirror (gm0).">
+sudo kldload zfs sudo sysctl vfs.zfs.min_auto_ashift=12   Remove one (da0) of the two disks (da0, da1) which make up the gmirror (gm0).">
   <meta name="twitter:description" content="I had been wanting to migrate a FreeBSD system on a GEOM mirror (gmirror) to a ZFS mirror.
 After several rehearsals on a VM, I have finally achieved that goal with the following steps.
   Load …">
@@ -103,13 +101,11 @@ After several rehearsals on a VM, I have finally achieved that goal with the fol
 <p>Load ZFS-releated kernel modules and set a tunable to use 4K sector drives.</p>
 <pre><code>sudo kldload zfs
 sudo sysctl vfs.zfs.min_auto_ashift=12
-</code></pre><p>``</p>
-</li>
+</code></pre></li>
 <li>
 <p>Remove one (da0) of the two disks (da0, da1) which make up the gmirror (gm0).</p>
 <pre><code>sudo gmirror remove gm0 da0
-</code></pre><p>``</p>
-</li>
+</code></pre></li>
 <li>
 <p>Re-create partitions on the disk removed from the gmirror (da0). Label them appropriately.</p>
 <pre><code>sudo gpart destroy -F da0
@@ -117,20 +113,17 @@ sudo gpart create -s gpt da0
 sudo gpart add -a 4k -t freebsd-boot -s 512k -l zfsboot0 da0
 sudo gpart add -a 1m -t freebsd-zfs -l zfssys0 da0
 sudo gpart bootcode -b /boot/pmbr -p /boot/gptzfsboot -i 1 da0
-</code></pre><p>``</p>
-<p>GEOM mirrored disks usually use MBR partitioning because both gmirror and GPT(another partitioning scheme) store metadata at the end of the disk.</p>
+</code></pre><p>GEOM mirrored disks usually use MBR partitioning because both gmirror and GPT(another partitioning scheme) store metadata at the end of the disk.</p>
 </li>
 <li>
 <p>Create a ZFS pool (zroot) with a partition (gpt/zfssys0) on da0.</p>
 <pre><code>sudo zpool create -O compression=lz4 -O atime=off -o altroot=/mnt -m none zroot gpt/zfssys0
-</code></pre><p>``</p>
-</li>
+</code></pre></li>
 <li>
 <p>Export and re-import the pool and mount it on a temporary location (/mnt).</p>
 <pre><code>sudo zpool export zroot
 sudo zpool import -o altroot=/mnt zroot
-</code></pre><p>``</p>
-</li>
+</code></pre></li>
 <li>
 <p>Create datasets in a Boot Environment compliant layout.</p>
 <pre><code>sudo zfs create -o mountpoint=none zroot/ROOT
@@ -149,15 +142,13 @@ sudo zfs create -o exec=off -o setuid=off zroot/var/log
 sudo zfs create -o atime=on zroot/var/mail
 sudo zfs create -o setuid=off zroot/var/tmp
 sudo zfs create -o mountpoint=/data zroot/data
-</code></pre><p>``</p>
-</li>
+</code></pre></li>
 <li>
 <p>Set bootfs property and fix permissions on temporay directories.</p>
 <pre><code>sudo zpool set bootfs=zroot/ROOT/default zroot
 sudo chmod 1777 /mnt/tmp
 sudo chmod 1777 /mnt/var/tmp
-</code></pre><p>``</p>
-</li>
+</code></pre></li>
 <li>
 <p>Copy files from the gmirror to the new ZFS pool.</p>
 <pre><code>sudo sh -c &quot;find -x / | cpio -pmd /mnt&quot;
@@ -165,8 +156,7 @@ sudo sh -c &quot;find -x /var | cpio -pmd /mnt&quot;
 sudo sh -c &quot;find -x /usr | cpio -pmd /mnt&quot;
 sudo sh -c &quot;find -x /home | cpio -pmd /mnt&quot;
 sudo sh -c &quot;find -x /data | cpio -pmd /mnt
-</code></pre><p>``</p>
-</li>
+</code></pre></li>
 <li>
 <p>Modify configuration files on the pool.</p>
 <p>[/mnt/boot/loader.conf]</p>
@@ -174,17 +164,13 @@ sudo sh -c &quot;find -x /data | cpio -pmd /mnt
 kern.geom.label.disk_ident.enable=&quot;0&quot;
 kern.geom.label.gptid.enable=&quot;0&quot;
 zfs_load=&quot;YES&quot;
-</code></pre><p>``</p>
-<p>[/mnt/etc/sysctl.conf]</p>
+</code></pre><p>[/mnt/etc/sysctl.conf]</p>
 <pre><code>vfs.zfs.min_auto_ashift=12
-</code></pre><p>``</p>
-<p>[/mnt/etc/rc.conf]</p>
+</code></pre><p>[/mnt/etc/rc.conf]</p>
 <pre><code>zfs_enable=&quot;YES&quot;
-</code></pre><p>``</p>
-<p>[/mnt/etc/fstab]</p>
+</code></pre><p>[/mnt/etc/fstab]</p>
 <pre><code># comment out all mount entries for gmirror (gm0).
-</code></pre><p>``</p>
-</li>
+</code></pre></li>
 <li>
 <p>Reboot into ZFS.</p>
 <pre><code>sudo shutdown -r now

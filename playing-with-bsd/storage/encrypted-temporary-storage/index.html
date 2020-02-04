@@ -115,42 +115,35 @@ I came up with the following options.
 <p>Create a ZFS volume.<br>
 You can access the newly created zvol through the device file /dev/zvol/zroot/workvol.</p>
 <pre><code>$ sudo zfs create -V 10g zroot/workvol
-</code></pre><p>``</p>
-</li>
+</code></pre></li>
 <li>
 <p>Encrypt the zvol with GELI.</p>
 <pre><code>$ sudo geli init -s 4096 /dev/zvol/zroot/workvol
 (Enter a passphrase to set)
-</code></pre><p>``</p>
-</li>
+</code></pre></li>
 <li>
 <p>Attach the GELI encrypted zvol.<br>
 This creates the decrypted device node with .eli extension (<code>/dev/zvol/zroot/workvol.eli</code>).</p>
 <pre><code>$ sudo geli attach /dev/zvol/zroot/workvol
 (Enter the previously set passphrase)
-</code></pre><p>``</p>
-</li>
+</code></pre></li>
 <li>
 <p>Create a UFS filesystem on the attached GELI volume.</p>
 <pre><code>$ sudo newfs /dev/zvol/zroot/workvol.eli
-</code></pre><p>``</p>
-</li>
+</code></pre></li>
 <li>
 <p>Mount the filesystem.</p>
 <pre><code>$ sudo mount /dev/zvol/zroot/workvol.eli /mnt
-</code></pre><p>``</p>
-</li>
+</code></pre></li>
 <li>
 <p>Do what you want on the mounted filesystem.</p>
 <pre><code>(Do the job under /mnt)
-</code></pre><p>``</p>
-</li>
+</code></pre></li>
 <li>
 <p>Once you are done, unmount and detach the GELI volume.</p>
 <pre><code>$ sudo umount /mnt
 $ sudo geli detach /dev/zvol/zroot/workvol
-</code></pre><p>``</p>
-</li>
+</code></pre></li>
 <li>
 <p>The encrypted zvol can be used later by performing step 3 and 5 again.</p>
 <pre><code>$ sudo geli attach /dev/zvol/zroot/workvol
@@ -158,8 +151,7 @@ $ sudo geli detach /dev/zvol/zroot/workvol
 $ sudo mount /dev/zvol/zroot/workvol.eli /mnt
 </code></pre><p>Or if you no longer need the space, destroy the zvol.</p>
 <pre><code>$ sudo zfs destroy zroot/workvol
-</code></pre><p>``</p>
-</li>
+</code></pre></li>
 </ol>
 <h2 id="geli-on-memory-disk-md">GELI on Memory Disk (md)</h2>
 <p>If you need a small encrypted storage only once and for a short period, a memory disk encrypted with an onetime key might be enough.</p>
@@ -170,40 +162,33 @@ If you omit <code>-u (unit number or device name)</code> option, the newly creat
 In this example, you can access the memory disk through the device /dev/md0.</p>
 <pre><code>$ sudo mdconfig -s 500m
 md0
-</code></pre><p>``</p>
-</li>
+</code></pre></li>
 <li>
 <p>Encrypt and attach the memory disk with a randomly generated onetime key.<br>
 This creates the decrypted device node with .eli extension (<code>/dev/md0.eli</code>).</p>
 <pre><code>$ sudo geli onetime -s 4096 /dev/md0
-</code></pre><p>``</p>
-</li>
+</code></pre></li>
 <li>
 <p>Create a UFS filesystem on the attached GELI volume.</p>
 <pre><code>$ sudo newfs /dev/md0.eli
-</code></pre><p>``</p>
-</li>
+</code></pre></li>
 <li>
 <p>Mount the filesystem.</p>
 <pre><code>$ sudo mount /dev/md0.eli /mnt
-</code></pre><p>``</p>
-</li>
+</code></pre></li>
 <li>
 <p>Do what you want on the mounted filesystem.</p>
 <pre><code>(Do the job under /mnt)
-</code></pre><p>``</p>
-</li>
+</code></pre></li>
 <li>
 <p>Once you are done, unmount and detach the GELI volume.</p>
 <pre><code>$ sudo umount /mnt
 $ sudo geli detach /dev/md0
-</code></pre><p>``</p>
-</li>
+</code></pre></li>
 <li>
 <p>Lastly, detach the memory disk.</p>
 <pre><code>$ sudo mdconfig -d -u md0
-</code></pre><p>``</p>
-</li>
+</code></pre></li>
 </ol>
 <h2 id="references">References</h2>
 <ul>

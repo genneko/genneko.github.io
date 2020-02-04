@@ -165,13 +165,11 @@ wg genkey &gt; freebsd.private
 wg pubkey &lt; freebsd.private &gt; freebsd.public
 wg genkey &gt; android.private
 wg pubkey &lt; android.private &gt; android.public
-</code></pre><p>``</p>
-</li>
+</code></pre></li>
 <li>
 <p>Create a configuration file for the server (FreeBSD).</p>
 <pre><code>vi wg0.conf
-</code></pre><p>``</p>
-<p>[wg0.conf]</p>
+</code></pre><p>[wg0.conf]</p>
 <pre><code>[Interface]
 Address = 192.168.222.1/32
 PrivateKey = &lt;content of freebsd.private&gt;
@@ -180,13 +178,11 @@ ListenPort = 51820
 [Peer]
 PublicKey = &lt;content of android.public&gt;
 AllowedIPs = 192.168.222.2/32
-</code></pre><p>``</p>
-</li>
+</code></pre></li>
 <li>
 <p>Create a configuration file for the client (Android).</p>
 <pre><code>vi android.conf
-</code></pre><p>``</p>
-<p>[android.conf]</p>
+</code></pre><p>[android.conf]</p>
 <pre><code>[Interface]
 Address = 192.168.222.2/32
 PrivateKey = &lt;content of android.private&gt;
@@ -195,20 +191,17 @@ PrivateKey = &lt;content of android.private&gt;
 PublicKey = &lt;content of freebsd.public&gt;
 AllowedIPs = 192.168.222.1/32
 Endpoint = wg.example.com:51820
-</code></pre><p>``</p>
-</li>
+</code></pre></li>
 <li>
 <p>Start WireGuard service on the server.</p>
 <pre><code>sysrc wireguard_enable=&quot;YES&quot;
 sysrc wireguard_interfaces=&quot;wg0&quot;
 service wireguard start
-</code></pre><p>``</p>
-</li>
+</code></pre></li>
 <li>
 <p>Display a QR code representing the Android configuration.</p>
 <pre><code>qrencode -t ansi &lt; android.conf
-</code></pre><p>``</p>
-</li>
+</code></pre></li>
 </ol>
 <h3 id="android-1">Android</h3>
 <ol>

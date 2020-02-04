@@ -233,33 +233,35 @@ Change the following settings and press F10 to save and exit.</p>
 </li>
 <li>
 <p>Before exiting the installer, I manually renamed a ZFS dataset for home directories as usual.</p>
-</li>
-</ul>
 <pre><code>rm /home
 zfs rename zroot/usr/home zroot/home
 zfs set mountpoint=/home zroot/home
 exit
-</code></pre><h3 id="basic-configurations-after-the-first-boot">Basic Configurations After the First Boot</h3>
+</code></pre></li>
+</ul>
+<h3 id="basic-configurations-after-the-first-boot">Basic Configurations After the First Boot</h3>
 <p>After the first boot, I logged in and performed the following usual configurations.</p>
 <ul>
-<li>Update the OS.</li>
-</ul>
+<li>
+<p>Update the OS.</p>
 <pre><code>su
 freebsd-update fetch install
 shutdown -r now
-</code></pre><ul>
-<li>Install basic packages.
-I usually install non-X or lite versions if available but this time I selected full versions.</li>
-</ul>
+</code></pre></li>
+<li>
+<p>Install basic packages.
+I usually install non-X or lite versions if available but this time I selected full versions.</p>
 <pre><code>su
 pkg update
 pkg install git vim tmux bash sudo rsync perl5 ja-nkf zfs-stats portmaster gnupg1
-</code></pre><ul>
-<li>Configure sudoers.</li>
-</ul>
+</code></pre></li>
+<li>
+<p>Configure sudoers.</p>
 <pre><code>visudo
-</code></pre><ul>
-<li>Configure user preferences such as dotfiles.</li>
+</code></pre></li>
+<li>
+<p>Configure user preferences such as dotfiles.</p>
+</li>
 </ul>
 <h3 id="setting-up-grahpical-desktop-environment">Setting up Grahpical Desktop Environment</h3>
 <p>I&rsquo;m completely new to the graphical desktop world. So it&rsquo;s inevitable for me to learn things one by one through a lot of trial and error.</p>
@@ -285,23 +287,23 @@ pkg install git vim tmux bash sudo rsync perl5 ja-nkf zfs-stats portmaster gnupg
 </ul>
 <p>Setup process was as follows.</p>
 <ul>
-<li>Install Graphics Driver and reboot the system.</li>
-</ul>
+<li>
+<p>Install Graphics Driver and reboot the system.</p>
 <pre><code>sudo pkg install drm-kmod
 sudo sysrc kld_list=&quot;/boot/modules/i915kms.ko&quot;
 shutdown -r now
-</code></pre><ul>
-<li>Install Xorg and releated packages.</li>
-</ul>
+</code></pre></li>
+<li>
+<p>Install Xorg and releated packages.</p>
 <pre><code>sudo pkg install xorg xfce xfce4-goodies slim slim-themes
-</code></pre><ul>
-<li>Install local language stuff</li>
-</ul>
+</code></pre></li>
+<li>
+<p>Install local language stuff</p>
 <pre><code>sudo pkg install japanese/font-std japanese/font-vlgothic japanese/font-takao ja-fcitx-mozc ja-fcitx-skk zh-fcitx-configtool
-</code></pre><ul>
-<li>Create ~/.xinitrc.<br>
-There are a lot of language configurations. Please ignore them if you do not need them.</li>
-</ul>
+</code></pre></li>
+<li>
+<p>Create ~/.xinitrc.<br>
+There are a lot of language configurations. Please ignore them if you do not need them.</p>
 <pre><code>#!/bin/sh
 #
 # ~/.xinitrc for Xfce4
@@ -310,24 +312,24 @@ There are a lot of language configurations. Please ignore them if you do not nee
 export LC_ALL=ja_JP.UTF-8
 export LANGUAGE=ja_JP.UTF-8
 export LANG=ja_JP.UTF-8
-
+  
 ## Input Method - fcitx-mozc
 export GTK_IM_MODULE=fcitx
 export QT_IM_MODULE=fcitx
 export XMODIFIERS='@im=fcitx'
-
+  
 ## Start Input Method
 /usr/local/bin/mozc start
 fcitx -r -d
-
+  
 ## Disable Beep
 xset -b
-
+  
 ## Start Xfce4
 exec startxfce4
-</code></pre><ul>
-<li>Configure and start services. This brings up a graphical login manager.</li>
-</ul>
+</code></pre></li>
+<li>
+<p>Configure and start services. This brings up a graphical login manager.</p>
 <pre><code>sudo sysrc dbus_enable=YES
 sudo sysrc hald_enable=YES
 sudo sysrc polkitd_enable=YES
@@ -339,23 +341,26 @@ sudo service hald start
 sudo service avahi-daemon start
 sudo service avahi-dnsconfd start
 sudo service slim start
-</code></pre><ul>
-<li>Install applications.</li>
-</ul>
+</code></pre></li>
+<li>
+<p>Install applications.</p>
 <pre><code>sudo pkg install firefox thunderbird chromium ...
-</code></pre><h2 id="personal-notes-on-further-setup">Personal Notes on Further Setup</h2>
+</code></pre></li>
+</ul>
+<h2 id="personal-notes-on-further-setup">Personal Notes on Further Setup</h2>
 <h3 id="touchpad-and-trackpoint">Touchpad and TrackPoint</h3>
 <p><a href="https://ben-rowan.github.io/post/disable_lenovo_trackpad/">https://ben-rowan.github.io/post/disable_lenovo_trackpad/</a></p>
 <ul>
 <li>As I use a wireless mouse (Logicool&rsquo;s Unifying one) most of the time, I disabled touchpad and enabled &ldquo;Virtual Scrolling&rdquo; with the TrackPoint and the middle button instead.<br>
-[/boot/loader.conf]</li>
-</ul>
+[/boot/loader.conf]
 <pre><code>hw.psm.synaptics_support=&quot;1&quot;
 </code></pre><p>[/etc/sysctl.conf]</p>
 <pre><code>hw.psm.synaptics.min_pressure=220
 </code></pre><p>[/etc/rc.conf]</p>
 <pre><code>moused_flags=&quot;-V&quot;
-</code></pre><h3 id="suspendresume">Suspend/Resume</h3>
+</code></pre></li>
+</ul>
+<h3 id="suspendresume">Suspend/Resume</h3>
 <p>I was able to perform suspend/resume by running <code>acpiconf -s 3</code> or from the XFCE4&rsquo;s &ldquo;Logout&rdquo; dialog almost out of the box.<br>
 But at some point, I realized the following behaviors of the Logout dialog.</p>
 <ul>
@@ -407,26 +412,30 @@ polkit.addRule(function (action, subject) {
 <ul>
 <li>XFCE4 Power Manager&rsquo;s Brightness Control sometimes shows weird behavior. When I switch the power between AC and battery, screen brightness initially changes as configured but gets back to the previous level when I move mouse cursor.<br>
 After struggling for a while, I found the following configurations with the XFCE4&rsquo;s brightness adjustment disabled allow me to automatically adjust brightness upon change of the power source (AC or battery).<br>
-[/boot/loader.conf]</li>
-</ul>
+[/boot/loader.conf]
 <pre><code>acpi_video_load=&quot;YES&quot;
 </code></pre><p>[/etc/sysctl.conf]</p>
 <pre><code>hw.acpi.video.lcd0.economy=30
 hw.acpi.video.lcd0.fullpower=60
-</code></pre><h3 id="beep-on-logout">Beep on Logout</h3>
-<ul>
-<li>When unmute, opening the logout dialog makes a loud beep. I added the following line to ~/.xinitrc to avoid it.</li>
+</code></pre></li>
 </ul>
+<h3 id="beep-on-logout">Beep on Logout</h3>
+<ul>
+<li>When unmute, opening the logout dialog makes a loud beep. I added the following line to ~/.xinitrc to avoid it.
 <pre><code>xset -b
-</code></pre><h3 id="epson-ink-jet-printer-ep-802a">EPSON Ink-Jet Printer EP-802A</h3>
-<ul>
-<li>Install and configure CUPS as follows. Then point your web browser to localhost:631 and configure the printer.</li>
+</code></pre></li>
 </ul>
+<h3 id="epson-ink-jet-printer-ep-802a">EPSON Ink-Jet Printer EP-802A</h3>
+<ul>
+<li>
+<p>Install and configure CUPS as follows. Then point your web browser to localhost:631 and configure the printer.</p>
 <pre><code>sudo pkg install gutenprint
 sudo sysrc cupsd_enable=YES
 sudo service cupsd start
-</code></pre><ul>
-<li>xfce4-print package doesn&rsquo;t seem to support CUPS (only supports LPD).</li>
+</code></pre></li>
+<li>
+<p>xfce4-print package doesn&rsquo;t seem to support CUPS (only supports LPD).</p>
+</li>
 </ul>
 <h3 id="audacity">Audacity</h3>
 <ul>
@@ -442,30 +451,33 @@ Audacity itself can be installed via binary package.</li>
 <p><a href="https://github.com/abraunegg/onedrive">https://github.com/abraunegg/onedrive</a></p>
 <ul>
 <li>On the previous main PC (Windows 10), I used OneDrive to import photos taken and uploaded by smartphones.
-OneDrive Free Client allows me to achieve this on FreeBSD machine.</li>
-</ul>
+OneDrive Free Client allows me to achieve this on FreeBSD machine.
 <pre><code>sudo pkg install onedrive
-
+  
 onedrive
 # Open the URL shown and sign in with your Microsoft account.  
 # When you see a blank page after granting access to &quot;OneDrive Free Client&quot;, enter the blank page's URL on the command-line prompt.
-
+  
 # Test it now.
 # ~/OneDrive is the default sync_dir.
 onedrive --download-only --dry-run --synchronize
-
+  
 # Real Run.
 onedrive --download-only --synchronize
-</code></pre><h3 id="wine">WINE</h3>
+</code></pre></li>
+</ul>
+<h3 id="wine">WINE</h3>
 <p><a href="https://wiki.winehq.org/FreeBSD">https://wiki.winehq.org/FreeBSD</a><br>
 <a href="https://wiki.freebsd.org/i386-Wine">https://wiki.freebsd.org/i386-Wine</a><br>
 <a href="https://forums.freebsd.org/threads/wine-wow64-and-winetricks-at-x64-wine.62634/">https://forums.freebsd.org/threads/wine-wow64-and-winetricks-at-x64-wine.62634/</a></p>
 <ul>
-<li>Install i386-wine-* (this time I chose &lsquo;devel&rsquo;).</li>
-</ul>
+<li>
+<p>Install i386-wine-* (this time I chose &lsquo;devel&rsquo;).</p>
 <pre><code>sudo pkg install i386-wine-devel wine-gecko-devel wine-mono-devel winetricks
-</code></pre><ul>
-<li>I can run IrfanView, Picasa3 and Yamaha&rsquo;s Mid Radio Player.</li>
+</code></pre></li>
+<li>
+<p>I can run IrfanView, Picasa3 and Yamaha&rsquo;s Mid Radio Player.</p>
+</li>
 </ul>
 <h3 id="bhyve">Bhyve</h3>
 <p>Maybe in another post.</p>

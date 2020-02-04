@@ -177,19 +177,18 @@ $ sudo service routing restart
 <h2 id="setting-up-ra-and-dhcpv6">Setting up RA and DHCPv6</h2>
 <p>Now the IPv6 tunnel is up, I have to set up rtadvd and dhcpd6 to selectively auto-configure hosts.</p>
 <ol>
-<li>On the RPI-B, create /etc/rtadvd.conf.
+<li>
+<p>On the RPI-B, create /etc/rtadvd.conf.</p>
 <pre><code>$ sudo vi /etc/rtadvd.conf
 ue0:\
   :rltime#1200:raflags=&quot;mo&quot;:mtu#1480:\
   :noifprefix:addr=&quot;2001:db8:2:beef::&quot;:prefixlen#64:\
   :pinfoflags=&quot;l&quot;:vltime#600:pltime#300:\
   :rdnss=&quot;2001:db8:2:beef::3,2001:db8:2:beef::5&quot;:
-</code></pre></li>
-</ol>
-<p><code>raflags=&quot;mo&quot;</code> sets Managed Configuration(M) and Other Configuration(O) flags in RA. Those flags notify receiving hosts that they may be able to get address and other information from DHCPv6 server.<br>
+</code></pre><p><code>raflags=&quot;mo&quot;</code> sets Managed Configuration(M) and Other Configuration(O) flags in RA. Those flags notify receiving hosts that they may be able to get address and other information from DHCPv6 server.<br>
 <code>noifprefix</code>, <code>addr=&quot;2001:db8:2:beef::</code> and <code>prefixlen#64</code> explicitly instruct rtadvd to advertise the routed/64 prefix &lsquo;2001:db8:2:beef::/64&rsquo;.<br>
 <code>pinfoflags=&quot;l&quot;</code> tells rtadvd to set only On-Link(L) flag in prefix information&rsquo;s flags field. By default, Autonomous(A) flag is also set but I remove it because I don&rsquo;t want hosts to autoconfigure their IPv6 address with RA.</p>
-<ol start="2">
+</li>
 <li>
 <p>Install the ISC-DSCP-Server and create /usr/local/etc/dhcpd6.conf.<br>
 Here I configure so that only a single host &lsquo;pc1&rsquo; can get a statically configured IPv6 address (and DNS server addresses).</p>

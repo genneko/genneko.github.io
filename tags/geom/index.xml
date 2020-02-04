@@ -32,8 +32,7 @@ I came up with the following options.
       <description>I had been wanting to migrate a FreeBSD system on a GEOM mirror (gmirror) to a ZFS mirror.
 After several rehearsals on a VM, I have finally achieved that goal with the following steps.
   Load ZFS-releated kernel modules and set a tunable to use 4K sector drives.
-sudo kldload zfs sudo sysctl vfs.zfs.min_auto_ashift=12 ``
-  Remove one (da0) of the two disks (da0, da1) which make up the gmirror (gm0).</description>
+sudo kldload zfs sudo sysctl vfs.zfs.min_auto_ashift=12   Remove one (da0) of the two disks (da0, da1) which make up the gmirror (gm0).</description>
     </item>
     
   </channel>
