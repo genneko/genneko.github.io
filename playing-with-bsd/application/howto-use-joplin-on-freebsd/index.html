@@ -22,7 +22,7 @@ Target Version The current …">
   <meta property="og:url" content="https://genneko.github.io/playing-with-bsd/application/howto-use-joplin-on-freebsd/" />
   <meta property="og:type" content="article" />
   <meta name="twitter:card" content="summary" />
-  <meta name="generator" content="Hugo 0.67.0" />
+  <meta name="generator" content="Hugo 0.67.1" />
 
   <link rel="stylesheet" href="https://genneko.github.io/css/style.css" media="all" />
   <link rel="stylesheet" href="https://genneko.github.io/css/syntax.css" media="all" />
@@ -60,7 +60,7 @@ Target Version The current …">
       <ul class="article-meta">
         <li class="article-meta-date"><time>2020-01-15</time>
         
-        <span class="updated">Update: 2020-03-25</span>
+        <span class="updated">Update: 2020-03-28</span>
         
         </li>
         <li class="article-meta-tags">
@@ -171,7 +171,8 @@ The weird character will be suppressed because it will be shown with the zero-wi
 <p>If you are using a custom editor font, you cannot specify the special font in &ldquo;Editor font family&rdquo; because it can take only a single font name thus overrides the custom font.<br>
 But if you have Joplin <a href="https://github.com/laurent22/joplin/releases/tag/v1.0.176">v1.0.176</a> or later<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup>, you can use the Joplin-wide stylesheet to work around this issue while you continue to use the custom editor font.<br>
 Just store the special font file somewhere and create Joplin-wide stylesheet from Tools &gt; Options &gt; Appearance &gt; Custom stylesheet for Joplin-wide app styles<sup id="fnref:2"><a href="#fn:2" class="footnote-ref" role="doc-noteref">2</a></sup>.<br>
-For example, if you saved the special font as /home/username/share/fonts/NoLSEP.ttf and want to use IPAGothic as the custom editor font, the stylesheet should look like this<sup id="fnref:3"><a href="#fn:3" class="footnote-ref" role="doc-noteref">3</a></sup>.</p>
+For example, if you saved the special font as /home/username/share/fonts/NoLSEP.ttf and want to use IPAGothic as the custom editor font, the stylesheet should look like this<sup id="fnref:3"><a href="#fn:3" class="footnote-ref" role="doc-noteref">3</a></sup>.<br>
+<strong>Make sure to restart Joplin</strong> after saving the stylesheet. Changes in the stylesheet have no effect until you restart Joplin. See the <a href="https://github.com/laurent22/joplin#custom-css">official page</a> for more details.</p>
 <pre><code>@font-face {
     font-family: NoLSEP;
     src: url(file:///home/username/share/fonts/NoLSEP.ttf);
@@ -235,6 +236,7 @@ I changed selector from &lsquo;.ace_editor&rsquo; to &lsquo;div.ace_editor&rsquo
 <li>2020-02-23: Updated the target version to 1.0.185 (Build steps were changed)</li>
 <li>2020-03-04: Updated the target version to 1.0.187</li>
 <li>2020-03-25: Add a note on Windows file path</li>
+<li>2020-03-28: Add a note on restarting Joplin after editing the custom stylesheet.</li>
 </ul>
 <section class="footnotes" role="doc-endnotes">
 <hr>
