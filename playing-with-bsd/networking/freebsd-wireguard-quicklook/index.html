@@ -120,8 +120,8 @@ This time I focused on site-to-site VPN setup. Maybe I will try remote-access VP
 <p>I used this weekend to have a quick look at it on FreeBSD 12.0.<br>
 This time I focused on site-to-site VPN setup. Maybe I will try remote-access VPN configuration in the near future.</p>
 <p><em>NOTE: WireGuard is still in early stage of development. Go-implementation (wireguard-go) has no official release yet. Also testing network software on VNET jails might be a bit tricky in itself. This article just shows you what I did to see what it looked like.</em></p>
-<p>2019-01-23: I tested remote-access configuration between FreeBSD and Android. A quick write-up is [here] (/playing-with-bsd/networking/freebsd-wireguard-android).</p>
-<p>2019-01-26: Added a [new section] (#remote-access-host-to-site-configuration) on testing remote-access (host-to-site) by a roaming client.</p>
+<p>2019-01-23: I tested remote-access configuration between FreeBSD and Android. A quick write-up is <a href="https://genneko.github.io/playing-with-bsd/networking/freebsd-wireguard-android">here</a>.</p>
+<p>2019-01-26: Added a <a href="#remote-access-host-to-site-configuration">new section</a> on testing remote-access (host-to-site) by a roaming client.</p>
 <h2 id="prerequisite">Prerequisite</h2>
 <ul>
 <li>FreeBSD 12.0/amd64</li>
@@ -465,7 +465,7 @@ service wireguard start
 
                                  Site 2
 </code></pre>
-<p>NOTE: I also tested remote-access configuration using the WireGuard Android app. See [this article] (/playing-with-bsd/networking/freebsd-wireguard-android) on this.</p>
+<p>NOTE: I also tested remote-access configuration using the WireGuard Android app. See <a href="https://genneko.github.io/playing-with-bsd/networking/freebsd-wireguard-android">this article</a> on this.</p>
 <h3 id="change-settings">Change Settings</h3>
 <p>Here is a summary of changes which I made to the site-to-site configuration.</p>
 <ol>
