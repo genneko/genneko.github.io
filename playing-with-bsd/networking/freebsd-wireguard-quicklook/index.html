@@ -164,7 +164,7 @@ This time I focused on site-to-site VPN setup. Maybe I will try remote-access VP
 </code></pre>
 <p>In this configuration,  jail r1 acts as a central router which crudely emulates a public network and is to be used as a monitoring post running tcpdump, while jail vpnr1 and vpnr2 are routers on private sites and remaining two (vpnh1 and vpnh2) are hosts on the private sites.</p>
 <p>I planned to run WireGuard on vpnr1 and vpnr2 and build a VPN tunnel between site1 and site2.</p>
-<p>For details on jails configuration, please refer to <a href="https://genneko.github.io/playing-with-bsd/system/learning-notes-on-jails/#separate-network-configuration">another post</a>.<br>
+<p>For details on jails configuration, please refer to <a href="https://genneko.github.io/playing-with-bsd/system/learning-notes-on-jails/#isolated-network-configuration">another post</a>.<br>
 The following sections assume that all five jails are up and running.</p>
 <h3 id="install-wireguard">Install WireGuard</h3>
 <p>Because the jails in the above configuration cannot access network outside of the host system, <code>pkg install</code> cannot be used to install WireGuard on them. Instead I used <code>pkg add</code> to install the package files downloaded with <code>pkg fetch</code>.</p>
