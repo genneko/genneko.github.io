@@ -7,10 +7,23 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>&amp;copy; Copyright 2017 - 2020 genneko</copyright>
-    <lastBuildDate>Sun, 07 Oct 2018 18:35:49 +0900</lastBuildDate>
+    <lastBuildDate>Sat, 11 Apr 2020 17:06:00 +0900</lastBuildDate>
     
 	<atom:link href="https://genneko.github.io/tags/jail/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Running X Applications on a Jail created with Bastille</title>
+      <link>https://genneko.github.io/playing-with-bsd/application/running-xapps-on-a-jail/</link>
+      <pubDate>Sat, 11 Apr 2020 17:06:00 +0900</pubDate>
+      
+      <guid>https://genneko.github.io/playing-with-bsd/application/running-xapps-on-a-jail/</guid>
+      <description>FreeBSD jails are often talked about from a security or system administration perspective.
+Although it&amp;rsquo;s a perfectly valid point of view, jails can also be used for other purposes.
+In fact, just recently I benefited from a jail in such a situation.
+It once again convinced me that jails were really awesome and I&amp;rsquo;d like to write up this short article.
+Assumptions  The host is a graphical desktop workstation running FreeBSD 12.</description>
+    </item>
     
     <item>
       <title>Learning Notes on FreeBSD Jails</title>

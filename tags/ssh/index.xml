@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>xorg on genneko</title>
-    <link>https://genneko.github.io/tags/xorg/</link>
-    <description>Recent content in xorg on genneko</description>
+    <title>ssh on genneko</title>
+    <link>https://genneko.github.io/tags/ssh/</link>
+    <description>Recent content in ssh on genneko</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>&amp;copy; Copyright 2017 - 2020 genneko</copyright>
     <lastBuildDate>Sat, 11 Apr 2020 17:06:00 +0900</lastBuildDate>
     
-	<atom:link href="https://genneko.github.io/tags/xorg/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://genneko.github.io/tags/ssh/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
@@ -23,18 +23,6 @@ Although it&amp;rsquo;s a perfectly valid point of view, jails can also be used 
 In fact, just recently I benefited from a jail in such a situation.
 It once again convinced me that jails were really awesome and I&amp;rsquo;d like to write up this short article.
 Assumptions  The host is a graphical desktop workstation running FreeBSD 12.</description>
-    </item>
-    
-    <item>
-      <title>ThinkPad T480 is my new main laptop which runs FreeBSD</title>
-      <link>https://genneko.github.io/playing-with-bsd/hardware/freebsd-on-thinkpad-t480/</link>
-      <pubDate>Thu, 22 Aug 2019 00:50:00 +0900</pubDate>
-      
-      <guid>https://genneko.github.io/playing-with-bsd/hardware/freebsd-on-thinkpad-t480/</guid>
-      <description>I&amp;rsquo;ve been using FreeBSD as my primary server OS for quite a long time.
-But, for unknown reasons, I have never seriously used it on client workstations.
-Maybe it&amp;rsquo;s partly because I&amp;rsquo;m a CUI-oriented person who loves doing things on text terminals as much as possible.
-Actually, I have been pretty happy with any client OS as long as I could use a decent terminal on it, so that I could SSH into FreeBSD servers where I spent a lot of time doing jobs which didn&amp;rsquo;t require graphical interface.</description>
     </item>
     
   </channel>

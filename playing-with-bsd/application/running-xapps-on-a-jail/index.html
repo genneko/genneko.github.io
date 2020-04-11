@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <title>Running X Applications on a Jail created with Bastille - genneko</title>
+  <meta property="og:title" content="Running X Applications on a Jail created with Bastille - genneko" />
+  <meta name="twitter:title" content="Running X Applications on a Jail created with Bastille - genneko" />
+  <meta name="description" content="FreeBSD jails are often talked about from a security or system administration perspective.
+Although it&rsquo;s a perfectly valid point of view, jails can also be used for other purposes.
+In fact, just recently I benefited from a jail in such a situation.
+It once again convinced me that jails were really awesome and I&rsquo;d like to write up this short article.
+Assumptions  The host is a graphical desktop workstation running FreeBSD 12.">
+  <meta property="og:description" content="FreeBSD jails are often talked about from a security or system administration perspective.
+Although it&rsquo;s a perfectly valid point of view, jails can also be used for other purposes.
+In fact, just recently I benefited from a jail in such a situation.
+It once again convinced me that jails were really awesome and I&rsquo;d like to write up this short article.
+Assumptions  The host is a graphical desktop workstation running FreeBSD 12.">
+  <meta name="twitter:description" content="FreeBSD jails are often talked about from a security or system administration perspective.
+Although it&rsquo;s a perfectly valid point of view, jails can also be used for other purposes.
+In fact, just …">
+  <meta name="author" content="genneko"/>
+  <meta property="og:site_name" content="genneko" />
+  <meta property="og:url" content="https://genneko.github.io/playing-with-bsd/application/running-xapps-on-a-jail/" />
+  <meta property="og:type" content="article" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="generator" content="Hugo 0.68.3" />
+
+  <link rel="stylesheet" href="https://genneko.github.io/css/style.css" media="all" />
+  <link rel="stylesheet" href="https://genneko.github.io/css/syntax.css" media="all" />
+  <link rel="stylesheet" href="https://genneko.github.io/css/custom.css" media="all" />
+
+  <script src="https://genneko.github.io/js/script.js"></script>
+  <script src="https://genneko.github.io/js/custom.js"></script>
+  <script defer src="https://genneko.github.io/js/fontawesome.js"></script>
+</head>
+
+<body>
+
+<header class="site-header">
+  <nav class="site-navi">
+    <img class="site-icon" src="https://genneko.github.io/images/genneko-icon.png">
+    <h1 class="site-title"><a href="https://genneko.github.io/">genneko</a></h1>
+    <ul class="site-navi-items">
+      <li class="site-navi-item-playing-with-bsd"><a href="https://genneko.github.io/playing-with-bsd/" title="Playing with BSD">Playing with BSD</a></li>
+      <li class="site-navi-item-tags"><a href="https://genneko.github.io/tags/" title="Tags">Tags</a></li>
+      <li class="site-navi-item-archives"><a href="https://genneko.github.io/archives/" title="Archives">Archives</a></li>
+      <li class="site-navi-item-about"><a href="https://genneko.github.io/about/" title="About">About</a></li>
+    </ul>
+  </nav>
+</header>
+<hr class="site-header-bottom">
+
+
+  <div class="main" role="main">
+    <article class="article">
+      
+      
+      <h1 class="article-title">Running X Applications on a Jail created with Bastille</h1>
+      
+      <hr class="article-title-bottom">
+      <ul class="article-meta">
+        <li class="article-meta-date"><time>2020-04-11</time>
+        
+        </li>
+        <li class="article-meta-tags">
+          <a href="https://genneko.github.io/tags/application/">
+            <i class="fas fa-tag"></i>
+            application
+          </a>&nbsp;
+        </li>
+        <li class="article-meta-tags">
+          <a href="https://genneko.github.io/tags/freebsd/">
+            <i class="fas fa-tag"></i>
+            freebsd
+          </a>&nbsp;
+        </li>
+        <li class="article-meta-tags">
+          <a href="https://genneko.github.io/tags/jail/">
+            <i class="fas fa-tag"></i>
+            jail
+          </a>&nbsp;
+        </li>
+        <li class="article-meta-tags">
+          <a href="https://genneko.github.io/tags/ssh/">
+            <i class="fas fa-tag"></i>
+            ssh
+          </a>&nbsp;
+        </li>
+        <li class="article-meta-tags">
+          <a href="https://genneko.github.io/tags/xorg/">
+            <i class="fas fa-tag"></i>
+            xorg
+          </a>&nbsp;
+        </li>
+      </ul>
+      
+<aside class="toc">
+  <nav id="TableOfContents">
+  <ul>
+    <li><a href="#assumptions">Assumptions</a></li>
+    <li><a href="#the-problem">The Problem</a></li>
+    <li><a href="#the-solution">The Solution</a></li>
+    <li><a href="#configurations">Configurations</a></li>
+    <li><a href="#afterwords">Afterwords</a></li>
+    <li><a href="#references">References</a></li>
+    <li><a href="#revision-history">Revision History</a></li>
+  </ul>
+</nav>
+</aside>
+      <p>FreeBSD jails are often talked about from a security or system administration perspective.<br>
+Although it&rsquo;s a perfectly valid point of view, jails can also be used for other purposes.</p>
+<p>In fact, just recently I benefited from a jail in such a situation.<br>
+It once again convinced me that jails were really awesome and I&rsquo;d like to write up this short article.</p>
+<h2 id="assumptions">Assumptions</h2>
+<ul>
+<li>The host is a <a href="https://genneko.github.io/playing-with-bsd/hardware/freebsd-on-thinkpad-t480/">graphical desktop workstation</a> running FreeBSD 12.1/amd64 on ZFS.</li>
+<li>I usually create jails with the procedures described in <a href="https://genneko.github.io/playing-with-bsd/system/learning-notes-on-jails/">this post</a> - in short, by using the standard tools.<br>
+But this time, I used <a href="https://bastillebsd.org/">bastille</a> (a shell-based lightweight jail manager) to quickly setup a jail.</li>
+<li>Bastille has been installed and configured to be ready for use.<br>
+PF firewall on the host has been also setup to allow and translate(NAT) traffic for jails.<br>
+See the official <a href="https://bastillebsd.org/getting-started/">Getting Started with Bastille guide</a> for more details on how to configure them.</li>
+<li>Bastille&rsquo;s data directory ($bastille_prefix) is set to /vm/bastille. It&rsquo;s just my personal preference.</li>
+<li>My username on the host is genneko and its user ID (uid) is 500.</li>
+<li>The host is not running sshd (as it&rsquo;s a client machine).</li>
+<li>I use &lsquo;sudo&rsquo; to perform privileged operations on the host while I login to the jail as root.</li>
+</ul>
+<h2 id="the-problem">The Problem</h2>
+<p>I wanted to use <a href="https://inkscape.org/">Inkscape</a> (a vector drawing application), but I couldn&rsquo;t install <a href="https://www.freshports.org/graphics/inkscape">graphics/inkscape</a> package because it depends on <a href="https://www.freshports.org/graphics/ImageMagick6/">graphics/ImageMagick6</a> while other existing apps require <a href="https://www.freshports.org/graphics/ImageMagick7/">ImageMagick7</a>. Those ImageMagick versions conflict and cannot be installed on the same system.</p>
+<h2 id="the-solution">The Solution</h2>
+<p>As a jail can have its own files and directories and can be regarded as a separate system from the host, I can install packages on a jail without worrying about conflicts with the packages installed on the host.</p>
+<p>Although a jail doesn&rsquo;t have a monitor, X applications like Inkscape can display its windows on the X server running on the host, thanks to the client/server nature of the X Window System.</p>
+<h2 id="configurations">Configurations</h2>
+<p>I can think of several combinations of jail types (shared or vnet) and network configurations (address assignment, bridged/routed and etc). But here I pick up just one of them. It&rsquo;s a standard jail with its address on a dedicated loopback interface on the host.</p>
+<ol>
+<li>
+<p>Create a 12.1-RELEASE jail. I name it &lsquo;xapp&rsquo; here.</p>
+<pre><code>$ sudo bastille create xapp 12.1-RELEASE 127.1.1.1
+</code></pre></li>
+<li>
+<p>Add the jail&rsquo;s address/hostname to /etc/hosts on both the host and the jail.</p>
+<pre><code>$ sudo sh -c 'echo 127.1.1.1 xapp &gt;&gt; /etc/hosts'
+$ sudo sh -c 'echo 127.1.1.1 xapp &gt;&gt; /vm/bastille/jails/xapp/root/etc/hosts'
+</code></pre></li>
+<li>
+<p>Start the jail.</p>
+<pre><code>$ sudo bastille start xapp
+</code></pre></li>
+<li>
+<p>Login to the jail.</p>
+<pre><code>$ sudo bastille console xapp
+</code></pre></li>
+<li>
+<p>Configure the jail from inside.</p>
+<ul>
+<li>
+<p>Add a user who runs Inkscape.<br>
+It would be the most convenient to create a user with the same uid as the host&rsquo;s user.</p>
+<pre><code># pw useradd -n genneko -u 500 -m
+# passwd genneko
+</code></pre></li>
+<li>
+<p>Install xauth, inkscape and its dependencies.<br>
+Xauth is required for X11 forwarding.</p>
+<pre><code># pkg install xauth inkscape
+</code></pre></li>
+<li>
+<p>Configure and start SSH server on the jail.<br>
+<code>X11UseLocalhost no</code> is required because the &lsquo;localhost&rsquo; in a standard (non-VNET) jail doesn&rsquo;t seem to be the true localhost.<br>
+Although I&rsquo;m not sure about this and cannot explain its details, I&rsquo;ve confirmed at least that it&rsquo;s not required on a VNET jail which has its own network stack and has a true localhost.</p>
+<pre><code># sysrc sshd_enable=&quot;YES&quot;
+# echo &quot;X11UseLocalhost no&quot; &gt;&gt; /etc/ssh/sshd_config
+# service sshd start
+</code></pre></li>
+<li>
+<p>Exit the jail.</p>
+<pre><code># exit
+</code></pre></li>
+</ul>
+</li>
+<li>
+<p>Once back on the host, use ssh to run Inkscape on the jail.<br>
+The -Y flag enables the Trusted X11 forwarding and the -C enables the compression.</p>
+<pre><code>$ ssh -CY xapp inkscape
+</code></pre><p>Yay, I made it!
+<img src="https://genneko.github.io/images/running-xapps-on-a-jail/inkscape.png" alt="Inkscape"></p>
+</li>
+<li>
+<p>When I quitted inkscape, I noticed the following warnings on the terminal.</p>
+<pre><code>(inkscape:16851): Gdk-WARNING **: 15:46:51.493: shmget failed: error 78 (Function not implemented)
+   
+(inkscape:16851): Gtk-WARNING **: 15:49:56.146: Attempting to store changes into `/home/genneko/.local/share/recently-used.xbel', but failed: Failed to create file ?/home/genneko/.local/share/recently-used.xbel.AG2YI0?: No such file or directory
+   
+(inkscape:16851): Gtk-WARNING **: 15:49:56.146: Attempting to set the permissions of `/home/genneko/.local/share/recently-used.xbel', but failed: No such file or directory
+</code></pre><p>The first warning can be coped with by allowing the jail to access SysV shared memory primitives.<br>
+Open the jail&rsquo;s configuration with an editor by running either <code>sudo bastille edit xapp</code> or <code>sudo vi /vm/bastille/jails/xapp/jail.conf</code>.<br>
+Then add the following line to the &lsquo;xapp&rsquo; section and restart the jail with <code>sudo bastille restart xapp</code>.</p>
+<pre><code>  sysvshm = new;
+</code></pre><p>The second and the third warnings can be suppressed by just creating the directory mentioned in the messages on the jail&rsquo;s filesystem.</p>
+<pre><code>$ mkdir -p /vm/bastille/jails/xapp/root/home/genneko/.local/share
+</code></pre></li>
+</ol>
+<h2 id="afterwords">Afterwords</h2>
+<p>I learned it&rsquo;s really easy to install X applications on a jail and use it from the host.<br>
+Other X applications such as xfig, xterm and so on can be also run in the same manner.</p>
+<p>Now I got another reason to love the FreeBSD jails - not the real jails, of course :P</p>
+<h2 id="references">References</h2>
+<ul>
+<li>
+<p>FreeBSD Manual Pages: jail(8)<br>
+<a href="https://www.freebsd.org/cgi/man.cgi?query=jail(8)">https://www.freebsd.org/cgi/man.cgi?query=jail(8)</a></p>
+</li>
+<li>
+<p>Bastille<br>
+<a href="https://bastillebsd.org/">https://bastillebsd.org/</a></p>
+</li>
+<li>
+<p>SSH Mastery Second Edition by Michael W. Lucas<br>
+<a href="https://mwl.io/nonfiction/tools#ssh">https://mwl.io/nonfiction/tools#ssh</a></p>
+</li>
+</ul>
+<h2 id="revision-history">Revision History</h2>
+<ul>
+<li>2020-04-11: Created</li>
+</ul>
+
+    </article>
+
+    
+
+
+    <ul class="pager article-pager">
+      <li class="pager-newer pager-noitem">&lt; Newer</li>
+      <li class="pager-older">
+        <a href="https://genneko.github.io/playing-with-bsd/application/howto-use-joplin-on-freebsd/" data-toggle="tooltip" data-placement="top" title="How to use Joplin desktop app on FreeBSD">Older &gt;</a>
+      </li>
+    </ul>
+  </div>
+
+
+<div class="site-footer">
+  <div class="copyright">&copy; Copyright 2017 - 2020 genneko</div>
+  <ul class="site-footer-items">
+    <li class="site-footer-item-about"><a href="https://genneko.github.io/about/" title="About">About</a></li>
+  </ul>
+  <div class="powerdby">
+    Powered by <a href="https://gohugo.io/">Hugo</a> and <a href="https://github.com/taikii/whiteplain">Whiteplain</a>
+  </div>
+</div>
+
+
+</body>
+</html>
