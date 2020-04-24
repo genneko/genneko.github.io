@@ -57,7 +57,7 @@ This article is a sort of personal notebook where I summarize …">
       <ul class="article-meta">
         <li class="article-meta-date"><time>2018-10-07</time>
         
-        <span class="updated">Update: 2020-01-13</span>
+        <span class="updated">Update: 2020-04-24</span>
         
         </li>
         <li class="article-meta-tags">
@@ -157,7 +157,8 @@ fetch ftp://ftp.freebsd.org/pub/FreeBSD/releases/amd64/11.2-RELEASE/base.txz
 </code></pre></li>
 <li>
 <p>Copy timezone configuration from the host to the template.<br>
-Usually /etc/resolv.conf is also copied from the host, but after some experiments I decided to copy it by using /etc/jail.conf&rsquo;s exec.prestart and delete it by exec.poststop.</p>
+Usually /etc/resolv.conf is also copied from the host, but after some experiments I decided to copy it by using /etc/jail.conf&rsquo;s exec.prestart and delete it by exec.poststop for most cases.<br>
+(But I won&rsquo;t do this if the host acts as a name server and its resolv.conf refers to itself. In such a case, I&rsquo;ll use a statically configured resolv.conf for jails)</p>
 <pre><code>sudo cp /etc/localtime /vm/tmpl/11.2/etc/
 </code></pre></li>
 <li>
@@ -168,6 +169,7 @@ sendmail_submit_enable=&quot;NO&quot;
 sendmail_outbound_enable=&quot;NO&quot;
 sendmail_msp_queue_enable=&quot;NO&quot;
 syslogd_flags=&quot;-ss&quot;
+cron_flags=&quot;-J 60&quot;
 </code></pre></li>
 <li>
 <p>Edit system crontab in the template to disable adjkern.</p>
@@ -818,6 +820,7 @@ The following line in /etc/jail.conf achieves this.  The host&rsquo;s /var/cache
 <li>2019-10-13: Update the procedure to run &ldquo;freebsd-update upgrade&rdquo; on jails</li>
 <li>2019-10-25: Add an optional &ldquo;change jail&rsquo;s root prompt&rdquo; step to &ldquo;Creating a Template&rdquo;</li>
 <li>2020-01-13: Add periodic.conf and enable cron in jails.</li>
+<li>2020-04-24: Add words on resolv.conf and add cron_flags to rc.conf.</li>
 </ul>
 
     </article>
