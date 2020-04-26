@@ -117,7 +117,7 @@ Although there were times the app got disappointing updates or the service was u
       <guid>https://genneko.github.io/playing-with-bsd/networking/freebsd-wireguard-android/</guid>
       <description>After playing briefly with WireGuard (See previous post) on FreeBSD VNET Jails, today I performed a quick test between a FreeBSD host and an Android device over the Internet.
 NOTE: WireGuard is still in early stage of development. Android app is clearly marked with beta and Go-implementation (wireguard-go) has no official release yet. This article just shows you what I did to take a look at it.
-Network Configuration   FreeBSD - WireGuard Server.</description>
+2020-04-26: I wrote a new post on building a WireGuard jail with the FreeBSD&amp;rsquo;s standard tools.</description>
     </item>
     
     <item>
