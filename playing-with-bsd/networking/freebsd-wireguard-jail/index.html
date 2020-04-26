@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <title>Building a WireGuard Jail with the FreeBSD&#39;s Standard Tools - genneko</title>
+  <meta property="og:title" content="Building a WireGuard Jail with the FreeBSD&#39;s Standard Tools - genneko" />
+  <meta name="twitter:title" content="Building a WireGuard Jail with the FreeBSD&#39;s Standard Tools - genneko" />
+  <meta name="description" content="Recently, I had an opportunity to build a WireGuard jail on a FreeBSD 12.1 host.
+As it was really quick and easy to setup and it has been working completely fine for a month, I&rsquo;d like to share my experience with anyone interested in this topic.
+ I would like to use WireGuard app on my Android phone to access my home NAS (a vanilla FreeBSD server) via the WireGuard tunnel and reach the Internet through the tunnel too.">
+  <meta property="og:description" content="Recently, I had an opportunity to build a WireGuard jail on a FreeBSD 12.1 host.
+As it was really quick and easy to setup and it has been working completely fine for a month, I&rsquo;d like to share my experience with anyone interested in this topic.
+ I would like to use WireGuard app on my Android phone to access my home NAS (a vanilla FreeBSD server) via the WireGuard tunnel and reach the Internet through the tunnel too.">
+  <meta name="twitter:description" content="Recently, I had an opportunity to build a WireGuard jail on a FreeBSD 12.1 host.
+As it was really quick and easy to setup and it has been working completely fine for a month, I&rsquo;d like to share …">
+  <meta name="author" content="genneko"/>
+  <meta property="og:site_name" content="genneko" />
+  <meta property="og:url" content="https://genneko.github.io/playing-with-bsd/networking/freebsd-wireguard-jail/" />
+  <meta property="og:type" content="article" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="generator" content="Hugo 0.69.0" />
+
+  <link rel="stylesheet" href="https://genneko.github.io/css/style.css" media="all" />
+  <link rel="stylesheet" href="https://genneko.github.io/css/syntax.css" media="all" />
+  <link rel="stylesheet" href="https://genneko.github.io/css/custom.css" media="all" />
+
+  <script src="https://genneko.github.io/js/script.js"></script>
+  <script src="https://genneko.github.io/js/custom.js"></script>
+  <script defer src="https://genneko.github.io/js/fontawesome.js"></script>
+</head>
+
+<body>
+
+<header class="site-header">
+  <nav class="site-navi">
+    <img class="site-icon" src="https://genneko.github.io/images/genneko-icon.png">
+    <h1 class="site-title"><a href="https://genneko.github.io/">genneko</a></h1>
+    <ul class="site-navi-items">
+      <li class="site-navi-item-playing-with-bsd"><a href="https://genneko.github.io/playing-with-bsd/" title="Playing with BSD">Playing with BSD</a></li>
+      <li class="site-navi-item-tags"><a href="https://genneko.github.io/tags/" title="Tags">Tags</a></li>
+      <li class="site-navi-item-archives"><a href="https://genneko.github.io/archives/" title="Archives">Archives</a></li>
+      <li class="site-navi-item-about"><a href="https://genneko.github.io/about/" title="About">About</a></li>
+    </ul>
+  </nav>
+</header>
+<hr class="site-header-bottom">
+
+
+  <div class="main" role="main">
+    <article class="article">
+      
+      
+      <h1 class="article-title">Building a WireGuard Jail with the FreeBSD&#39;s Standard Tools</h1>
+      
+      <hr class="article-title-bottom">
+      <ul class="article-meta">
+        <li class="article-meta-date"><time>2020-04-26</time>
+        
+        </li>
+        <li class="article-meta-tags">
+          <a href="https://genneko.github.io/tags/freebsd/">
+            <i class="fas fa-tag"></i>
+            freebsd
+          </a>&nbsp;
+        </li>
+        <li class="article-meta-tags">
+          <a href="https://genneko.github.io/tags/network/">
+            <i class="fas fa-tag"></i>
+            network
+          </a>&nbsp;
+        </li>
+        <li class="article-meta-tags">
+          <a href="https://genneko.github.io/tags/vpn/">
+            <i class="fas fa-tag"></i>
+            vpn
+          </a>&nbsp;
+        </li>
+        <li class="article-meta-tags">
+          <a href="https://genneko.github.io/tags/wireguard/">
+            <i class="fas fa-tag"></i>
+            wireguard
+          </a>&nbsp;
+        </li>
+      </ul>
+      
+<aside class="toc">
+  <nav id="TableOfContents">
+  <ul>
+    <li><a href="#create-a-jail-filesystem">Create a Jail Filesystem</a></li>
+    <li><a href="#configure-internal-network">Configure Internal Network</a></li>
+    <li><a href="#adjust-firewall-rules">Adjust Firewall Rules</a></li>
+    <li><a href="#configure-the-jail">Configure the Jail</a>
+      <ul>
+        <li><a href="#on-the-host">On the Host</a></li>
+        <li><a href="#on-the-jails-filesystem">On the Jail&rsquo;s Filesystem</a></li>
+      </ul>
+    </li>
+    <li><a href="#apply-configurations-and-start-the-jail">Apply Configurations and Start the Jail</a></li>
+    <li><a href="#install-and-configure-wireguard">Install and Configure WireGuard</a>
+      <ul>
+        <li><a href="#on-the-jail">On the Jail</a></li>
+        <li><a href="#on-the-android-device">On the Android Device</a></li>
+      </ul>
+    </li>
+    <li><a href="#references">References</a></li>
+    <li><a href="#revision-history">Revision History</a></li>
+  </ul>
+</nav>
+</aside>
+      <p>Recently, I had an opportunity to build a <a href="https://www.wireguard.com">WireGuard</a> jail on a FreeBSD 12.1 host.</p>
+<p>As it was really quick and easy to setup and it has been working completely fine for a month, I&rsquo;d like to share my experience with anyone interested in this topic.</p>
+<ul>
+<li>I would like to use <a href="https://play.google.com/store/apps/details?id=com.wireguard.android">WireGuard app</a> on my Android phone to access my home NAS (a vanilla FreeBSD server) via the WireGuard tunnel and reach the Internet through the tunnel too.</li>
+<li>The host is a small home gateway/firewall (<a href="https://www.pcengines.ch/apu2.htm">PC Engines APU2</a>) running FreeBSD 12.1/amd64 (GENERIC kernel) on ZFS.</li>
+<li>The host is routing/NATing traffic between two physical interfaces (igb1 and igb0), each of which is connected to the home LAN and the Internet respectively.</li>
+<li>The host&rsquo;s public IP address (on igb0) is dynamically assigned by my ISP. I&rsquo;m using Amazon Route53 to add a FQDN for the address (&ldquo;wg.example.com&rdquo;) and automatically update its address with dhcpclient-exit-hooks.</li>
+<li>The host is also acting as a DNS/DHCP server (dnsmasq) for the home LAN.</li>
+<li>WireGuard will be installed in a VNET jail (named &ldquo;wg&rdquo;) created on the host.<br>
+(I have setup WireGuard on a FreeBSD host (not in a jail) before. See <a href="https://genneko.github.io/playing-with-bsd/networking/freebsd-wireguard-android/">this article</a> for that.)</li>
+<li>The WireGuard jail will be placed in an internal network and the host will route/NAT traffic from/to the jail.</li>
+<li>The internal network will be created with a bridge and epairs.<br>
+Although I&rsquo;m quite a fan of netgraph and usually use ng_eiface/ng_bridge for VNET jails, this time I&rsquo;ll try another more popular option.</li>
+<li>Only the standard tools in the FreeBSD base system will be used to manage the jail and the internal network.<br>
+This is also one of the reasons I use bridge/epair this time instead of netgraph, for which I always use <a href="https://github.com/genneko/freebsd-vimage-jails.git">my script</a> to setup network.</li>
+</ul>
+<p>I have achieved my goal by roughly taking the following steps.</p>
+<h2 id="create-a-jail-filesystem">Create a Jail Filesystem</h2>
+<p>As usual, I created a jail&rsquo;s filesystem from a template ZFS snapshot.</p>
+<pre><code>$ sudo sh -c &quot;zfs send zroot/vm/tmpl/12.1@p3 | zfs receive zroot/vm/wg&quot;
+</code></pre><p>Refer to <a href="https://genneko.github.io/playing-with-bsd/system/learning-notes-on-jails#creating-a-template">this article</a> for details on how to create a template.</p>
+<h2 id="configure-internal-network">Configure Internal Network</h2>
+<p>I created a bridge (bridge0) for the internal jail network (192.168.20.0/24) and an epair (epair0a/b), attached the &lsquo;b&rsquo; side of the epair to the bridge and assigned an IP address to the bridge.<br>
+Adding the IP address to the bridge0 makes it the third routed interface on the host and the address becomes the default gateway for the jail.</p>
+<pre><code>cloned_interfaces=&quot;bridge0 epair0&quot;
+ifconfig_bridge0=&quot;inet 192.168.20.1/24 addm epair0b up&quot;
+ifconfig_epair0b=&quot;up&quot;
+</code></pre><p><img src="https://genneko.github.io/images/freebsd-wireguard-jail/wgjail-topology.png" alt="Network Topology"></p>
+<p>In the above example, I use the bridge so that I can add more jails to the internal subnet in the future, as shown in the following diagram.<br>
+<img src="https://genneko.github.io/images/freebsd-wireguard-jail/wgjail-bridge-multi.png" alt="Two jails connected to the bridge0"></p>
+<p>But if you need only a single jail, it&rsquo;s not necessary to use the bridge.<br>
+You can connect the jail to the host directly with the epair by using the following configuration.<br>
+With this config, epair0b becomes the host&rsquo;s third routed interface.</p>
+<pre><code>cloned_interfaces=&quot;epair0&quot;
+ifconfig_epair0b=&quot;inet 192.168.20.1/24&quot;
+</code></pre><p><img src="https://genneko.github.io/images/freebsd-wireguard-jail/wgjail-epair.png" alt="A jail directly connected with an epair"></p>
+<h2 id="adjust-firewall-rules">Adjust Firewall Rules</h2>
+<p>Next I edited /etc/pf.conf to adjust firewall rules for the jail and WireGuard subnets.</p>
+<ul>
+<li>
+<p>Define macros for the internal jail and WireGuard subnets, the WireGuard jail&rsquo;s address and the WireGuard port.</p>
+<pre><code>&gt; jailnet = &quot;192.168.20.0/24&quot;
+&gt; wgnet = &quot;192.168.250.0/24&quot;
+&gt; wg_ipv4 = &quot;192.168.20.2&quot;
+&gt; wg_port = &quot;51820&quot;
+</code></pre></li>
+<li>
+<p>Add outgoing packets from the jail and the WireGuard subnet to the NAT target.</p>
+<pre><code>&lt; nat on $ext_if inet from $localnet to any -&gt; ($ext_if)
+---
+&gt; nat on $ext_if inet from { $localnet $jailnet $wgnet } to any -&gt; ($ext_if)
+</code></pre></li>
+<li>
+<p>Add a rdr (port-forwarding) rule to redirect incoming UDP packets destined to the port 51820 of the host&rsquo;s public IP address to the jail.</p>
+<pre><code>&gt; rdr pass log on { $ext_if $int_if } inet proto udp to ($ext_if) port $wg_port -&gt; $wg_ipv4
+</code></pre></li>
+<li>
+<p>Allow incoming packets from the jail and the WireGuard subnet.</p>
+<pre><code>&gt; pass in from { $jailnet $wgnet }
+</code></pre></li>
+</ul>
+<h2 id="configure-the-jail">Configure the Jail</h2>
+<h3 id="on-the-host">On the Host</h3>
+<ul>
+<li>
+<p>Edit or create /etc/devfs.rules to add a devfs ruleset for the jail. This is required for the jail to create WireGuard interfaces.</p>
+<pre><code>[devfsrules_bpfjail=10]
+add include $devfsrules_jail
+add path 'bpf*' unhide
+</code></pre></li>
+<li>
+<p>Edit or create /etc/jail.conf to add basic configurations for the WireGuard jail &ldquo;wg&rdquo;.</p>
+<pre><code>exec.start = &quot;/bin/sh /etc/rc&quot;;
+exec.stop = &quot;/bin/sh /etc/rc.shutdown&quot;;
+exec.clean;
+mount.devfs;
+  
+host.hostname = $name;
+path = &quot;/vm/$name&quot;;
+exec.consolelog = &quot;/var/log/jail_${name}_console.log&quot;;
+  
+wg {
+        $vif = &quot;epair0a&quot;;
+        $route = &quot;192.168.250.0/24 192.168.20.2&quot;;
+  
+        vnet;
+        vnet.interface = $vif;
+        exec.prestart += &quot;route add $route&quot;;
+        exec.poststop += &quot;route delete $route&quot;;
+  
+        # workaround
+        # https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=238326
+        exec.prestop  += &quot;ifconfig $vif -vnet $name&quot;;
+  
+        allow.chflags;
+        devfs_ruleset = 10;
+}
+</code></pre></li>
+<li>
+<p>Edit /etc/rc.conf to enable the jail on system startup.</p>
+<pre><code>jail_enable=&quot;YES&quot;
+jail_list=&quot;wg&quot;
+</code></pre></li>
+</ul>
+<h3 id="on-the-jails-filesystem">On the Jail&rsquo;s Filesystem</h3>
+<ul>
+<li>Pre-edit the jail&rsquo;s /etc/rc.conf (/vm/wg/etc/rc.conf on the host) to configure its IP address/default gateway address and enable packet forwarding (router) function.
+<pre><code>ifconfig_epair0a=&quot;192.168.20.2/24&quot;
+defaultrouter=&quot;192.168.20.1&quot;
+gateway_enable=&quot;YES&quot;
+</code></pre></li>
+</ul>
+<h2 id="apply-configurations-and-start-the-jail">Apply Configurations and Start the Jail</h2>
+<p>Once the jail configurations on the host and the jail&rsquo;s filesystem were finished, I ran the following commands to actually build the internal network, reload the firewall rules and start the jail.</p>
+<pre><code>$ sudo service netif cloneup
+$ sudo service pf reload
+$ sudo service jail start
+</code></pre><h2 id="install-and-configure-wireguard">Install and Configure WireGuard</h2>
+<h3 id="on-the-jail">On the Jail</h3>
+<p>Next I used <a href="https://www.freebsd.org/cgi/man.cgi?query=pkg(8)">pkg</a>&lsquo;s -j option to install WireGuard and libqrencode on the jail. The latter will be used for generating a QR code to pass WireGuard configuration to Android device.</p>
+<pre><code>$ sudo pkg -j wg install wireguard libqrencode
+</code></pre><p>Then, finally I logged in to the jail and configured WireGuard. See <a href="https://genneko.github.io/playing-with-bsd/networking/freebsd-wireguard-android/#configure-wireguard">this article</a> for more details.</p>
+<pre><code>$ sudo jexec -l wg
+&lt;root@wg&gt;# cd /usr/local/etc/wireguard/
+&lt;root@wg&gt;# wg genkey | tee wg.private | wg pubkey &gt; wg.public
+&lt;root@wg&gt;# wg genkey | tee android.private | wg pubkey &gt; android.public
+&lt;root@wg&gt;# vi wg0.conf
+&lt;root@wg&gt;# chmod 400 *.private *.conf
+&lt;root@wg&gt;# sysrc wireguard_enable=&quot;YES&quot;
+&lt;root@wg&gt;# sysrc wireguard_interfaces=&quot;wg0&quot;
+</code></pre><p>[wg0.conf]</p>
+<pre><code>[Interface]
+Address = 192.168.250.1/32
+PrivateKey = &lt;content of wg.private&gt;
+ListenPort = 51820
+   
+[Peer]
+PublicKey = &lt;content of android.public&gt;
+AllowedIPs = 192.168.250.2/32
+</code></pre><p>[android.conf]</p>
+<pre><code>[Interface]
+Address = 192.168.250.2/32
+PrivateKey = &lt;content of android.private&gt;
+DNS = 192.168.10.1
+   
+[Peer]
+PublicKey = &lt;content of wg.public&gt;
+AllowedIPs = 0.0.0.0/0,::/0
+Endpoint = wg.example.com:51820
+</code></pre><h3 id="on-the-android-device">On the Android Device</h3>
+<p>Install WireGuard App from Google Play.<br>
+<a href="https://play.google.com/store/apps/details?id=com.wireguard.android">https://play.google.com/store/apps/details?id=com.wireguard.android</a></p>
+<p>Then configure Android app using a QR code generated by qrencode. See <a href="https://genneko.github.io/playing-with-bsd/networking/freebsd-wireguard-android/#android-1">this article</a> for more details.</p>
+<pre><code>&lt;root@wg&gt;# qrencode -t ansi &lt; android.conf
+</code></pre><h2 id="references">References</h2>
+<ul>
+<li>
+<p>WireGuard<br>
+<a href="https://www.wireguard.com/">https://www.wireguard.com/</a></p>
+</li>
+<li>
+<p>genneko: Learning Notes on FreeBSD Jails<br>
+<a href="https://genneko.github.io/playing-with-bsd/system/learning-notes-on-jails/">https://genneko.github.io/playing-with-bsd/system/learning-notes-on-jails/</a></p>
+</li>
+<li>
+<p>genneko: WireGuard on FreeBSD Quick Look Part 2: Android Remote Access<br>
+<a href="https://genneko.github.io/playing-with-bsd/networking/freebsd-wireguard-android/">https://genneko.github.io/playing-with-bsd/networking/freebsd-wireguard-android/</a></p>
+</li>
+</ul>
+<h2 id="revision-history">Revision History</h2>
+<ul>
+<li>2020-04-26: Created</li>
+</ul>
+
+    </article>
+
+    
+
+
+    <ul class="pager article-pager">
+      <li class="pager-newer pager-noitem">&lt; Newer</li>
+      <li class="pager-older">
+        <a href="https://genneko.github.io/playing-with-bsd/application/running-xapps-on-a-jail/" data-toggle="tooltip" data-placement="top" title="Running X Applications on a Jail created with Bastille">Older &gt;</a>
+      </li>
+    </ul>
+  </div>
+
+
+<div class="site-footer">
+  <div class="copyright">&copy; Copyright 2017 - 2020 genneko</div>
+  <ul class="site-footer-items">
+    <li class="site-footer-item-about"><a href="https://genneko.github.io/about/" title="About">About</a></li>
+  </ul>
+  <div class="powerdby">
+    Powered by <a href="https://gohugo.io/">Hugo</a> and <a href="https://github.com/taikii/whiteplain">Whiteplain</a>
+  </div>
+</div>
+
+
+</body>
+</html>

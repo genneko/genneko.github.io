@@ -7,10 +7,46 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>&amp;copy; Copyright 2017 - 2020 genneko</copyright>
-    <lastBuildDate>Sat, 11 Apr 2020 17:06:00 +0900</lastBuildDate>
+    <lastBuildDate>Sun, 26 Apr 2020 22:46:00 +0900</lastBuildDate>
     
 	<atom:link href="https://genneko.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>freebsd</title>
+      <link>https://genneko.github.io/tags/freebsd/</link>
+      <pubDate>Sun, 26 Apr 2020 22:46:00 +0900</pubDate>
+      
+      <guid>https://genneko.github.io/tags/freebsd/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>network</title>
+      <link>https://genneko.github.io/tags/network/</link>
+      <pubDate>Sun, 26 Apr 2020 22:46:00 +0900</pubDate>
+      
+      <guid>https://genneko.github.io/tags/network/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>vpn</title>
+      <link>https://genneko.github.io/tags/vpn/</link>
+      <pubDate>Sun, 26 Apr 2020 22:46:00 +0900</pubDate>
+      
+      <guid>https://genneko.github.io/tags/vpn/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>wireguard</title>
+      <link>https://genneko.github.io/tags/wireguard/</link>
+      <pubDate>Sun, 26 Apr 2020 22:46:00 +0900</pubDate>
+      
+      <guid>https://genneko.github.io/tags/wireguard/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>application</title>
@@ -18,15 +54,6 @@
       <pubDate>Sat, 11 Apr 2020 17:06:00 +0900</pubDate>
       
       <guid>https://genneko.github.io/tags/application/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>freebsd</title>
-      <link>https://genneko.github.io/tags/freebsd/</link>
-      <pubDate>Sat, 11 Apr 2020 17:06:00 +0900</pubDate>
-      
-      <guid>https://genneko.github.io/tags/freebsd/</guid>
       <description></description>
     </item>
     
@@ -153,33 +180,6 @@
       <pubDate>Wed, 23 Jan 2019 01:22:00 +0900</pubDate>
       
       <guid>https://genneko.github.io/tags/android/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>network</title>
-      <link>https://genneko.github.io/tags/network/</link>
-      <pubDate>Wed, 23 Jan 2019 01:22:00 +0900</pubDate>
-      
-      <guid>https://genneko.github.io/tags/network/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>vpn</title>
-      <link>https://genneko.github.io/tags/vpn/</link>
-      <pubDate>Wed, 23 Jan 2019 01:22:00 +0900</pubDate>
-      
-      <guid>https://genneko.github.io/tags/vpn/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>wireguard</title>
-      <link>https://genneko.github.io/tags/wireguard/</link>
-      <pubDate>Wed, 23 Jan 2019 01:22:00 +0900</pubDate>
-      
-      <guid>https://genneko.github.io/tags/wireguard/</guid>
       <description></description>
     </item>
     

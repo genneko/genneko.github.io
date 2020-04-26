@@ -13,6 +13,17 @@
     
     
     <item>
+      <title>Building a WireGuard Jail with the FreeBSD&#39;s Standard Tools</title>
+      <link>https://genneko.github.io/playing-with-bsd/networking/freebsd-wireguard-jail/</link>
+      <pubDate>Sun, 26 Apr 2020 22:46:00 +0900</pubDate>
+      
+      <guid>https://genneko.github.io/playing-with-bsd/networking/freebsd-wireguard-jail/</guid>
+      <description>Recently, I had an opportunity to build a WireGuard jail on a FreeBSD 12.1 host.
+As it was really quick and easy to setup and it has been working completely fine for a month, I&amp;rsquo;d like to share my experience with anyone interested in this topic.
+ I would like to use WireGuard app on my Android phone to access my home NAS (a vanilla FreeBSD server) via the WireGuard tunnel and reach the Internet through the tunnel too.</description>
+    </item>
+    
+    <item>
       <title>Running X Applications on a Jail created with Bastille</title>
       <link>https://genneko.github.io/playing-with-bsd/application/running-xapps-on-a-jail/</link>
       <pubDate>Sat, 11 Apr 2020 17:06:00 +0900</pubDate>
