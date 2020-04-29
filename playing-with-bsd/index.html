@@ -55,6 +55,49 @@
   <div class="main" role="main">
     <section class="list section-list">
       <article class="article">
+        <a href="https://genneko.github.io/playing-with-bsd/networking/freebsd-vlan/" class="article-titles">
+          <h2 class="article-title">Understanding VLAN Configuration on FreeBSD</h2>
+          
+        </a>
+        <ul class="article-meta">
+          <li class="article-meta-date"><time>2020-04-29</time>
+          
+          </li>
+          <li class="article-meta-tags">
+            <a href="https://genneko.github.io/tags/freebsd/">
+              <i class="fas fa-tag"></i>
+              freebsd
+            </a>&nbsp;
+          </li>
+          <li class="article-meta-tags">
+            <a href="https://genneko.github.io/tags/jail/">
+              <i class="fas fa-tag"></i>
+              jail
+            </a>&nbsp;
+          </li>
+          <li class="article-meta-tags">
+            <a href="https://genneko.github.io/tags/network/">
+              <i class="fas fa-tag"></i>
+              network
+            </a>&nbsp;
+          </li>
+          <li class="article-meta-tags">
+            <a href="https://genneko.github.io/tags/vlan/">
+              <i class="fas fa-tag"></i>
+              vlan
+            </a>&nbsp;
+          </li>
+        </ul>
+        <div class="article-content">
+          Until recently, I&rsquo;ve never had a chance to use VLANs on FreeBSD hosts, though I sometimes configure them on ethernet switches.
+But when I was playing with vnet jails, I suddenly got interested in VLAN configuration on FreeBSD and experimented with it for some time.
+I wrote this short article to summarize my current understanding of how to configure VLANs on FreeBSD.
+Terminology I think the word VLAN is being used in at least two different senses.
+        </div>
+        <div class="article-readmore"><a href="https://genneko.github.io/playing-with-bsd/networking/freebsd-vlan/">Read more...</a></div>
+        <div class="article-floatclear"></div>
+      </article>
+      <article class="article">
         <a href="https://genneko.github.io/playing-with-bsd/networking/freebsd-wireguard-jail/" class="article-titles">
           <h2 class="article-title">Building a WireGuard Jail with the FreeBSD&#39;s Standard Tools</h2>
           
@@ -463,50 +506,6 @@ NOTE: WireGuard is still in early stage of development. Android app is clearly m
 2020-04-26: I wrote a new post on building a WireGuard jail with the FreeBSD&rsquo;s standard tools.
         </div>
         <div class="article-readmore"><a href="https://genneko.github.io/playing-with-bsd/networking/freebsd-wireguard-android/">Read more...</a></div>
-        <div class="article-floatclear"></div>
-      </article>
-      <article class="article">
-        <a href="https://genneko.github.io/playing-with-bsd/networking/freebsd-wireguard-quicklook/" class="article-titles">
-          <h2 class="article-title">WireGuard on FreeBSD Quick Look: Testing VPN in Jail Network</h2>
-          
-        </a>
-        <ul class="article-meta">
-          <li class="article-meta-date"><time>2019-01-20</time>
-          
-          <span class="updated">Update: 2019-05-29</span>
-          
-          </li>
-          <li class="article-meta-tags">
-            <a href="https://genneko.github.io/tags/freebsd/">
-              <i class="fas fa-tag"></i>
-              freebsd
-            </a>&nbsp;
-          </li>
-          <li class="article-meta-tags">
-            <a href="https://genneko.github.io/tags/network/">
-              <i class="fas fa-tag"></i>
-              network
-            </a>&nbsp;
-          </li>
-          <li class="article-meta-tags">
-            <a href="https://genneko.github.io/tags/vpn/">
-              <i class="fas fa-tag"></i>
-              vpn
-            </a>&nbsp;
-          </li>
-          <li class="article-meta-tags">
-            <a href="https://genneko.github.io/tags/wireguard/">
-              <i class="fas fa-tag"></i>
-              wireguard
-            </a>&nbsp;
-          </li>
-        </ul>
-        <div class="article-content">
-          WireGuard is a new VPN application which focuses on simplicity thus security and speed. Although it was initially developed as a Linux kernel feature, now it has a userspace implementation in Go and binary packages are available for FreeBSD.
-I used this weekend to have a quick look at it on FreeBSD 12.0.
-This time I focused on site-to-site VPN setup. Maybe I will try remote-access VPN configuration in the near future.
-        </div>
-        <div class="article-readmore"><a href="https://genneko.github.io/playing-with-bsd/networking/freebsd-wireguard-quicklook/">Read more...</a></div>
         <div class="article-floatclear"></div>
       </article>
     </section>

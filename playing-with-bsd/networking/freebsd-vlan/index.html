@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <title>Understanding VLAN Configuration on FreeBSD - genneko</title>
+  <meta property="og:title" content="Understanding VLAN Configuration on FreeBSD - genneko" />
+  <meta name="twitter:title" content="Understanding VLAN Configuration on FreeBSD - genneko" />
+  <meta name="description" content="Until recently, I&rsquo;ve never had a chance to use VLANs on FreeBSD hosts, though I sometimes configure them on ethernet switches.
+But when I was playing with vnet jails, I suddenly got interested in VLAN configuration on FreeBSD and experimented with it for some time.
+I wrote this short article to summarize my current understanding of how to configure VLANs on FreeBSD.
+Terminology I think the word VLAN is being used in at least two different senses.">
+  <meta property="og:description" content="Until recently, I&rsquo;ve never had a chance to use VLANs on FreeBSD hosts, though I sometimes configure them on ethernet switches.
+But when I was playing with vnet jails, I suddenly got interested in VLAN configuration on FreeBSD and experimented with it for some time.
+I wrote this short article to summarize my current understanding of how to configure VLANs on FreeBSD.
+Terminology I think the word VLAN is being used in at least two different senses.">
+  <meta name="twitter:description" content="Until recently, I&rsquo;ve never had a chance to use VLANs on FreeBSD hosts, though I sometimes configure them on ethernet switches.
+But when I was playing with vnet jails, I suddenly got interested …">
+  <meta name="author" content="genneko"/>
+  <meta property="og:site_name" content="genneko" />
+  <meta property="og:url" content="https://genneko.github.io/playing-with-bsd/networking/freebsd-vlan/" />
+  <meta property="og:type" content="article" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="generator" content="Hugo 0.69.0" />
+
+  <link rel="stylesheet" href="https://genneko.github.io/css/style.css" media="all" />
+  <link rel="stylesheet" href="https://genneko.github.io/css/syntax.css" media="all" />
+  <link rel="stylesheet" href="https://genneko.github.io/css/custom.css" media="all" />
+
+  <script src="https://genneko.github.io/js/script.js"></script>
+  <script src="https://genneko.github.io/js/custom.js"></script>
+  <script defer src="https://genneko.github.io/js/fontawesome.js"></script>
+</head>
+
+<body>
+
+<header class="site-header">
+  <nav class="site-navi">
+    <img class="site-icon" src="https://genneko.github.io/images/genneko-icon.png">
+    <h1 class="site-title"><a href="https://genneko.github.io/">genneko</a></h1>
+    <ul class="site-navi-items">
+      <li class="site-navi-item-playing-with-bsd"><a href="https://genneko.github.io/playing-with-bsd/" title="Playing with BSD">Playing with BSD</a></li>
+      <li class="site-navi-item-tags"><a href="https://genneko.github.io/tags/" title="Tags">Tags</a></li>
+      <li class="site-navi-item-archives"><a href="https://genneko.github.io/archives/" title="Archives">Archives</a></li>
+      <li class="site-navi-item-about"><a href="https://genneko.github.io/about/" title="About">About</a></li>
+    </ul>
+  </nav>
+</header>
+<hr class="site-header-bottom">
+
+
+  <div class="main" role="main">
+    <article class="article">
+      
+      
+      <h1 class="article-title">Understanding VLAN Configuration on FreeBSD</h1>
+      
+      <hr class="article-title-bottom">
+      <ul class="article-meta">
+        <li class="article-meta-date"><time>2020-04-29</time>
+        
+        </li>
+        <li class="article-meta-tags">
+          <a href="https://genneko.github.io/tags/freebsd/">
+            <i class="fas fa-tag"></i>
+            freebsd
+          </a>&nbsp;
+        </li>
+        <li class="article-meta-tags">
+          <a href="https://genneko.github.io/tags/jail/">
+            <i class="fas fa-tag"></i>
+            jail
+          </a>&nbsp;
+        </li>
+        <li class="article-meta-tags">
+          <a href="https://genneko.github.io/tags/network/">
+            <i class="fas fa-tag"></i>
+            network
+          </a>&nbsp;
+        </li>
+        <li class="article-meta-tags">
+          <a href="https://genneko.github.io/tags/vlan/">
+            <i class="fas fa-tag"></i>
+            vlan
+          </a>&nbsp;
+        </li>
+      </ul>
+      
+<aside class="toc">
+  <nav id="TableOfContents">
+  <ul>
+    <li><a href="#terminology">Terminology</a></li>
+    <li><a href="#target-topology">Target Topology</a></li>
+    <li><a href="#tldr">TL;DR</a>
+      <ul>
+        <li><a href="#etcrcconf">/etc/rc.conf</a></li>
+        <li><a href="#etcjailconf">/etc/jail.conf</a></li>
+        <li><a href="#switch">Switch</a></li>
+      </ul>
+    </li>
+    <li><a href="#learn-by-manual-configuration">Learn by Manual Configuration</a></li>
+    <li><a href="#additional-topics">Additional Topics</a>
+      <ul>
+        <li><a href="#allow-the-host-to-access-the-jails-directly">Allow the Host to Access the Jails Directly</a></li>
+        <li><a href="#let-the-host-route-traffic-between-jail-vlans">Let the Host Route Traffic Between Jail VLANs</a></li>
+        <li><a href="#do-not-bridge-the-parent-interface-of-the-vlans">Do not bridge the parent interface of the VLANs</a></li>
+      </ul>
+    </li>
+    <li><a href="#references">References</a></li>
+    <li><a href="#revision-history">Revision History</a></li>
+  </ul>
+</nav>
+</aside>
+      <p>Until recently, I&rsquo;ve never had a chance to use VLANs on FreeBSD hosts, though I sometimes configure them on ethernet switches.</p>
+<p>But when I was playing with vnet jails, I suddenly got interested in VLAN configuration on FreeBSD and experimented with it for some time.</p>
+<p>I wrote this short article to summarize my current understanding of how to configure VLANs on FreeBSD.</p>
+<h2 id="terminology">Terminology</h2>
+<p>I think the word VLAN is being used in at least two different senses.</p>
+<p>In a narrow sense, it stands for IEEE 802.Q vlan tagging.<br>
+On FreeBSD, it&rsquo;s implemented as <a href="https://www.freebsd.org/cgi/man.cgi?query=if_vlan(4)">vlan(4)</a> logical interface (sub-interface).</p>
+<p>In a broader sense, the word VLAN is used to describe a layer 2 network which is physically or logically created in a wider network. On a single ethernet switch, a VLAN can be regarded as a virtual switch with a selected subset of its ethernet ports.
+On FreeBSD, it can be represented by <a href="https://www.freebsd.org/cgi/man.cgi?query=bridge(4)">bridge(4)</a>.</p>
+<p>In this article, I use the word in the latter sense. Thus, the words VLAN and bridge are interchangeable in most cases.</p>
+<p>For the VLAN in a narrow sense, I use &ldquo;tagged or trunk ports (interfaces)&quot;.</p>
+<h2 id="target-topology">Target Topology</h2>
+<p>I set my goal here to create the following network topology with a ethernet switch, a FreeBSD host and vnet jails on it.</p>
+<p>The switch has the layer3 capability and acts a router on this network. Later, I will also try to have the host forward IP traffic between VLANs.</p>
+<p>As I&rsquo;m not a network engineer (nor an engineer of any kind), there might be something which makes no sense in real network. But anyway I&rsquo;m going for it.</p>
+<p><img src="https://genneko.github.io/images/freebsd-vlan/vlan-bridges6-s.png" alt="Target Topology"></p>
+<p>Here are some notes and assumptions.</p>
+<ul>
+<li>
+<p>There are four VLANs and corresponding IP subnets on this network.<br>
+(vlan 1, 10, 20, 30 and subnet 192.168.1.0/24, 192.168.10.0/24, 192.168.20.0/24, 192.168.30.0/24)</p>
+<ul>
+<li>
+<p>Vlan 1 (192.168.1.0/24) is only used on the link between the host and the switch and all traffic on the VLAN is untagged.</p>
+</li>
+<li>
+<p>Vlan 10, 20 and 30 are distributed across the network. They exist physically on the switch ports and virtually inside the host as the bridged jail networks.<br>
+Both parts of those VLANs are connected by a trunk (tagged) link between the host and the switch, which delivers 802.1Q tagged packets containing VLAN ID 10, 20 or 30 in addition to untagged (native) vlan 1 traffic.</p>
+</li>
+</ul>
+</li>
+<li>
+<p>Traffic between different subnets is always going through the switch, which is the only router on the network.<br>
+The gateway addresses for the VLANs are:</p>
+<ul>
+<li>vlan 1 - 192.168.1.2</li>
+<li>vlan 10 - 192.168.10.2</li>
+<li>vlan 20 - 192.168.20.2</li>
+<li>vlan 30 - 192.168.30.2</li>
+</ul>
+</li>
+<li>
+<p>The host has only a single IP address (192.168.1.1) on em0.<br>
+It cannot reach the jails directly because it doesn&rsquo;t have any address in the jail&rsquo;s subnet.
+Assigning IP addresses on the bridge interfaces lets the host access the jails directly. But in this example, the host communicates with the jalis via the switch (the host&rsquo;s default gateway 192.168.1.2).</p>
+</li>
+<li>
+<p>Each vnet jail is connected to the corresponding bridge with <a href="https://www.freebsd.org/cgi/man.cgi?query=epair(4)">epair(4)</a>.<br>
+As an epair has &lsquo;a&rsquo; and &lsquo;b&rsquo; ends (e.g. epair0a and epair0b), I decided to attach &lsquo;b&rsquo; ends (&lsquo;b&rsquo; for &lsquo;bridge&rsquo;) to bridges and &lsquo;a&rsquo; ends to jails.</p>
+</li>
+</ul>
+<h2 id="tldr">TL;DR</h2>
+<p>In short, I could achieve the goal by adding the following lines in the standard configuration files.</p>
+<h3 id="etcrcconf">/etc/rc.conf</h3>
+<p>The host&rsquo;s part of the VLANs can be configured in this way.</p>
+<pre><code>#
+# Create
+#   3 bridges (VLANs)
+#   6 epairs
+#   3 802.1Q VLAN interfaces
+#
+cloned_interfaces=&quot;bridge10 bridge20 bridge30 epair101 epair102 epair201 epair202 epair301 epair302 em0.10 em0.20 em0.30&quot;
+
+#
+# Assign an IP address to the host's untagged (native) interface.
+# Point the default gateway to the switch's vlan 1 address.
+#
+ifconfig_em0=&quot;192.168.1.1/24&quot;
+defaultrouter=&quot;192.168.1.2&quot;
+
+#
+# Bring up all interfaces to be added to the bridges.
+# 'a' sides of the epairs (epairXa) will be up when they are assigned
+# IP addresses in the jails.
+#
+ifconfig_em0_10=&quot;up&quot;
+ifconfig_em0_20=&quot;up&quot;
+ifconfig_em0_30=&quot;up&quot;
+ifconfig_epair101b=&quot;up&quot;
+ifconfig_epair102b=&quot;up&quot;
+ifconfig_epair201b=&quot;up&quot;
+ifconfig_epair202b=&quot;up&quot;
+ifconfig_epair301b=&quot;up&quot;
+ifconfig_epair302b=&quot;up&quot;
+
+#
+# Add tagged(em0.x) and untagged(epairXb's) members to the bridges.
+#
+ifconfig_bridge10=&quot;addm em0.10 addm epair101b addm epair102b up&quot;
+ifconfig_bridge20=&quot;addm em0.20 addm epair201b addm epair202b up&quot;
+ifconfig_bridge30=&quot;addm em0.30 addm epair301b addm epair302b up&quot;
+</code></pre><h3 id="etcjailconf">/etc/jail.conf</h3>
+<p>Each jail is given the &lsquo;a&rsquo;-end of the corresponding epair by &lsquo;vnet.interface&rsquo;.<br>
+For brevity, I use &lsquo;exec.start&rsquo; here to assign IP and gateway addresses to the jails, but it might be more common to do this in each jail&rsquo;s /etc/rc.conf.</p>
+<pre><code>exec.start = &quot;/bin/sh /etc/rc&quot;;
+exec.stop = &quot;/bin/sh /etc/rc.shutdown&quot;;
+exec.clean;
+mount.devfs;
+
+host.hostname = $name;
+path = &quot;/vm/$name&quot;;
+exec.consolelog = &quot;/var/log/jail_${name}_console.log&quot;;
+
+vnet;
+vnet.interface = $vif;
+
+exec.start += &quot;ifconfig $vif $addr&quot;;
+exec.start += &quot;route add default $gw&quot;;
+
+# workaround
+# https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=238326
+exec.prestop += &quot;ifconfig $vif -vnet $name&quot;;
+
+v101 { $vif = &quot;epair101a&quot;; $addr = &quot;192.168.10.11/24&quot;; $gw = &quot;192.168.10.2&quot;; }
+v102 { $vif = &quot;epair102a&quot;; $addr = &quot;192.168.10.12/24&quot;; $gw = &quot;192.168.10.2&quot;; }
+v201 { $vif = &quot;epair201a&quot;; $addr = &quot;192.168.20.11/24&quot;; $gw = &quot;192.168.20.2&quot;; }
+v202 { $vif = &quot;epair202a&quot;; $addr = &quot;192.168.20.12/24&quot;; $gw = &quot;192.168.20.2&quot;; }
+v301 { $vif = &quot;epair301a&quot;; $addr = &quot;192.168.30.11/24&quot;; $gw = &quot;192.168.30.2&quot;; }
+v302 { $vif = &quot;epair302a&quot;; $addr = &quot;192.168.30.12/24&quot;; $gw = &quot;192.168.30.2&quot;; }
+</code></pre><h3 id="switch">Switch</h3>
+<p>This is a pseudo-config of an imaginary switch.</p>
+<pre><code>vlan 10
+vlan 20
+vlan 30
+
+interface port 1
+ switchport mode trunk
+ switchport trunk allowed vlan 10,20,30
+
+interface range port 2 - 4
+ switchport mode access
+ switchport access vlan 10
+
+interface range port 5 - 7
+ switchport mode access
+ switchport access vlan 20
+
+interface range port 8 - 10
+ switchport mode access
+ switchport access vlan 30
+
+interface vlan 1
+ ip address 192.168.1.2/24
+
+interface vlan 10
+ ip address 192.168.10.2/24
+
+interface vlan 20
+ ip address 192.168.20.2/24
+
+interface vlan 30
+ ip address 192.168.30.2/24
+</code></pre><p>That&rsquo;s it!<br>
+Surprisingly, the amount of required configuration is much less than I expected.</p>
+<h2 id="learn-by-manual-configuration">Learn by Manual Configuration</h2>
+<p>Next, I&rsquo;m trying to explain each step of the VLAN configuration.<br>
+Manual configuration becomes somewhat lengthy but it will show you how FreeBSD constructs VLANs.</p>
+<ol>
+<li>
+<p>Let&rsquo;s start with the following configuration.<br>
+The host has only the em0 configured while the switch has all VLANs and IP addresses properly setup.
+<img src="https://genneko.github.io/images/freebsd-vlan/vlan-bridges1-s.png" alt="Host connected to a switch"></p>
+</li>
+<li>
+<p>Create three bridges on the host, each of which forms a separate VLAN.</p>
+<pre><code>ifconfig bridge10 create
+ifconfig bridge20 create
+ifconfig bridge30 create
+</code></pre><p><img src="https://genneko.github.io/images/freebsd-vlan/vlan-bridges2-s.png" alt="Create bridges (vlans)"></p>
+</li>
+<li>
+<p>Create 802.1Q logical interfaces for vlan 10, 20 and 30 on the parent interface (em0) and add them to the bridges (VLANs).<br>
+Those logical interfaces become trunk (tagged) ports on the bridges.</p>
+<pre><code>ifconfig em0.10 create
+ifconfig em0.20 create
+ifconfig em0.30 create
+ifconfig em0.10 up
+ifconfig em0.20 up
+ifconfig em0.30 up
+ifconfig bridge10 addm em0.10 up
+ifconfig bridge20 addm em0.20 up
+ifconfig bridge30 addm em0.30 up
+</code></pre><p><img src="https://genneko.github.io/images/freebsd-vlan/vlan-bridges3-s.png" alt="Assign tagged ports to vlans"></p>
+</li>
+<li>
+<p>Create virtual interfaces (epairs) for the jails and add &lsquo;b&rsquo; ends of them to the bridges (VLANs) as access (untagged) ports.</p>
+<pre><code>ifconfig epair101 create
+ifconfig epair102 create
+ifconfig epair201 create
+ifconfig epair202 create
+ifconfig epair301 create
+ifconfig epair302 create
+ifconfig epair101b up
+ifconfig epair102b up
+ifconfig epair201b up
+ifconfig epair202b up
+ifconfig epair301b up
+ifconfig epair302b up
+ifconfig bridge10 addm epair101b addm epair102b
+ifconfig bridge20 addm epair201b addm epair202b
+ifconfig bridge30 addm epair301b addm epair302b
+</code></pre><p><img src="https://genneko.github.io/images/freebsd-vlan/vlan-bridges4-s.png" alt="Assign untagged ports to vlans"></p>
+</li>
+<li>
+<p>Create the vnet jails and move &lsquo;a&rsquo; ends of the epairs from the host to the jails.<br>
+See <a href="https://www.freebsd.org/cgi/man.cgi?query=jail(8)">jail(8)</a> for the command to manually creating/destroying jails.</p>
+<pre><code>jail -c name=v101 vnet persist
+jail -c name=v102 vnet persist
+jail -c name=v201 vnet persist
+jail -c name=v202 vnet persist
+jail -c name=v301 vnet persist
+jail -c name=v302 vnet persist
+ifconfig epair101a vnet v101
+ifconfig epair102a vnet v102
+ifconfig epair201a vnet v201
+ifconfig epair202a vnet v202
+ifconfig epair301a vnet v301
+ifconfig epair302a vnet v302
+</code></pre><p><img src="https://genneko.github.io/images/freebsd-vlan/vlan-bridges5-s.png" alt="Attach untagged ports to the jails"></p>
+</li>
+<li>
+<p>Assign IP addresses to the epairs on jails.</p>
+<pre><code>jexec v101 ifconfig epair101a 192.168.10.11/24
+jexec v102 ifconfig epair102a 192.168.10.12/24
+jexec v201 ifconfig epair201a 192.168.20.11/24
+   
+jexec v301 ifconfig epair301a 192.168.30.11/24
+jexec v302 ifconfig epair302a 192.168.30.12/24
+</code></pre><p><img src="https://genneko.github.io/images/freebsd-vlan/vlan-bridges6-s.png" alt="Assign IP addresses to the jails"></p>
+</li>
+<li>
+<p>Done!</p>
+</li>
+</ol>
+<h2 id="additional-topics">Additional Topics</h2>
+<h3 id="allow-the-host-to-access-the-jails-directly">Allow the Host to Access the Jails Directly</h3>
+<p>To let the host directly access the jails, assign an IP address to each bridge interface.<br>
+This can be done by adding <code>inet 192.168.xx.1/24</code> to the following lines in the host&rsquo;s /etc/rc.conf.</p>
+<pre><code>ifconfig_bridge10=&quot;inet 192.168.10.1/24 addm em0.10 addm epair101b addm epair102b up&quot;
+ifconfig_bridge20=&quot;inet 192.168.20.1/24 addm em0.20 addm epair201b addm epair202b up&quot;
+ifconfig_bridge30=&quot;inet 192.168.30.1/24 addm em0.30 addm epair301b addm epair302b up&quot;
+</code></pre><p>You can also do it manually.</p>
+<pre><code>ifconfig bridge10 inet 192.168.10.1/24
+ifconfig bridge20 inet 192.168.20.1/24
+ifconfig bridge30 inet 192.168.30.1/24
+</code></pre><p><img src="https://genneko.github.io/images/freebsd-vlan/vlan-bridges7-s.png" alt="Assign IP addresses to the bridges"></p>
+<h3 id="let-the-host-route-traffic-between-jail-vlans">Let the Host Route Traffic Between Jail VLANs</h3>
+<p>At this point, the jails in different VLANs (subnets) can communicate each other but their packets have to go through the switch.<br>
+You can avoid the packets leaving the host by enabling the IP forwarding on the host and making it act as a router.</p>
+<p>After assigning IP addresses to the bridges, add the following line to the host&rsquo;s /etc/rc.conf.</p>
+<pre><code>gateway_enable=&quot;YES&quot;
+</code></pre><p>To manually enable the IP forwarding, use the following commands.</p>
+<pre><code>sysctl net.inet.ip.fowarding=1
+</code></pre><blockquote>
+<p><strong>NOTE</strong>: To route packets between the bridges (VLANs), make sure to assign IP addresses to the bridges as described in the previous section, not their member interfaces such as em0.10.</p>
+</blockquote>
+<p>Then change the default gateway for each jail from the switch&rsquo;s vlan address to the host&rsquo;s bridge interface address.</p>
+<pre><code>v101 { $vif = &quot;epair101a&quot;; $addr = &quot;192.168.10.11/24&quot;; $gw = &quot;192.168.10.1&quot;; }
+v102 { $vif = &quot;epair102a&quot;; $addr = &quot;192.168.10.12/24&quot;; $gw = &quot;192.168.10.1&quot;; }
+v201 { $vif = &quot;epair201a&quot;; $addr = &quot;192.168.20.11/24&quot;; $gw = &quot;192.168.20.1&quot;; }
+v202 { $vif = &quot;epair202a&quot;; $addr = &quot;192.168.20.12/24&quot;; $gw = &quot;192.168.20.1&quot;; }
+v301 { $vif = &quot;epair301a&quot;; $addr = &quot;192.168.30.11/24&quot;; $gw = &quot;192.168.30.1&quot;; }
+v302 { $vif = &quot;epair302a&quot;; $addr = &quot;192.168.30.12/24&quot;; $gw = &quot;192.168.30.1&quot;; }
+</code></pre><p>To change them dynamically, run the following commands.</p>
+<pre><code>jexec v101 route delete default 192.168.10.2
+jexec v101 route add default 192.168.10.1
+jexec v102 route delete default 192.168.10.2
+jexec v102 route add default 192.168.10.1
+jexec v201 route delete default 192.168.20.2
+jexec v201 route add default 192.168.20.1
+jexec v202 route delete default 192.168.20.2
+jexec v202 route add default 192.168.20.1
+jexec v301 route delete default 192.168.30.2
+jexec v301 route add default 192.168.30.1
+jexec v302 route delete default 192.168.30.2
+jexec v302 route add default 192.168.30.1
+</code></pre><h3 id="do-not-bridge-the-parent-interface-of-the-vlans">Do not bridge the parent interface of the VLANs</h3>
+<p>When you use 802.1Q VLAN tagged interfaces created on a physical interface (parent interface), make sure not to add the parent interface to any bridge.</p>
+<p>If you do this, ARP resolutions on the tagged interfaces seem to cease working as reported in the following PR/Forum Threads.</p>
+<ul>
+<li><a href="https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=240106">Bug 240106 - VNET issue with ARP and routing sockets in jails</a></li>
+<li><a href="https://forums.freebsd.org/threads/vnet-arp-replies-are-lost.71082/">FreeBSD Forum: VNET ARP replies are lost</a></li>
+<li><a href="https://forums.freebsd.org/threads/bridge-epair-not-passing-through-tagged-vlan-traffic-between-host-and-vnet-jail.71646/">FreeBSD Forum: Bridge/epair not passing through tagged VLAN traffic between host and VNET jail</a></li>
+</ul>
+<h2 id="references">References</h2>
+<ul>
+<li>
+<p>FreeBSD Handbook: VLANs<br>
+<a href="https://www.freebsd.org/doc/handbook/network-vlan.html">https://www.freebsd.org/doc/handbook/network-vlan.html</a></p>
+</li>
+<li>
+<p>genneko: Learning Notes on FreeBSD Jails<br>
+<a href="https://genneko.github.io/playing-with-bsd/system/learning-notes-on-jails/">https://genneko.github.io/playing-with-bsd/system/learning-notes-on-jails/</a></p>
+</li>
+</ul>
+<h2 id="revision-history">Revision History</h2>
+<ul>
+<li>2020-04-29: Created</li>
+</ul>
+
+    </article>
+
+    
+
+
+    <ul class="pager article-pager">
+      <li class="pager-newer pager-noitem">&lt; Newer</li>
+      <li class="pager-older">
+        <a href="https://genneko.github.io/playing-with-bsd/networking/freebsd-wireguard-jail/" data-toggle="tooltip" data-placement="top" title="Building a WireGuard Jail with the FreeBSD&#39;s Standard Tools">Older &gt;</a>
+      </li>
+    </ul>
+  </div>
+
+
+<div class="site-footer">
+  <div class="copyright">&copy; Copyright 2017 - 2020 genneko</div>
+  <ul class="site-footer-items">
+    <li class="site-footer-item-about"><a href="https://genneko.github.io/about/" title="About">About</a></li>
+  </ul>
+  <div class="powerdby">
+    Powered by <a href="https://gohugo.io/">Hugo</a> and <a href="https://github.com/taikii/whiteplain">Whiteplain</a>
+  </div>
+</div>
+
+
+</body>
+</html>

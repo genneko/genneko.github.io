@@ -7,10 +7,22 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>&amp;copy; Copyright 2017 - 2020 genneko</copyright>
-    <lastBuildDate>Sun, 26 Apr 2020 22:46:00 +0900</lastBuildDate>
+    <lastBuildDate>Wed, 29 Apr 2020 23:53:00 +0900</lastBuildDate>
     
 	<atom:link href="https://genneko.github.io/tags/freebsd/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Understanding VLAN Configuration on FreeBSD</title>
+      <link>https://genneko.github.io/playing-with-bsd/networking/freebsd-vlan/</link>
+      <pubDate>Wed, 29 Apr 2020 23:53:00 +0900</pubDate>
+      
+      <guid>https://genneko.github.io/playing-with-bsd/networking/freebsd-vlan/</guid>
+      <description>Until recently, I&amp;rsquo;ve never had a chance to use VLANs on FreeBSD hosts, though I sometimes configure them on ethernet switches.
+But when I was playing with vnet jails, I suddenly got interested in VLAN configuration on FreeBSD and experimented with it for some time.
+I wrote this short article to summarize my current understanding of how to configure VLANs on FreeBSD.
+Terminology I think the word VLAN is being used in at least two different senses.</description>
+    </item>
     
     <item>
       <title>Building a WireGuard Jail with the FreeBSD&#39;s Standard Tools</title>

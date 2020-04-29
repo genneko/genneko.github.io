@@ -3,27 +3,42 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>https://genneko.github.io/playing-with-bsd/networking/freebsd-wireguard-jail/</loc>
-    <lastmod>2020-04-26T22:46:00+09:00</lastmod>
-  </url>
-  
-  <url>
     <loc>https://genneko.github.io/tags/freebsd/</loc>
-    <lastmod>2020-04-26T22:46:00+09:00</lastmod>
+    <lastmod>2020-04-29T23:53:00+09:00</lastmod>
   </url>
   
   <url>
     <loc>https://genneko.github.io/</loc>
-    <lastmod>2020-04-26T22:46:00+09:00</lastmod>
+    <lastmod>2020-04-29T23:53:00+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://genneko.github.io/tags/jail/</loc>
+    <lastmod>2020-04-29T23:53:00+09:00</lastmod>
   </url>
   
   <url>
     <loc>https://genneko.github.io/tags/network/</loc>
-    <lastmod>2020-04-26T22:46:00+09:00</lastmod>
+    <lastmod>2020-04-29T23:53:00+09:00</lastmod>
   </url>
   
   <url>
     <loc>https://genneko.github.io/tags/</loc>
+    <lastmod>2020-04-29T23:53:00+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://genneko.github.io/playing-with-bsd/networking/freebsd-vlan/</loc>
+    <lastmod>2020-04-29T23:53:00+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://genneko.github.io/tags/vlan/</loc>
+    <lastmod>2020-04-29T23:53:00+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://genneko.github.io/playing-with-bsd/networking/freebsd-wireguard-jail/</loc>
     <lastmod>2020-04-26T22:46:00+09:00</lastmod>
   </url>
   
@@ -40,11 +55,6 @@
   <url>
     <loc>https://genneko.github.io/tags/application/</loc>
     <lastmod>2020-04-16T18:32:00+09:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://genneko.github.io/tags/jail/</loc>
-    <lastmod>2020-04-24T10:21:00+09:00</lastmod>
   </url>
   
   <url>
