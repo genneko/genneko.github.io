@@ -104,6 +104,7 @@ But when I was playing with vnet jails, I suddenly got interested …">
         <li><a href="#allow-the-host-to-access-the-jails-directly">Allow the Host to Access the Jails Directly</a></li>
         <li><a href="#let-the-host-route-traffic-between-jail-vlans">Let the Host Route Traffic Between Jail VLANs</a></li>
         <li><a href="#do-not-bridge-the-parent-interface-of-the-vlans">Do not bridge the parent interface of the VLANs</a></li>
+        <li><a href="#use-another-freebsd-host-to-emulate-the-switch">Use Another FreeBSD Host to Emulate the Switch</a></li>
       </ul>
     </li>
     <li><a href="#references">References</a></li>
@@ -395,7 +396,29 @@ jexec v302 route add default 192.168.30.1
 <li><a href="https://forums.freebsd.org/threads/vnet-arp-replies-are-lost.71082/">FreeBSD Forum: VNET ARP replies are lost</a></li>
 <li><a href="https://forums.freebsd.org/threads/bridge-epair-not-passing-through-tagged-vlan-traffic-between-host-and-vnet-jail.71646/">FreeBSD Forum: Bridge/epair not passing through tagged VLAN traffic between host and VNET jail</a></li>
 </ul>
-<h2 id="references">References</h2>
+<h3 id="use-another-freebsd-host-to-emulate-the-switch">Use Another FreeBSD Host to Emulate the Switch</h3>
+<p>If you don&rsquo;t have a switch at hand, you can setup another FreeBSD host to emulate it for the testing purpose.</p>
+<p>A minimal configuration for the second host to act like a simple layer 3 switch (or more exactly a router capable of handling VLAN tags).</p>
+<pre><code>cloned_interfaces=&quot;em0.10 em0.20 em0.30&quot;
+ifconfig_em0=&quot;192.168.1.2/24&quot;
+ifconfig_em0_10=&quot;inet 192.168.10.2/24&quot;
+ifconfig_em0_20=&quot;inet 192.168.20.2/24&quot;
+ifconfig_em0_30=&quot;inet 192.168.30.2/24&quot;
+gateway_enable=&quot;YES&quot;
+</code></pre><p>If the host has multiple physical interfaces, it can be more like a switch.</p>
+<pre><code>cloned_interfaces=&quot;bridge10 bridge20 bridge30 em0.10 em0.20 em0.30&quot;
+ifconfig_em0=&quot;192.168.1.2/24&quot;
+ifconfig_em0_10=&quot;up&quot;
+ifconfig_em0_20=&quot;up&quot;
+ifconfig_em0_30=&quot;up&quot;
+ifconfig_em1=&quot;up&quot;
+ifconfig_em2=&quot;up&quot;
+ifconfig_em3=&quot;up&quot;
+ifconfig_bridge10=&quot;inet 192.168.10.2/24 addm em0.10 addm em1 up&quot;
+ifconfig_bridge20=&quot;inet 192.168.20.2/24 addm em0.20 addm em2 up&quot;
+ifconfig_bridge30=&quot;inet 192.168.30.2/24 addm em0.30 addm em3 up&quot;
+gateway_enable=&quot;YES&quot;
+</code></pre><h2 id="references">References</h2>
 <ul>
 <li>
 <p>FreeBSD Handbook: VLANs<br>
