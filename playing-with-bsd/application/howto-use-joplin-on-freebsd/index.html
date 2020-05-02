@@ -9,11 +9,11 @@
   <meta name="description" content="This is a quick note on how I build and use the latest Joplin desktop app on FreeBSD.
 For my initial exploration of Joplin on FreeBSD, please refer to the previous post.
 Target Version The current target version of this article is Joplin Electron release v1.0.201 (Apr 2020).
-I confirmed that the app could be built using my fork at the tag freebsd-20200416. Building Joplin I take the following steps to build Joplin desktop on my FreeBSD 12.">
+I confirmed that the app could be built using my fork at the tag freebsd-20200421. Building Joplin I take the following steps to build Joplin desktop on my FreeBSD 12.">
   <meta property="og:description" content="This is a quick note on how I build and use the latest Joplin desktop app on FreeBSD.
 For my initial exploration of Joplin on FreeBSD, please refer to the previous post.
 Target Version The current target version of this article is Joplin Electron release v1.0.201 (Apr 2020).
-I confirmed that the app could be built using my fork at the tag freebsd-20200416. Building Joplin I take the following steps to build Joplin desktop on my FreeBSD 12.">
+I confirmed that the app could be built using my fork at the tag freebsd-20200421. Building Joplin I take the following steps to build Joplin desktop on my FreeBSD 12.">
   <meta name="twitter:description" content="This is a quick note on how I build and use the latest Joplin desktop app on FreeBSD.
 For my initial exploration of Joplin on FreeBSD, please refer to the previous post.
 Target Version The current …">
@@ -22,7 +22,7 @@ Target Version The current …">
   <meta property="og:url" content="https://genneko.github.io/playing-with-bsd/application/howto-use-joplin-on-freebsd/" />
   <meta property="og:type" content="article" />
   <meta name="twitter:card" content="summary" />
-  <meta name="generator" content="Hugo 0.69.0" />
+  <meta name="generator" content="Hugo 0.69.2" />
 
   <link rel="stylesheet" href="https://genneko.github.io/css/style.css" media="all" />
   <link rel="stylesheet" href="https://genneko.github.io/css/syntax.css" media="all" />
@@ -60,7 +60,7 @@ Target Version The current …">
       <ul class="article-meta">
         <li class="article-meta-date"><time>2020-01-15</time>
         
-        <span class="updated">Update: 2020-04-16</span>
+        <span class="updated">Update: 2020-05-02</span>
         
         </li>
         <li class="article-meta-tags">
@@ -104,7 +104,7 @@ Target Version The current …">
 <p>For my initial exploration of Joplin on FreeBSD, please refer to the <a href="https://genneko.github.io/playing-with-bsd/application/joplin-on-freebsd">previous post</a>.</p>
 <h2 id="target-version">Target Version</h2>
 <p>The current target version of this article is Joplin Electron release v1.0.201 (Apr 2020).<br>
-I confirmed that the app could be built using my fork at the tag <a href="https://github.com/genneko/joplin/releases/tag/freebsd-20200416">freebsd-20200416</a>.
+I confirmed that the app could be built using my fork at the tag <a href="https://github.com/genneko/joplin/releases/tag/freebsd-20200421">freebsd-20200421</a>.
 <img src="https://genneko.github.io/images/howto-use-joplin-on-freebsd/JoplinVersion.png" alt="Joplin Version"></p>
 <h2 id="building-joplin">Building Joplin</h2>
 <p>I take the following steps to build Joplin desktop on my FreeBSD 12.1-RELEASE system (with XFCE4 desktop).</p>
@@ -117,6 +117,13 @@ Now all dependencies can be installed from the FreeBSD&rsquo;s official packages
 <p><strong>NOTE</strong><br>
 As the electron7 port is pretty new, you might have to switch the package repository from &lsquo;quarterly&rsquo; to &lsquo;latest&rsquo; to install electron7.<br>
 Please refer to the <a href="https://www.freebsd.org/doc/handbook/pkgng-intro.html#quarterly-latest-branch">relevant section</a> of the FreeBSD Handbook.</p>
+</blockquote>
+<blockquote>
+<p><strong>NOTE</strong> (2020/5/2)<br>
+The recent update of the electron7 port to 7.2.2 seems to cause trouble.<br>
+Im my environment, Joplin doesn&rsquo;t start correctly with the version.<br>
+I&rsquo;m not sure what the cause is but if you have the same trouble, please try <a href="https://github.com/tagattie/FreeBSD-Electron/releases/tag/v7.1.14">7.1.14 on the pre-release repository</a>.
+If your system has currently 7.1.x, you can run <code>pkg lock electron7</code> to lock its version.</p>
 </blockquote>
 <p>Then I created symbolic links for compatibility.</p>
 <pre><code>cd /usr/local/bin
@@ -133,8 +140,8 @@ git checkout electron_freebsd
 </code></pre><blockquote>
 <p><strong>NOTE</strong><br>
 If the head of the branch cannot be built (it occurs from time to time), please try the tagged version which I confirmed to be built.<br>
-As of 16 April 2020, the latest confirmed tag is <a href="https://github.com/genneko/joplin/releases/tag/freebsd-20200416">freebsd-20200416</a> and it can be checked out as follows:</p>
-<pre><code>git checkout freebsd-20200416
+As of 16 April 2020, the latest confirmed tag is <a href="https://github.com/genneko/joplin/releases/tag/freebsd-20200421">freebsd-20200421</a> and it can be checked out as follows:</p>
+<pre><code>git checkout freebsd-20200421
 </code></pre></blockquote>
 </li>
 <li>
@@ -243,6 +250,7 @@ I changed selector from &lsquo;.ace_editor&rsquo; to &lsquo;div.ace_editor&rsquo
 <li>2020-04-12: Updated the target version to 1.0.199 and add a few notes</li>
 <li>2020-04-12: Updated the target version to 1.0.200.</li>
 <li>2020-04-16: Updated the target version to 1.0.201.</li>
+<li>2020-05-02: Added a note on electron7-7.2.2.</li>
 </ul>
 <section class="footnotes" role="doc-endnotes">
 <hr>
