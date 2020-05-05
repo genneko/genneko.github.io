@@ -155,8 +155,8 @@ The gateway addresses for the VLANs are:</p>
 </li>
 <li>
 <p>The host has only a single IP address (192.168.1.1) on em0.<br>
-It cannot reach the jails directly because it doesn&rsquo;t have any address in the jail&rsquo;s subnet.
-Assigning IP addresses on the bridge interfaces lets the host access the jails directly. But in this example, the host communicates with the jalis via the switch (the host&rsquo;s default gateway 192.168.1.2).</p>
+It cannot reach the jails directly because it doesn&rsquo;t have any address in the jail&rsquo;s subnet.<br>
+Instead, the host communicates with the jails via the switch (the host&rsquo;s default gateway 192.168.1.2).</p>
 </li>
 <li>
 <p>Each vnet jail is connected to the corresponding bridge with <a href="https://www.freebsd.org/cgi/man.cgi?query=epair(4)">epair(4)</a>.<br>
@@ -359,7 +359,7 @@ ifconfig bridge20 inet 192.168.20.1/24
 ifconfig bridge30 inet 192.168.30.1/24
 </code></pre><p><img src="https://genneko.github.io/images/freebsd-vlan/vlan-bridges7-s.png" alt="Assign IP addresses to the bridges"></p>
 <h3 id="let-the-host-route-traffic-between-jail-vlans">Let the Host Route Traffic Between Jail VLANs</h3>
-<p>At this point, the jails in different VLANs (subnets) can communicate each other but their packets have to go through the switch.<br>
+<p>At this point, the jails in different VLANs (subnets) can communicate each other but their packets still have to go through the switch.<br>
 You can avoid the packets leaving the host by enabling the IP forwarding on the host and making it act as a router.</p>
 <p>After assigning IP addresses to the bridges, add the following line to the host&rsquo;s /etc/rc.conf.</p>
 <pre><code>gateway_enable=&quot;YES&quot;
@@ -368,7 +368,7 @@ You can avoid the packets leaving the host by enabling the IP forwarding on the 
 </code></pre><blockquote>
 <p><strong>NOTE</strong>: To route packets between the bridges (VLANs), make sure to assign IP addresses to the bridges as described in the previous section, not their member interfaces such as em0.10.</p>
 </blockquote>
-<p>Then change the default gateway for each jail from the switch&rsquo;s vlan address to the host&rsquo;s bridge interface address.</p>
+<p>You also have to change the default gateway for each jail from the switch&rsquo;s vlan address to the host&rsquo;s bridge interface address.</p>
 <pre><code>v101 { $vif = &quot;epair101a&quot;; $addr = &quot;192.168.10.11/24&quot;; $gw = &quot;192.168.10.1&quot;; }
 v102 { $vif = &quot;epair102a&quot;; $addr = &quot;192.168.10.12/24&quot;; $gw = &quot;192.168.10.1&quot;; }
 v201 { $vif = &quot;epair201a&quot;; $addr = &quot;192.168.20.11/24&quot;; $gw = &quot;192.168.20.1&quot;; }
