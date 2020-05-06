@@ -132,6 +132,7 @@ This is also one of the reasons I use bridge/epair this time instead of netgraph
 <h2 id="configure-internal-network">Configure Internal Network</h2>
 <p>I created a bridge (bridge0) for the internal jail network (192.168.20.0/24) and an epair (epair0a/b), attached the &lsquo;b&rsquo; side of the epair to the bridge and assigned an IP address to the bridge.<br>
 Adding the IP address to the bridge0 makes it the third routed interface on the host and the address becomes the default gateway for the jail.</p>
+<p>[/etc/rc.conf]</p>
 <pre><code>cloned_interfaces=&quot;bridge0 epair0&quot;
 ifconfig_bridge0=&quot;inet 192.168.20.1/24 addm epair0b up&quot;
 ifconfig_epair0b=&quot;up&quot;
@@ -141,6 +142,7 @@ ifconfig_epair0b=&quot;up&quot;
 <p>But if you need only a single jail, it&rsquo;s not necessary to use the bridge.<br>
 You can connect the jail to the host directly with the epair by using the following configuration.<br>
 With this config, epair0b becomes the host&rsquo;s third routed interface.</p>
+<p>[/etc/rc.conf]</p>
 <pre><code>cloned_interfaces=&quot;epair0&quot;
 ifconfig_epair0b=&quot;inet 192.168.20.1/24&quot;
 </code></pre><p><img src="https://genneko.github.io/images/freebsd-wireguard-jail/wgjail-epair.png" alt="A jail directly connected with an epair"></p>
