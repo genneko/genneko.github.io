@@ -60,7 +60,7 @@ Target Version The current …">
       <ul class="article-meta">
         <li class="article-meta-date"><time>2020-01-15</time>
         
-        <span class="updated">Update: 2020-05-02</span>
+        <span class="updated">Update: 2020-05-13</span>
         
         </li>
         <li class="article-meta-tags">
@@ -112,15 +112,18 @@ I confirmed that the app could be built using my fork at the tag <a href="https:
 <li>
 <p>Install dependencies such as Electron and Nodejs.<br>
 Now all dependencies can be installed from the FreeBSD&rsquo;s official packages.</p>
-<pre><code>sudo pkg install electron7 node12 npm-node12 python vips
+<pre><code>sudo pkg install electron7 node12 npm-node12 python vips git rsync
 </code></pre><blockquote>
 <p><strong>NOTE</strong><br>
-As the electron7 port is pretty new, you might have to switch the package repository from &lsquo;quarterly&rsquo; to &lsquo;latest&rsquo; to install electron7.<br>
+To use the latest electron7 package, you might have to switch the package repository from &lsquo;quarterly&rsquo; to &lsquo;latest&rsquo; to install electron7.<br>
 Please refer to the <a href="https://www.freebsd.org/doc/handbook/pkgng-intro.html#quarterly-latest-branch">relevant section</a> of the FreeBSD Handbook.</p>
 </blockquote>
 <blockquote>
-<p><strong>NOTE</strong> (2020/5/2)<br>
-The recent update of the electron7 port to 7.2.2 seems to cause trouble.<br>
+<p><strong>NOTE</strong><br>
+(2020/5/13 Update) It turned out not to be the 7.2.2&rsquo;s fault.<br>
+When the electron7 port was upgrade from 7.1.x to 7.2.2, the sqlite3 native module was not rebuilt and Joplin couldn&rsquo;t find a file in ElectronClient/node_modules/sqlite3/lib/binding/electron-v7.2-freebsd-x64 directory.<br>
+Rebuilding Joplin after deleting ElectronClient/node_modules/sqlite3 directory solved the problem.</p>
+<p>(2020/5/2) The recent update of the electron7 port to 7.2.2 seems to cause trouble.<br>
 Im my environment, Joplin doesn&rsquo;t start correctly with the version.<br>
 I&rsquo;m not sure what the cause is but if you have the same trouble, please try <a href="https://github.com/tagattie/FreeBSD-Electron/releases/tag/v7.1.14">7.1.14 on the pre-release repository</a>.
 If your system has currently 7.1.x, you can run <code>pkg lock electron7</code> to lock its version.</p>
@@ -140,7 +143,7 @@ git checkout electron_freebsd
 </code></pre><blockquote>
 <p><strong>NOTE</strong><br>
 If the head of the branch cannot be built (it occurs from time to time), please try the tagged version which I confirmed to be built.<br>
-As of 16 April 2020, the latest confirmed tag is <a href="https://github.com/genneko/joplin/releases/tag/freebsd-20200421">freebsd-20200421</a> and it can be checked out as follows:</p>
+As of 21 April 2020, the latest confirmed tag is <a href="https://github.com/genneko/joplin/releases/tag/freebsd-20200421">freebsd-20200421</a> and it can be checked out as follows:</p>
 <pre><code>git checkout freebsd-20200421
 </code></pre></blockquote>
 </li>
@@ -251,6 +254,7 @@ I changed selector from &lsquo;.ace_editor&rsquo; to &lsquo;div.ace_editor&rsquo
 <li>2020-04-12: Updated the target version to 1.0.200.</li>
 <li>2020-04-16: Updated the target version to 1.0.201.</li>
 <li>2020-05-02: Added a note on electron7-7.2.2.</li>
+<li>2020-05-13: Update(Correction) to the note on electron7-7.2.2.</li>
 </ul>
 <section class="footnotes" role="doc-endnotes">
 <hr>
