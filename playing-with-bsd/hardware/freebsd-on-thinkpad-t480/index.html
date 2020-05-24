@@ -22,7 +22,7 @@ Maybe it&rsquo;s partly because I&rsquo;m …">
   <meta property="og:url" content="https://genneko.github.io/playing-with-bsd/hardware/freebsd-on-thinkpad-t480/" />
   <meta property="og:type" content="article" />
   <meta name="twitter:card" content="summary" />
-  <meta name="generator" content="Hugo 0.69.2" />
+  <meta name="generator" content="Hugo 0.70.0" />
 
   <link rel="stylesheet" href="https://genneko.github.io/css/style.css" media="all" />
   <link rel="stylesheet" href="https://genneko.github.io/css/syntax.css" media="all" />
@@ -60,7 +60,7 @@ Maybe it&rsquo;s partly because I&rsquo;m …">
       <ul class="article-meta">
         <li class="article-meta-date"><time>2019-08-22</time>
         
-        <span class="updated">Update: 2019-11-09</span>
+        <span class="updated">Update: 2020-05-24</span>
         
         </li>
         <li class="article-meta-tags">
@@ -123,6 +123,7 @@ Maybe it&rsquo;s partly because I&rsquo;m …">
         <li><a href="#bhyve">Bhyve</a></li>
         <li><a href="#failover-between-ethernet-and-wifi">Failover between Ethernet and WiFi</a></li>
         <li><a href="#burning-cds">Burning CDs</a></li>
+        <li><a href="#webcam-and-video-conferencing">Webcam and Video Conferencing</a></li>
       </ul>
     </li>
     <li><a href="#references">References</a></li>
@@ -165,10 +166,7 @@ But, for unknown reasons, I have never seriously used it on client workstations.
 <li>Some Windows programs can be run on WINE.</li>
 <li>Windows 10 can be run on bhyve (to purchase MP3s on Amazon Music, etc).</li>
 <li>LAGG Failover between Ethernet and WiFi works (Use Ethernet if it&rsquo;s available. Otherwise use WiFi).</li>
-</ul>
-<p>I haven&rsquo;t able to make those things work so far.</p>
-<ul>
-<li>Webcam works on pwcview with webcamd and cuse.ko but isn&rsquo;t detected by Google Hangouts on Firefox/Chromium.</li>
+<li>Webcam works on Chromium, Firefox and pwcview with webcamd and cuse.ko. It can be used for video conferencing on <a href="https://meet.jit.si/">Jitsi Meet</a> and a private <a href="https://github.com/jitsi/jitsi-meet">jitsi-meet</a> (<a href="https://www.freshports.org/www/jitsi-meet">port is available</a>) instance.</li>
 </ul>
 <p>I haven&rsquo;t tested the following items.</p>
 <ul>
@@ -564,6 +562,36 @@ But for now I use the formers with the following output.</p>
 <p>Now I can burn CDs with GUI programs too.</p>
 </li>
 </ol>
+<h3 id="webcam-and-video-conferencing">Webcam and Video Conferencing</h3>
+<p>(Added on 2020-05-24)<br>
+It was a pleasant surprise to find that jitsi video conference using Firefox/Chromium just works with the help of cuse.ko and webcamd!</p>
+<ol>
+<li>
+<p>Install webcamd.</p>
+<pre><code>sudo pkg install webcamd
+</code></pre></li>
+<li>
+<p>Add a user to the webcamd group.</p>
+<pre><code>sudo pw groupmod webcamd -m genneko
+</code></pre></li>
+<li>
+<p>Configure the cuse kernel module to be loaded on boot.</p>
+<pre><code>sudo sysrc kld_list+=cuse
+</code></pre></li>
+<li>
+<p>Configure the webcamd to be started on boot.</p>
+<pre><code>sudo sysrc webcamd_enable=YES
+</code></pre><p>or</p>
+<pre><code>sudo service webcamd enable
+</code></pre></li>
+<li>
+<p>Manually load the module and restart devd to start the service, or reboot the entire system.</p>
+<pre><code>sudo kldload cuse
+sudo service devd restart
+</code></pre><p>or</p>
+<pre><code>sudo shutdown -r now
+</code></pre></li>
+</ol>
 <h2 id="references">References</h2>
 <ul>
 <li>
@@ -632,6 +660,7 @@ But for now I use the formers with the following output.</p>
 <li>2019-09-15: Added &ldquo;Suspend/Resume&rdquo;</li>
 <li>2019-09-22: Updated the OneDrive Free Client&rsquo;s URL</li>
 <li>2019-11-09: Added &ldquo;Burning CDs&rdquo;</li>
+<li>2020-05-24: Added &ldquo;Webcam and Video Conferencing&rdquo;</li>
 </ul>
 
     </article>
