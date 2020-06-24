@@ -19,7 +19,7 @@ As it was really quick and easy to setup and it has been working completely fine
   <meta property="og:url" content="https://genneko.github.io/playing-with-bsd/networking/freebsd-wireguard-jail/" />
   <meta property="og:type" content="article" />
   <meta name="twitter:card" content="summary" />
-  <meta name="generator" content="Hugo 0.70.0" />
+  <meta name="generator" content="Hugo 0.72.0" />
 
   <link rel="stylesheet" href="https://genneko.github.io/css/style.css" media="all" />
   <link rel="stylesheet" href="https://genneko.github.io/css/syntax.css" media="all" />
@@ -229,7 +229,7 @@ $ sudo service pf reload
 $ sudo service jail start
 </code></pre><h2 id="install-and-configure-wireguard">Install and Configure WireGuard</h2>
 <h3 id="on-the-jail">On the Jail</h3>
-<p>Next I used <a href="https://www.freebsd.org/cgi/man.cgi?query=pkg(8)">pkg</a>&lsquo;s -j option to install WireGuard and libqrencode on the jail. The latter will be used for generating a QR code to pass WireGuard configuration to Android device.</p>
+<p>Next I used <a href="https://www.freebsd.org/cgi/man.cgi?query=pkg(8)">pkg</a>&rsquo;s -j option to install WireGuard and libqrencode on the jail. The latter will be used for generating a QR code to pass WireGuard configuration to Android device.</p>
 <pre><code>$ sudo pkg -j wg install wireguard libqrencode
 </code></pre><p>Then, finally I logged in to the jail and configured WireGuard. See <a href="https://genneko.github.io/playing-with-bsd/networking/freebsd-wireguard-android/#configure-wireguard">this article</a> for more details.</p>
 <pre><code>$ sudo jexec -l wg

@@ -18,7 +18,7 @@ Unfortunately, native IPv6 service is still unavailable for me.">
   <meta property="og:url" content="https://genneko.github.io/playing-with-bsd/networking/freebsd-tunnelv6-he/" />
   <meta property="og:type" content="article" />
   <meta name="twitter:card" content="summary" />
-  <meta name="generator" content="Hugo 0.70.0" />
+  <meta name="generator" content="Hugo 0.72.0" />
 
   <link rel="stylesheet" href="https://genneko.github.io/css/style.css" media="all" />
   <link rel="stylesheet" href="https://genneko.github.io/css/syntax.css" media="all" />
@@ -91,7 +91,7 @@ Unfortunately, native IPv6 service is still unavailable for me.">
 </aside>
       <p>I had been playing with IPv6 on various systems in early 2000s. They were mostly NetBSD (1.x) and FreeBSD (4.x) plus Windows XP. My home network had been connected to the IPv6 Internet with a router running NetBSD/hpcmips which was installed on a Windows CE handheld PC.</p>
 <p>After a decade and a half, I decided to reconnect my home network to the IPv6 Internet.</p>
-<p>Unfortunately, native IPv6 service is still unavailable for me. So I chose Hurricane Electric(HE)&lsquo;s <a href="https://tunnelbroker.net/">TunnelBroker</a> service, which I was using 15 years ago.</p>
+<p>Unfortunately, native IPv6 service is still unavailable for me. So I chose Hurricane Electric(HE)&rsquo;s <a href="https://tunnelbroker.net/">TunnelBroker</a> service, which I was using 15 years ago.</p>
 <p>Another option is to build a tunnel to the VPS which is assigned a single IPv6 address and perform NAT66 there. Although IPv6 NAT sounds somewhat evil, it&rsquo;s interesting enough so I might also give it a try in future and hopefully write up another post.</p>
 <h2 id="starting-point">Starting Point</h2>
 <p>My home network is connected to the IPv4 Internet with ASUS RT-AC65U broadband router. The router&rsquo;s WAN interface gets a global IPv4 address via DHCP. The LAN segment is using an ordinary private address block 192.168.1.0/24 and the router is performing NAT.</p>

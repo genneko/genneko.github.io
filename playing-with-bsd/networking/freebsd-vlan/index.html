@@ -21,7 +21,7 @@ But when I was playing with vnet jails, I suddenly got interested …">
   <meta property="og:url" content="https://genneko.github.io/playing-with-bsd/networking/freebsd-vlan/" />
   <meta property="og:type" content="article" />
   <meta name="twitter:card" content="summary" />
-  <meta name="generator" content="Hugo 0.70.0" />
+  <meta name="generator" content="Hugo 0.72.0" />
 
   <link rel="stylesheet" href="https://genneko.github.io/css/style.css" media="all" />
   <link rel="stylesheet" href="https://genneko.github.io/css/syntax.css" media="all" />
@@ -122,7 +122,7 @@ On FreeBSD, it&rsquo;s implemented as <a href="https://www.freebsd.org/cgi/man.c
 <p>In a broader sense, the word VLAN is used to describe a layer 2 network which is physically or logically created in a wider network. On a single ethernet switch, a VLAN can be regarded as a virtual switch with a selected subset of its ethernet ports.
 On FreeBSD, it can be represented by <a href="https://www.freebsd.org/cgi/man.cgi?query=bridge(4)">bridge(4)</a>.</p>
 <p>In this article, I use the word in the latter sense. Thus, the words VLAN and bridge are interchangeable in most cases.</p>
-<p>For the VLAN in a narrow sense, I use &ldquo;tagged or trunk ports (interfaces)&quot;.</p>
+<p>For the VLAN in a narrow sense, I use &ldquo;tagged or trunk ports (interfaces)&rdquo;.</p>
 <h2 id="target-topology">Target Topology</h2>
 <p>I set my goal here to create the following network topology with a ethernet switch, a FreeBSD host and vnet jails on it.</p>
 <p>The switch has the layer3 capability and acts a router on this network. Later, I will also try to have the host forward IP traffic between VLANs.</p>

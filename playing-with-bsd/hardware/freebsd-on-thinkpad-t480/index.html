@@ -22,7 +22,7 @@ Maybe it&rsquo;s partly because I&rsquo;m …">
   <meta property="og:url" content="https://genneko.github.io/playing-with-bsd/hardware/freebsd-on-thinkpad-t480/" />
   <meta property="og:type" content="article" />
   <meta name="twitter:card" content="summary" />
-  <meta name="generator" content="Hugo 0.70.0" />
+  <meta name="generator" content="Hugo 0.72.0" />
 
   <link rel="stylesheet" href="https://genneko.github.io/css/style.css" media="all" />
   <link rel="stylesheet" href="https://genneko.github.io/css/syntax.css" media="all" />
@@ -544,7 +544,7 @@ I added pass and xpt because adding only cd0 didn&rsquo;t work.</p>
 add path cd0 group operator mode 0660
 add path pass1 group operator mode 0660
 add path xpt0 group operator mode 0660
-</code></pre><p>Maybe &lsquo;cd0&rsquo;, &lsquo;pass1&rsquo; and &lsquo;xpt0&rsquo; could be &lsquo;cd*', &lsquo;pass*&rsquo; and &lsquo;xpt*'.<br>
+</code></pre><p>Maybe &lsquo;cd0&rsquo;, &lsquo;pass1&rsquo; and &lsquo;xpt0&rsquo; could be &lsquo;cd*&rsquo;, &lsquo;pass*&rsquo; and &lsquo;xpt*&rsquo;.<br>
 But for now I use the formers with the following output.</p>
 <pre><code>camcontrol devlist
 &lt;Samsung SSD 860 EVO 1TB RVT02B6Q&gt;  at scbus0 target 0 lun 0 (ada0,pass0)
