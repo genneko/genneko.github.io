@@ -7,11 +7,7 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>&amp;copy; Copyright 2017 - 2020 genneko</copyright>
-    <lastBuildDate>Wed, 29 Apr 2020 23:53:00 +0900</lastBuildDate>
-    
-	<atom:link href="https://genneko.github.io/tags/jail/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Wed, 29 Apr 2020 23:53:00 +0900</lastBuildDate><atom:link href="https://genneko.github.io/tags/jail/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Understanding VLAN Configuration on FreeBSD</title>
       <link>https://genneko.github.io/playing-with-bsd/networking/freebsd-vlan/</link>

@@ -19,7 +19,7 @@ This article is a sort of personal notebook where I summarize …">
   <meta property="og:url" content="https://genneko.github.io/playing-with-bsd/system/learning-notes-on-jails/" />
   <meta property="og:type" content="article" />
   <meta name="twitter:card" content="summary" />
-  <meta name="generator" content="Hugo 0.74.3" />
+  <meta name="generator" content="Hugo 0.78.2" />
 
   <link rel="stylesheet" href="https://genneko.github.io/css/style.css" media="all" />
   <link rel="stylesheet" href="https://genneko.github.io/css/syntax.css" media="all" />
@@ -232,7 +232,7 @@ PACKAGES = /var/ports/packages
 <pre><code>sudo freebsd-update -b /vm/tmpl/11.2 fetch install
 </code></pre></li>
 <li>
-<p>Optionally, you can customize the jails&rsquo; root shell prompt to make it easily distinguishable from the host.</p>
+<p>Optionally, you can customize the jails' root shell prompt to make it easily distinguishable from the host.</p>
 <pre><code>sudo vi /vm/tmpl/11.2/root/.cshrc
 </code></pre><pre><code># ANSI Color 32 = Green
 set prompt=&quot;%{\033[32m%}%B&lt;%n@%m&gt;%b%{\033[0m%}:%~%# &quot;
@@ -408,7 +408,7 @@ sudo freebsd-update -b /vm/h1 install
 If the jail doesn&rsquo;t listen to a specific TCP or UDP port on the address, packets destined to the port/address are processed by the host.<br>
 A jail&rsquo;s address is usually an IP alias (secondary address) on the host but it&rsquo;s not limited to that. Actually a jail can use the host&rsquo;s primary IP address unless the host and the jail do not use the same ports.<br>
 I think this behavior is confusing because I expect that the host and jails can be viewed as spearate systems.</p>
-<p>It&rsquo;s also hard to understand at first that jail&rsquo;s 127.0.0.1 is mapped to an address deligated to the jail, inter-jail communications go through lo0 even if jails&rsquo; addresses are assigned to lo1 and so on.</p>
+<p>It&rsquo;s also hard to understand at first that jail&rsquo;s 127.0.0.1 is mapped to an address deligated to the jail, inter-jail communications go through lo0 even if jails' addresses are assigned to lo1 and so on.</p>
 <p>In this regard, VNET jails look simpler to me.<br>
 So I gave it a try despite the fact that they require custom kernel with VIMAGE feature enabled (I completely got used to using binary updates with GENERIC kernel and almost forgot the time when I always rebuilt kernel to slim it down).</p>
 <p><em>GOOD NEWS! (2018-12-14)<br>
@@ -738,8 +738,8 @@ Downloaded files are stored in the host&rsquo;s /var/cache/pkg.</p>
 </code></pre></li>
 <li>
 <p>Make the downloaded package files available to jails.<br>
-Although you can simply copy the files to jails&rsquo; filesystem but nullfs mount /var/cache/pkg is much better and easier.<br>
-The following line in /etc/jail.conf achieves this.  The host&rsquo;s /var/cache/pkg is mounted on the jails&rsquo; /mnt directory.</p>
+Although you can simply copy the files to jails' filesystem but nullfs mount /var/cache/pkg is much better and easier.<br>
+The following line in /etc/jail.conf achieves this.  The host&rsquo;s /var/cache/pkg is mounted on the jails' /mnt directory.</p>
 <pre><code>mount = &quot;/var/cache/pkg /vm/${name}/mnt nullfs ro 0 0&quot;;
 </code></pre></li>
 <li>

@@ -9,11 +9,13 @@
   <meta name="description" content="This is a quick note on how I build and use the latest Joplin desktop app on FreeBSD.
 For my initial exploration of Joplin on FreeBSD, please refer to the previous post.
 Target Version The current target version of this article is Joplin Electron release v1.0.233 (Aug 2020).
-I confirmed that the app could be built using my fork at the tag freebsd-20200802. Building Joplin I take the following steps to build Joplin desktop on my FreeBSD 12.">
+I confirmed that the app could be built using my fork at the tag freebsd-20200802.  NOTE (2020-09-07)
+The latest Android app on Google Play cannot be used with the above Electron release (v1.">
   <meta property="og:description" content="This is a quick note on how I build and use the latest Joplin desktop app on FreeBSD.
 For my initial exploration of Joplin on FreeBSD, please refer to the previous post.
 Target Version The current target version of this article is Joplin Electron release v1.0.233 (Aug 2020).
-I confirmed that the app could be built using my fork at the tag freebsd-20200802. Building Joplin I take the following steps to build Joplin desktop on my FreeBSD 12.">
+I confirmed that the app could be built using my fork at the tag freebsd-20200802.  NOTE (2020-09-07)
+The latest Android app on Google Play cannot be used with the above Electron release (v1.">
   <meta name="twitter:description" content="This is a quick note on how I build and use the latest Joplin desktop app on FreeBSD.
 For my initial exploration of Joplin on FreeBSD, please refer to the previous post.
 Target Version The current …">
@@ -22,7 +24,7 @@ Target Version The current …">
   <meta property="og:url" content="https://genneko.github.io/playing-with-bsd/application/howto-use-joplin-on-freebsd/" />
   <meta property="og:type" content="article" />
   <meta name="twitter:card" content="summary" />
-  <meta name="generator" content="Hugo 0.74.3" />
+  <meta name="generator" content="Hugo 0.78.2" />
 
   <link rel="stylesheet" href="https://genneko.github.io/css/style.css" media="all" />
   <link rel="stylesheet" href="https://genneko.github.io/css/syntax.css" media="all" />
@@ -60,7 +62,7 @@ Target Version The current …">
       <ul class="article-meta">
         <li class="article-meta-date"><time>2020-01-15</time>
         
-        <span class="updated">Update: 2020-09-12</span>
+        <span class="updated">Update: 2020-12-03</span>
         
         </li>
         <li class="article-meta-tags">
@@ -106,6 +108,18 @@ Target Version The current …">
 <p>The current target version of this article is Joplin Electron release v1.0.233 (Aug 2020).<br>
 I confirmed that the app could be built using my fork at the tag <a href="https://github.com/genneko/joplin/releases/tag/freebsd-20200802">freebsd-20200802</a>.
 <img src="https://genneko.github.io/images/howto-use-joplin-on-freebsd/JoplinVersion.png" alt="Joplin Version"></p>
+<blockquote>
+<p><strong>NOTE (2020-09-07)</strong><br>
+The latest Android app on Google Play cannot be used with the above Electron release (v1.0.233) due to the incompatibility of their database versions.<br>
+For a workaround, I have installed an older Joplin app using the APK at the following URL and disabled the automatic update for the app.<br>
+<a href="https://github.com/laurent22/joplin-android/releases/tag/android-v1.0.335">https://github.com/laurent22/joplin-android/releases/tag/android-v1.0.335</a></p>
+</blockquote>
+<blockquote>
+<p><strong>NOTE (2020-12-03)</strong><br>
+I found it&rsquo;s hard to build the recent Electron releases (v1.4.8 or later) on FreeBSD. Even if it&rsquo;s somehow built, I can no longer make it run correctly.<br>
+So for now, the last Electron release which runs on my FreeBSD host is the one tagged <a href="https://github.com/genneko/joplin/releases/tag/freebsd-v1.4.7-electron8-20201125">freebsd-v1.4.7-electron8-20201125</a>. Note it requires an unofficial <a href="https://github.com/tagattie/FreeBSD-Electron/releases/tag/v8.3.3">electron8</a> package instead of the FreeBSD-official electron7 package.<br>
+Based on those facts, I think the best bet for FreeBSD users is the Electron v1.0.233, though the later release up to v1.4.7 can also be used.</p>
+</blockquote>
 <h2 id="building-joplin">Building Joplin</h2>
 <p>I take the following steps to build Joplin desktop on my FreeBSD 12.1-RELEASE system (with XFCE4 desktop).</p>
 <ol>
@@ -255,6 +269,7 @@ I changed selector from &lsquo;.ace_editor&rsquo; to &lsquo;div.ace_editor&rsquo
 <li>2020-05-13: Update(Correction) to the note on electron7-7.2.2.</li>
 <li>2020-06-24: Update the target version to 1.0.224 and do some cleanup.</li>
 <li>2020-09-12: Update the target version to 1.0.233. Also add a note on 1.1.x in the LSEP/CJK section.</li>
+<li>2020-12-03: Add notes on the recent versions.</li>
 </ul>
 <section class="footnotes" role="doc-endnotes">
 <hr>

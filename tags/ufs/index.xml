@@ -7,11 +7,7 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>&amp;copy; Copyright 2017 - 2020 genneko</copyright>
-    <lastBuildDate>Thu, 18 Jul 2019 19:08:00 +0900</lastBuildDate>
-    
-	<atom:link href="https://genneko.github.io/tags/ufs/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Thu, 18 Jul 2019 19:08:00 +0900</lastBuildDate><atom:link href="https://genneko.github.io/tags/ufs/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Mounting ZFS Root failed when an external USB drive is connected</title>
       <link>https://genneko.github.io/playing-with-bsd/storage/mounting-from-zfs-failed/</link>

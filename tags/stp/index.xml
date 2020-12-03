@@ -7,11 +7,7 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>&amp;copy; Copyright 2017 - 2020 genneko</copyright>
-    <lastBuildDate>Sun, 04 Nov 2018 21:19:01 +0900</lastBuildDate>
-    
-	<atom:link href="https://genneko.github.io/tags/stp/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Sun, 04 Nov 2018 21:19:01 +0900</lastBuildDate><atom:link href="https://genneko.github.io/tags/stp/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Learning Spanning Tree Protocol with FreeBSD Bridges</title>
       <link>https://genneko.github.io/playing-with-bsd/networking/learning-stp/</link>

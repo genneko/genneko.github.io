@@ -7,11 +7,7 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>&amp;copy; Copyright 2017 - 2020 genneko</copyright>
-    <lastBuildDate>Sun, 17 Nov 2019 19:37:00 +0900</lastBuildDate>
-    
-	<atom:link href="https://genneko.github.io/tags/zfs/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Sun, 17 Nov 2019 19:37:00 +0900</lastBuildDate><atom:link href="https://genneko.github.io/tags/zfs/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Expanding a GELI-encrypted ZFS pool</title>
       <link>https://genneko.github.io/playing-with-bsd/storage/expanding-zfs-on-geli/</link>

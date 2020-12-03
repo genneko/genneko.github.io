@@ -7,11 +7,7 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>&amp;copy; Copyright 2017 - 2020 genneko</copyright>
-    <lastBuildDate>Thu, 22 Aug 2019 00:50:00 +0900</lastBuildDate>
-    
-	<atom:link href="https://genneko.github.io/tags/desktop/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Thu, 22 Aug 2019 00:50:00 +0900</lastBuildDate><atom:link href="https://genneko.github.io/tags/desktop/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>ThinkPad T480 is my new main laptop which runs FreeBSD</title>
       <link>https://genneko.github.io/playing-with-bsd/hardware/freebsd-on-thinkpad-t480/</link>

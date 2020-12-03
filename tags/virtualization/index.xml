@@ -7,11 +7,7 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>&amp;copy; Copyright 2017 - 2020 genneko</copyright>
-    <lastBuildDate>Sun, 07 Oct 2018 18:35:49 +0900</lastBuildDate>
-    
-	<atom:link href="https://genneko.github.io/tags/virtualization/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Sun, 07 Oct 2018 18:35:49 +0900</lastBuildDate><atom:link href="https://genneko.github.io/tags/virtualization/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Learning Notes on FreeBSD Jails</title>
       <link>https://genneko.github.io/playing-with-bsd/system/learning-notes-on-jails/</link>

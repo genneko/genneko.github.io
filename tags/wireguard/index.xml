@@ -7,11 +7,7 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
     <copyright>&amp;copy; Copyright 2017 - 2020 genneko</copyright>
-    <lastBuildDate>Sun, 26 Apr 2020 22:46:00 +0900</lastBuildDate>
-    
-	<atom:link href="https://genneko.github.io/tags/wireguard/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Sun, 26 Apr 2020 22:46:00 +0900</lastBuildDate><atom:link href="https://genneko.github.io/tags/wireguard/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Building a WireGuard Jail with the FreeBSD&#39;s Standard Tools</title>
       <link>https://genneko.github.io/playing-with-bsd/networking/freebsd-wireguard-jail/</link>
