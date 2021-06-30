@@ -24,7 +24,7 @@ In fact, just …">
   <meta property="og:url" content="https://genneko.github.io/playing-with-bsd/application/running-xapps-on-a-jail/" />
   <meta property="og:type" content="article" />
   <meta name="twitter:card" content="summary" />
-  <meta name="generator" content="Hugo 0.80.0" />
+  <meta name="generator" content="Hugo 0.83.1" />
 
   <link rel="stylesheet" href="https://genneko.github.io/css/style.css" media="all" />
   <link rel="stylesheet" href="https://genneko.github.io/css/syntax.css" media="all" />
@@ -188,9 +188,9 @@ The -Y flag enables the Trusted X11 forwarding and the -C enables the compressio
 <li>
 <p>When I quitted inkscape, I noticed the following warnings on the terminal.</p>
 <pre><code>(inkscape:16851): Gdk-WARNING **: 15:46:51.493: shmget failed: error 78 (Function not implemented)
-   
+
 (inkscape:16851): Gtk-WARNING **: 15:49:56.146: Attempting to store changes into `/home/genneko/.local/share/recently-used.xbel', but failed: Failed to create file ?/home/genneko/.local/share/recently-used.xbel.AG2YI0?: No such file or directory
-   
+
 (inkscape:16851): Gtk-WARNING **: 15:49:56.146: Attempting to set the permissions of `/home/genneko/.local/share/recently-used.xbel', but failed: No such file or directory
 </code></pre><p>The first warning can be coped with by allowing the jail to access SysV shared memory primitives.<br>
 Open the jail&rsquo;s configuration with an editor by running either <code>sudo bastille edit xapp</code> or <code>sudo vi /vm/bastille/jails/xapp/jail.conf</code>.<br>
@@ -227,7 +227,7 @@ Other X applications such as xfig, xterm, chromium, firefox<sup id="fnref:1"><a 
 <hr>
 <ol>
 <li id="fn:1" role="doc-endnote">
-<p>You may need to specify <code>--no-remote</code> option to the firefox when you are also running firefox on the host. Without the option, <code>ssh -CY xapp firefox</code> will create another window of the host&rsquo;s firefox instead of the new one on the jail. <a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+<p>You may need to specify <code>--no-remote</code> option to the firefox when you are also running firefox on the host. Without the option, <code>ssh -CY xapp firefox</code> will create another window of the host&rsquo;s firefox instead of the new one on the jail.&#160;<a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
 </li>
 </ol>
 </section>

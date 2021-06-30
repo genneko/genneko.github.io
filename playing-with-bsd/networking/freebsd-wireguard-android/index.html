@@ -19,7 +19,7 @@ NOTE: WireGuard is still …">
   <meta property="og:url" content="https://genneko.github.io/playing-with-bsd/networking/freebsd-wireguard-android/" />
   <meta property="og:type" content="article" />
   <meta name="twitter:card" content="summary" />
-  <meta name="generator" content="Hugo 0.80.0" />
+  <meta name="generator" content="Hugo 0.83.1" />
 
   <link rel="stylesheet" href="https://genneko.github.io/css/style.css" media="all" />
   <link rel="stylesheet" href="https://genneko.github.io/css/syntax.css" media="all" />
@@ -175,7 +175,7 @@ wg pubkey &lt; android.private &gt; android.public
 Address = 192.168.222.1/32
 PrivateKey = &lt;content of freebsd.private&gt;
 ListenPort = 51820
-   
+
 [Peer]
 PublicKey = &lt;content of android.public&gt;
 AllowedIPs = 192.168.222.2/32
@@ -187,7 +187,7 @@ AllowedIPs = 192.168.222.2/32
 <pre><code>[Interface]
 Address = 192.168.222.2/32
 PrivateKey = &lt;content of android.private&gt;
-   
+
 [Peer]
 PublicKey = &lt;content of freebsd.public&gt;
 AllowedIPs = 192.168.222.1/32

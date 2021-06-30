@@ -18,7 +18,7 @@ Unfortunately, native IPv6 service is still unavailable for me.">
   <meta property="og:url" content="https://genneko.github.io/playing-with-bsd/networking/freebsd-tunnelv6-he/" />
   <meta property="og:type" content="article" />
   <meta name="twitter:card" content="summary" />
-  <meta name="generator" content="Hugo 0.80.0" />
+  <meta name="generator" content="Hugo 0.83.1" />
 
   <link rel="stylesheet" href="https://genneko.github.io/css/style.css" media="all" />
   <link rel="stylesheet" href="https://genneko.github.io/css/syntax.css" media="all" />
@@ -151,9 +151,9 @@ int_if = &quot;ue0&quot;
 localnet = $int_if:network
 icmp6_types = &quot;{ unreach, toobig, timex, paramprob, echoreq, echorep, neighbrsol, neighbradv, routersol, routeradv }&quot;
 tunnel_server = &quot;10.10.10.10&quot;
-   
+
 set skip on lo0
-   
+
 block all
 pass from { self, $localnet }
 pass in inet proto ipv6 from $tunnel_server
@@ -197,7 +197,7 @@ $ sudo pkg install isc-dscp43-server
 $ sudo vi /usr/local/etc/dhcpd6.conf
 default-lease-time 600;
 max-lease-time 1200;
-   
+
 host pc1 {
   host-identifier option
     dhcp6.client-id 00:01:00:01:XX:XX:XX:XX:XX:XX:XX:XX:XX:XX;

@@ -19,7 +19,7 @@ As it was really quick and easy to setup and it has been working completely fine
   <meta property="og:url" content="https://genneko.github.io/playing-with-bsd/networking/freebsd-wireguard-jail/" />
   <meta property="og:type" content="article" />
   <meta name="twitter:card" content="summary" />
-  <meta name="generator" content="Hugo 0.80.0" />
+  <meta name="generator" content="Hugo 0.83.1" />
 
   <link rel="stylesheet" href="https://genneko.github.io/css/style.css" media="all" />
   <link rel="stylesheet" href="https://genneko.github.io/css/syntax.css" media="all" />
@@ -186,24 +186,24 @@ add path 'bpf*' unhide
 exec.stop = &quot;/bin/sh /etc/rc.shutdown&quot;;
 exec.clean;
 mount.devfs;
-  
+
 host.hostname = $name;
 path = &quot;/vm/$name&quot;;
 exec.consolelog = &quot;/var/log/jail_${name}_console.log&quot;;
-  
+
 wg {
         $vif = &quot;epair0a&quot;;
         $route = &quot;192.168.250.0/24 192.168.20.2&quot;;
-  
+
         vnet;
         vnet.interface = $vif;
         exec.prestart += &quot;route add $route&quot;;
         exec.poststop += &quot;route delete $route&quot;;
-  
+
         # workaround
         # https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=238326
         exec.prestop  += &quot;ifconfig $vif -vnet $name&quot;;
-  
+
         allow.chflags;
         devfs_ruleset = 10;
 }

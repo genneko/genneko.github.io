@@ -26,7 +26,7 @@ But then I wondered how to expand …">
   <meta property="og:url" content="https://genneko.github.io/playing-with-bsd/storage/expanding-zfs-on-geli/" />
   <meta property="og:type" content="article" />
   <meta name="twitter:card" content="summary" />
-  <meta name="generator" content="Hugo 0.80.0" />
+  <meta name="generator" content="Hugo 0.83.1" />
 
   <link rel="stylesheet" href="https://genneko.github.io/css/style.css" media="all" />
   <link rel="stylesheet" href="https://genneko.github.io/css/syntax.css" media="all" />
@@ -126,7 +126,7 @@ Write down this value somewhere so that you can use it when you resize the GELI 
        1064        984         - free -  (492K)
        2048  419426304      2  freebsd-zfs  (200G)
   419428352       2008         - free -  (1.0M)
-   
+
 # geli list
 Geom name: vtbd0p2.eli
 ...
@@ -142,16 +142,16 @@ Consumers:
    Stripesize: 0
    Stripeoffset: 1048576
    Mode: r1w1e1
-   
+
 # zpool list
 NAME    SIZE  ALLOC   FREE  CKPOINT  EXPANDSZ   FRAG    CAP  DEDUP  HEALTH  ALTROOT
 zroot   199G   177G  22.1G        -      200G    58%    88%  1.00x  ONLINE  -
-   
+
 # zpool status
   pool: zroot
 ...
 config:
-   
+
         NAME           STATE     READ WRITE CKSUM
         zroot          ONLINE       0     0     0
           vtbd0p2.eli  ONLINE       0     0     0
@@ -226,7 +226,7 @@ The whole process only took an hour where the disk expansion operation at the VP
        1064        984         - free -  (492K)
        2048  838856704      2  freebsd-zfs  (400G)
   838858752       2008         - free -  (1.0M)
-   
+
 # geli list
 Geom name: vtbd0p2.eli
 ...
@@ -242,16 +242,16 @@ Consumers:
    Stripesize: 0
    Stripeoffset: 1048576
    Mode: r1w1e1
-   
+
 # zpool list
 NAME    SIZE  ALLOC   FREE  CKPOINT  EXPANDSZ   FRAG    CAP  DEDUP  HEALTH  ALTROOT
 zroot   399G   174G   225G        -         -    31%    43%  1.00x  ONLINE  -
-   
+
 # zpool status
   pool: zroot
 ...
 config:
-   
+
         NAME           STATE     READ WRITE CKSUM
         zroot          ONLINE       0     0     0
           vtbd0p2.eli  ONLINE       0     0     0

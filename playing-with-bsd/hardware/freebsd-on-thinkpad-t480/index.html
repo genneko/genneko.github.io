@@ -22,7 +22,7 @@ Maybe it&rsquo;s partly because I&rsquo;m …">
   <meta property="og:url" content="https://genneko.github.io/playing-with-bsd/hardware/freebsd-on-thinkpad-t480/" />
   <meta property="og:type" content="article" />
   <meta name="twitter:card" content="summary" />
-  <meta name="generator" content="Hugo 0.80.0" />
+  <meta name="generator" content="Hugo 0.83.1" />
 
   <link rel="stylesheet" href="https://genneko.github.io/css/style.css" media="all" />
   <link rel="stylesheet" href="https://genneko.github.io/css/syntax.css" media="all" />
@@ -310,19 +310,19 @@ There are a lot of language configurations. Please ignore them if you do not nee
 export LC_ALL=ja_JP.UTF-8
 export LANGUAGE=ja_JP.UTF-8
 export LANG=ja_JP.UTF-8
-  
+
 ## Input Method - fcitx-mozc
 export GTK_IM_MODULE=fcitx
 export QT_IM_MODULE=fcitx
 export XMODIFIERS='@im=fcitx'
-  
+
 ## Start Input Method
 /usr/local/bin/mozc start
 fcitx -r -d
-  
+
 ## Disable Beep
 xset -b
-  
+
 ## Start Xfce4
 exec startxfce4
 </code></pre></li>
@@ -451,15 +451,15 @@ Audacity itself can be installed via binary package.</li>
 <li>On the previous main PC (Windows 10), I used OneDrive to import photos taken and uploaded by smartphones.
 OneDrive Free Client allows me to achieve this on FreeBSD machine.
 <pre><code>sudo pkg install onedrive
-  
+
 onedrive
 # Open the URL shown and sign in with your Microsoft account.  
 # When you see a blank page after granting access to &quot;OneDrive Free Client&quot;, enter the blank page's URL on the command-line prompt.
-  
+
 # Test it now.
 # ~/OneDrive is the default sync_dir.
 onedrive --download-only --dry-run --synchronize
-  
+
 # Real Run.
 onedrive --download-only --synchronize
 </code></pre></li>
@@ -524,7 +524,7 @@ iwm8265fw_load=&quot;YES&quot;
 <p>Check the CD drive&rsquo;s device number.</p>
 <pre><code>sudo cdrecord -scanbus
 ...
- 1,0,0	100) 'BUFFALO ' 'Optical Drive   ' '2.00' Removable CD-ROM
+	1,0,0	100) 'BUFFALO ' 'Optical Drive   ' '2.00' Removable CD-ROM
 ...
 </code></pre></li>
 <li>
