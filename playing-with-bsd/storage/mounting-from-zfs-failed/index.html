@@ -19,7 +19,7 @@ Mounting from zfs:zroot/ROOT/default failed with error 6; retrying for 3 more se
   <meta property="og:url" content="https://genneko.github.io/playing-with-bsd/storage/mounting-from-zfs-failed/" />
   <meta property="og:type" content="article" />
   <meta name="twitter:card" content="summary" />
-  <meta name="generator" content="Hugo 0.83.1" />
+  <meta name="generator" content="Hugo 0.85.0" />
 
   <link rel="stylesheet" href="https://genneko.github.io/css/style.css" media="all" />
   <link rel="stylesheet" href="https://genneko.github.io/css/syntax.css" media="all" />
@@ -129,12 +129,12 @@ Oh wait! Another zroot? Where does it come from?</p>
   state: FAULTED
  status: The pool was last accessed by another system.
  action: The pool cannot be imported due to damaged devices or data.
-    pool may be active on another system, but can be imported using
-    '-f' flag.
+	The pool may be active on another system, but can be imported using
+	the '-f' flag.
    see: http://illumos.org/msg/ZFS-8000-EY
  config:
 
-    t                     FAULTED  corrupted data
+	zroot                     FAULTED  corrupted data
       mirror-0                DEGRADED
         10037725760255352733  UNAVAIL  cannot open
         15874716908755608597  UNAVAIL  corrupted data

@@ -8,12 +8,12 @@
   <meta name="twitter:title" content="How to use Joplin desktop app on FreeBSD - genneko" />
   <meta name="description" content="This is a quick note on how I build and use the latest Joplin desktop app on FreeBSD.
 For my initial exploration of Joplin on FreeBSD, please refer to the previous post.
-Target Version The current target version of this article is Joplin Desktop release v2.1.7 (Jun 2021).
-I confirmed that the app could be built using my fork at the tag freebsd-v2.1.7-electron10-20210630. Building Joplin I take the following steps to build Joplin desktop on my FreeBSD 12.">
+Target Version The current target version of this article is Joplin Desktop release v2.2.7 (Aug 2021).
+I confirmed that the app could be built using my fork at the tag freebsd-v2.2.7. Building Joplin I take the following steps to build Joplin desktop on my FreeBSD 12.">
   <meta property="og:description" content="This is a quick note on how I build and use the latest Joplin desktop app on FreeBSD.
 For my initial exploration of Joplin on FreeBSD, please refer to the previous post.
-Target Version The current target version of this article is Joplin Desktop release v2.1.7 (Jun 2021).
-I confirmed that the app could be built using my fork at the tag freebsd-v2.1.7-electron10-20210630. Building Joplin I take the following steps to build Joplin desktop on my FreeBSD 12.">
+Target Version The current target version of this article is Joplin Desktop release v2.2.7 (Aug 2021).
+I confirmed that the app could be built using my fork at the tag freebsd-v2.2.7. Building Joplin I take the following steps to build Joplin desktop on my FreeBSD 12.">
   <meta name="twitter:description" content="This is a quick note on how I build and use the latest Joplin desktop app on FreeBSD.
 For my initial exploration of Joplin on FreeBSD, please refer to the previous post.
 Target Version The current …">
@@ -22,7 +22,7 @@ Target Version The current …">
   <meta property="og:url" content="https://genneko.github.io/playing-with-bsd/application/howto-use-joplin-on-freebsd/" />
   <meta property="og:type" content="article" />
   <meta name="twitter:card" content="summary" />
-  <meta name="generator" content="Hugo 0.83.1" />
+  <meta name="generator" content="Hugo 0.85.0" />
 
   <link rel="stylesheet" href="https://genneko.github.io/css/style.css" media="all" />
   <link rel="stylesheet" href="https://genneko.github.io/css/syntax.css" media="all" />
@@ -60,7 +60,7 @@ Target Version The current …">
       <ul class="article-meta">
         <li class="article-meta-date"><time>2020-01-15</time>
         
-        <span class="updated">Update: 2021-06-30</span>
+        <span class="updated">Update: 2021-08-14</span>
         
         </li>
         <li class="article-meta-tags">
@@ -103,8 +103,8 @@ Target Version The current …">
       <p>This is a quick note on how I build and use the latest Joplin desktop app on FreeBSD.</p>
 <p>For my initial exploration of Joplin on FreeBSD, please refer to the <a href="https://genneko.github.io/playing-with-bsd/application/joplin-on-freebsd">previous post</a>.</p>
 <h2 id="target-version">Target Version</h2>
-<p>The current target version of this article is Joplin Desktop release v2.1.7 (Jun 2021).<br>
-I confirmed that the app could be built using my fork at the tag <a href="https://github.com/genneko/joplin/releases/tag/freebsd-v2.1.7-electron10-20210630">freebsd-v2.1.7-electron10-20210630</a>.
+<p>The current target version of this article is Joplin Desktop release v2.2.7 (Aug 2021).<br>
+I confirmed that the app could be built using my fork at the tag <a href="https://github.com/genneko/joplin/releases/tag/freebsd-v2.2.7">freebsd-v2.2.7</a>.
 <img src="https://genneko.github.io/images/howto-use-joplin-on-freebsd/JoplinVersion.png" alt="Joplin Version"></p>
 <h2 id="building-joplin">Building Joplin</h2>
 <p>I take the following steps to build Joplin desktop on my FreeBSD 12.2-RELEASE system (with XFCE4 desktop).</p>
@@ -137,8 +137,8 @@ git checkout electron_freebsd
 </code></pre><blockquote>
 <p><strong>NOTE</strong><br>
 If the head of the branch cannot be built (it occurs from time to time), please try the tagged version which I confirmed to be built.<br>
-As of 30 Jun 2021, the latest confirmed tag is <a href="https://github.com/genneko/joplin/releases/tag/freebsd-v2.1.7-electron10-20210630">freebsd-v2.1.7-electron10-20210630</a> and it can be checked out as follows:</p>
-<pre><code>git checkout freebsd-v2.1.7-electron10-20210630
+As of 14 Aug 2021, the latest confirmed tag is <a href="https://github.com/genneko/joplin/releases/tag/freebsd-v2.2.7">freebsd-v2.2.7</a> and it can be checked out as follows:</p>
+<pre><code>git checkout freebsd-v2.2.7
 </code></pre></blockquote>
 </li>
 <li>
@@ -278,6 +278,7 @@ I changed selector from &lsquo;.ace_editor&rsquo; to &lsquo;div.ace_editor&rsquo
 <li>2020-12-03: Add notes on the recent versions.</li>
 <li>2021-02-03: Update the target version to 1.7.10.</li>
 <li>2021-06-30: Update the target version to 2.1.7.</li>
+<li>2021-08-14: Update the target version to 2.2.7.</li>
 </ul>
 <section class="footnotes" role="doc-endnotes">
 <hr>
