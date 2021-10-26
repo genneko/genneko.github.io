@@ -19,7 +19,7 @@ Originally it had two 500GB disks, but now it has a 500GB and a 1TB ones …">
   <meta property="og:url" content="https://genneko.github.io/playing-with-bsd/storage/growing-a-zfs-mirror/" />
   <meta property="og:type" content="article" />
   <meta name="twitter:card" content="summary" />
-  <meta name="generator" content="Hugo 0.85.0" />
+  <meta name="generator" content="Hugo 0.88.1" />
 
   <link rel="stylesheet" href="https://genneko.github.io/css/style.css" media="all" />
   <link rel="stylesheet" href="https://genneko.github.io/css/syntax.css" media="all" />
@@ -94,7 +94,7 @@ Originally it had two 500GB disks, but now it has a 500GB and a 1TB ones …">
 <li>
 <p>Check the current status.<br>
 I could see ada0(gpt/zfs1) is 1TB and ada1(gpt/zfs0) is 500GB.</p>
-<pre><code># camcontrol devlist
+<pre tabindex="0"><code># camcontrol devlist
 &lt;TOSHIBA MQ01ABD100 AX001U&gt;        at scbus0 target 0 lun 0 (ada0,pass0)
 &lt;TOSHIBA MK5076GSX GS001A&gt;         at scbus1 target 0 lun 0 (ada1,pass1)
 
@@ -142,14 +142,14 @@ zroot   464G   386G  78.2G        -         -    39%    83%  1.00x  ONLINE  -
 </li>
 <li>
 <p>See if the new 1TB disk (ada1) is detected.</p>
-<pre><code># camcontrol devlist
+<pre tabindex="0"><code># camcontrol devlist
 PASSWORD: 
 &lt;TOSHIBA MQ01ABD100 AX001U&gt;        at scbus0 target 0 lun 0 (ada0,pass0)
 &lt;TOSHIBA MQ01ABD100 AX101U&gt;        at scbus1 target 0 lun 0 (ada1,pass1)
 </code></pre></li>
 <li>
 <p>Partition the new disk, label it and install bootcode on it.</p>
-<pre><code># gpart backup ada0 | gpart restore -F ada1
+<pre tabindex="0"><code># gpart backup ada0 | gpart restore -F ada1
 
 # gpart show -l ada0 ada1
 =&gt;        40  1953525088  ada0  GPT  (932G)
@@ -189,7 +189,7 @@ bootcode written to ada1
 </code></pre></li>
 <li>
 <p>Replace the missing 500GB disk with the new 1TB one for the ZFS mirror pool.</p>
-<pre><code># zpool status
+<pre tabindex="0"><code># zpool status
   pool: zroot
  state: DEGRADED
 status: One or more devices could not be opened.  Sufficient replicas exist for
@@ -220,7 +220,7 @@ you may use the following command:
 </code></pre></li>
 <li>
 <p>Wait until resilvering completes.</p>
-<pre><code># zpool status
+<pre tabindex="0"><code># zpool status
   pool: zroot
  state: ONLINE
 status: Some supported features are not enabled on the pool. The pool can
@@ -241,13 +241,13 @@ errors: No known data errors
 </code></pre></li>
 <li>
 <p>As you can see, the pool size is not expanded yet.</p>
-<pre><code># zpool list
+<pre tabindex="0"><code># zpool list
 NAME    SIZE  ALLOC   FREE  CKPOINT  EXPANDSZ   FRAG    CAP  DEDUP  HEALTH  ALTROOT
 zroot   464G   386G  78.2G        -      464G    39%    83%  1.00x  ONLINE  -
 </code></pre></li>
 <li>
 <p>Grow the pool.</p>
-<pre><code># zpool online -e zroot gpt/zfs0 gpt/zfs1
+<pre tabindex="0"><code># zpool online -e zroot gpt/zfs0 gpt/zfs1
 
 $ zpool list
 NAME    SIZE  ALLOC   FREE  CKPOINT  EXPANDSZ   FRAG    CAP  DEDUP  HEALTH  ALTROOT

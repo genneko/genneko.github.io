@@ -24,7 +24,7 @@ In fact, just …">
   <meta property="og:url" content="https://genneko.github.io/playing-with-bsd/application/running-xapps-on-a-jail/" />
   <meta property="og:type" content="article" />
   <meta name="twitter:card" content="summary" />
-  <meta name="generator" content="Hugo 0.85.0" />
+  <meta name="generator" content="Hugo 0.88.1" />
 
   <link rel="stylesheet" href="https://genneko.github.io/css/style.css" media="all" />
   <link rel="stylesheet" href="https://genneko.github.io/css/syntax.css" media="all" />
@@ -135,20 +135,20 @@ See the official <a href="https://bastillebsd.org/getting-started/">Getting Star
 <ol>
 <li>
 <p>Create a 12.1-RELEASE jail. I name it &lsquo;xapp&rsquo; here.</p>
-<pre><code>$ sudo bastille create xapp 12.1-RELEASE 127.1.1.1
+<pre tabindex="0"><code>$ sudo bastille create xapp 12.1-RELEASE 127.1.1.1
 </code></pre></li>
 <li>
 <p>Add the jail&rsquo;s address/hostname to /etc/hosts on both the host and the jail.</p>
-<pre><code>$ sudo sh -c 'echo 127.1.1.1 xapp &gt;&gt; /etc/hosts'
+<pre tabindex="0"><code>$ sudo sh -c 'echo 127.1.1.1 xapp &gt;&gt; /etc/hosts'
 $ sudo sh -c 'echo 127.1.1.1 xapp &gt;&gt; /vm/bastille/jails/xapp/root/etc/hosts'
 </code></pre></li>
 <li>
 <p>Start the jail.</p>
-<pre><code>$ sudo bastille start xapp
+<pre tabindex="0"><code>$ sudo bastille start xapp
 </code></pre></li>
 <li>
 <p>Login to the jail.</p>
-<pre><code>$ sudo bastille console xapp
+<pre tabindex="0"><code>$ sudo bastille console xapp
 </code></pre></li>
 <li>
 <p>Configure the jail from inside.</p>
@@ -156,38 +156,38 @@ $ sudo sh -c 'echo 127.1.1.1 xapp &gt;&gt; /vm/bastille/jails/xapp/root/etc/host
 <li>
 <p>Add a user who runs Inkscape.<br>
 It would be the most convenient to create a user with the same uid as the host&rsquo;s user.</p>
-<pre><code># pw useradd -n genneko -u 500 -m
+<pre tabindex="0"><code># pw useradd -n genneko -u 500 -m
 # passwd genneko
 </code></pre></li>
 <li>
 <p>Install xauth, inkscape and its dependencies.<br>
 Xauth is required for X11 forwarding.</p>
-<pre><code># pkg install xauth inkscape
+<pre tabindex="0"><code># pkg install xauth inkscape
 </code></pre></li>
 <li>
 <p>Configure and start SSH server on the jail.<br>
 <code>X11UseLocalhost no</code> is required because the &lsquo;localhost&rsquo; in a standard (non-VNET) jail doesn&rsquo;t seem to be the true localhost.<br>
 Although I&rsquo;m not sure about this and cannot explain its details, I&rsquo;ve confirmed at least that it&rsquo;s not required on a VNET jail which has its own network stack and has a true localhost.</p>
-<pre><code># sysrc sshd_enable=&quot;YES&quot;
+<pre tabindex="0"><code># sysrc sshd_enable=&quot;YES&quot;
 # echo &quot;X11UseLocalhost no&quot; &gt;&gt; /etc/ssh/sshd_config
 # service sshd start
 </code></pre></li>
 <li>
 <p>Exit the jail.</p>
-<pre><code># exit
+<pre tabindex="0"><code># exit
 </code></pre></li>
 </ul>
 </li>
 <li>
 <p>Once back on the host, use ssh to run Inkscape on the jail.<br>
 The -Y flag enables the Trusted X11 forwarding and the -C enables the compression.</p>
-<pre><code>$ ssh -CY xapp inkscape
+<pre tabindex="0"><code>$ ssh -CY xapp inkscape
 </code></pre><p>Yay, I made it!
 <img src="https://genneko.github.io/images/running-xapps-on-a-jail/inkscape.png" alt="Inkscape"></p>
 </li>
 <li>
 <p>When I quitted inkscape, I noticed the following warnings on the terminal.</p>
-<pre><code>(inkscape:16851): Gdk-WARNING **: 15:46:51.493: shmget failed: error 78 (Function not implemented)
+<pre tabindex="0"><code>(inkscape:16851): Gdk-WARNING **: 15:46:51.493: shmget failed: error 78 (Function not implemented)
 
 (inkscape:16851): Gtk-WARNING **: 15:49:56.146: Attempting to store changes into `/home/genneko/.local/share/recently-used.xbel', but failed: Failed to create file ?/home/genneko/.local/share/recently-used.xbel.AG2YI0?: No such file or directory
 
@@ -195,9 +195,9 @@ The -Y flag enables the Trusted X11 forwarding and the -C enables the compressio
 </code></pre><p>The first warning can be coped with by allowing the jail to access SysV shared memory primitives.<br>
 Open the jail&rsquo;s configuration with an editor by running either <code>sudo bastille edit xapp</code> or <code>sudo vi /vm/bastille/jails/xapp/jail.conf</code>.<br>
 Then add the following line to the &lsquo;xapp&rsquo; section and restart the jail with <code>sudo bastille restart xapp</code>.</p>
-<pre><code>  sysvshm = new;
+<pre tabindex="0"><code>  sysvshm = new;
 </code></pre><p>The second and the third warnings can be suppressed by just creating the directory mentioned in the messages on the jail&rsquo;s filesystem.</p>
-<pre><code>$ mkdir -p /vm/bastille/jails/xapp/root/home/genneko/.local/share
+<pre tabindex="0"><code>$ mkdir -p /vm/bastille/jails/xapp/root/home/genneko/.local/share
 </code></pre></li>
 </ol>
 <h2 id="afterwords">Afterwords</h2>

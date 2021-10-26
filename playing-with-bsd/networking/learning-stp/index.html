@@ -19,7 +19,7 @@ Several variants have …">
   <meta property="og:url" content="https://genneko.github.io/playing-with-bsd/networking/learning-stp/" />
   <meta property="og:type" content="article" />
   <meta name="twitter:card" content="summary" />
-  <meta name="generator" content="Hugo 0.85.0" />
+  <meta name="generator" content="Hugo 0.88.1" />
 
   <link rel="stylesheet" href="https://genneko.github.io/css/style.css" media="all" />
   <link rel="stylesheet" href="https://genneko.github.io/css/syntax.css" media="all" />
@@ -124,7 +124,7 @@ Several variants have …">
 <p>Basically, all I need is a single FreeBSD host. A virtual machine is best suited because this experiment is inherently dangerous due to possible network loops.</p>
 <p>I picked up Vagrant box &lsquo;bento/freebsd-11.2&rsquo; to quickly create a VirtualBox vm running FreeBSD 11.2.<br>
 (I must confess. My laptop is running Windows 10 and I ran the following commands on cygwin <sup id="fnref:3"><a href="#fn:3" class="footnote-ref" role="doc-noteref">3</a></sup>.)</p>
-<pre><code>HostOS$ mkdir -p ~/vagrant/learnstp
+<pre tabindex="0"><code>HostOS$ mkdir -p ~/vagrant/learnstp
 HostOS$ cd ~/vagrant/learnstp
 HostOS$ vagrant init bento/freebsd-11.2
 HostOS$ vim Vagrantfile
@@ -136,7 +136,7 @@ HostOS$ vim Vagrantfile
 <li>set a limit on vm&rsquo;s cpu usage.</li>
 </ul>
 <p>This is the modified Vagrantfile.</p>
-<pre><code>Vagrant.configure(&quot;2&quot;) do |config|
+<pre tabindex="0"><code>Vagrant.configure(&quot;2&quot;) do |config|
   config.vm.box = &quot;bento/freebsd-11.2&quot;
   config.vm.hostname = &quot;learnstp&quot;
   config.vm.network :forwarded_port, guest: 3000, host: 3000
@@ -147,7 +147,7 @@ HostOS$ vim Vagrantfile
   end
 end
 </code></pre><p>Then I fired up the vm and logged in via ssh.</p>
-<pre><code>HostOS$ vagrant up
+<pre tabindex="0"><code>HostOS$ vagrant up
 HostOS$ vagrant ssh
 </code></pre><h3 id="building-a-simple-network-manually">Building a Simple Network Manually</h3>
 <p>To grasp the basics of FreeBSD bridge&rsquo;s STP configuration, I tried first to manually build a simple loop topology with three bridges. All the tasks can be done using a single command, ifconfig(8).</p>
@@ -167,7 +167,7 @@ epair0a |                   | epair1b
 </code></pre>
 <p>This topology requires three bridges and three links. I used if_bridge(4) for the former and epair(4) for the latter. As I wrote in another article, I usually use ng_bridge(4) in the netgraph(4) framework but it doesn&rsquo;t support STP (it has its own loop-detection mechanism, though). Epair is something like a virtual direct attach cable (DAC), which is a network cable with a pluggable tranceiver on either end.</p>
 <p>I ran the following commands to create them. Each command printed out a created device name such as bridge0 and epair2a. Note that a single epair provides two pseudo interfaces (e.g. epair2a and epair2b). <code>ifconfig epair create</code> returns only the first one which is suffixed with &lsquo;a&rsquo; but there&rsquo;s also the one with &lsquo;b&rsquo; suffix.</p>
-<pre><code>$ sudo ifconfig bridge create
+<pre tabindex="0"><code>$ sudo ifconfig bridge create
 bridge0
 $ sudo ifconfig bridge create
 bridge1
@@ -180,18 +180,18 @@ epair1a
 $ sudo ifconfig epair create
 epair2a
 </code></pre><p>As I didn&rsquo;t have any bridges and epairs before, now I have bridge0, bridge1, bridge2, epair0a, epair0b, epair1a, epair1b, epair2a and epair2b. Interfaces on a system can be listed by running ifconfig with -l flag.</p>
-<pre><code>$ ifconfig -l
+<pre tabindex="0"><code>$ ifconfig -l
 em0 lo0 bridge0 bridge1 bridge2 epair0a epair0b epair1a epair1b epair2a epair2b
 </code></pre><p>Next, I connected those bridges with epairs. I used <code>ifconfig addm</code> to add member ports (epair pseudo ethernet interfaces) to the bridges.</p>
-<pre><code>$ sudo ifconfig bridge0 addm epair0a addm epair2b
+<pre tabindex="0"><code>$ sudo ifconfig bridge0 addm epair0a addm epair2b
 $ sudo ifconfig bridge1 addm epair1a addm epair0b
 $ sudo ifconfig bridge2 addm epair2a addm epair1b
 </code></pre><p>By default, Spanning Tree Protocol is disabled on bridge member ports. So I used <code>ifconfig stp</code> to enable it.</p>
-<pre><code>$ sudo ifconfig bridge0 stp epair0a stp epair2b
+<pre tabindex="0"><code>$ sudo ifconfig bridge0 stp epair0a stp epair2b
 $ sudo ifconfig bridge1 stp epair1a stp epair0b
 $ sudo ifconfig bridge2 stp epair2a stp epair1b
 </code></pre><p>Now bring up bridges and epairs to see how it goes.</p>
-<pre><code>$ sudo ifconfig bridge0 up
+<pre tabindex="0"><code>$ sudo ifconfig bridge0 up
 $ sudo ifconfig bridge1 up
 $ sudo ifconfig bridge2 up
 $ sudo ifconfig epair0a up
@@ -201,7 +201,7 @@ $ sudo ifconfig epair1b up
 $ sudo ifconfig epair2a up
 $ sudo ifconfig epair2b up
 </code></pre><p>I checked STP topology by running ifconfig for each bridge.</p>
-<pre><code>$ ifconfig bridge0
+<pre tabindex="0"><code>$ ifconfig bridge0
 bridge0: flags=8843&lt;UP,BROADCAST,RUNNING,SIMPLEX,MULTICAST&gt; metric 0 mtu 1500
         ether 02:98:96:7c:39:00
         nd6 options=9&lt;PERFORMNUD,IFDISABLED&gt;
@@ -268,10 +268,10 @@ epair0a(R)   Discard       (R)epair1b
 <h3 id="scripting-bridge-operations">Scripting Bridge Operations</h3>
 <p>The first program I wrote is a thoughtlessly named <code>bridge.sh</code>. It&rsquo;s just a shell script to run bridge-related operations such as building N-bridge ring or mesh topology, adding a link between bridge A and B, shutting down epairX and showing summary.</p>
 <p>With this tiny script, the previously mentioned ring topology can be created by just running a single command.</p>
-<pre><code>$ sudo ./bridge.sh ring 3
+<pre tabindex="0"><code>$ sudo ./bridge.sh ring 3
 </code></pre><p>With the help of additional scripts written in perl, bridge.sh can also summarize the information nicely. This is far better than ifconfig output for this experiment.<br>
 (I must confess again. Perl is my favorite scripting language.)</p>
-<pre><code>$ ./bridge.sh show
+<pre tabindex="0"><code>$ ./bridge.sh show
 bridge0 32768.02:00:80:00:0c:0b desig root 32768.02:00:80:00:08:0b cost 2000
   epair0a  proto rstp  id 128.7   cost   2000:       root / forwarding
   epair2b  proto rstp  id 128.12  cost   2000:  alternate / discarding
@@ -288,9 +288,9 @@ bridge2 32768.02:00:80:00:0a:0b desig root 32768.02:00:80:00:08:0b cost 2000
 <p>Visualization has been a buzzword for a while. I&rsquo;ve heard a lot about various tools and frameworks to visualize data but I didn&rsquo;t have any idea where to start.</p>
 <p>Long story short, I chose <a href="https://visjs.org/">vis.js</a> to visualize topology on web browser, after trying vanilla HTML5 canvas and <a href="https://svgjs.com/">SVG.js</a>. I also used <a href="https://mojolicious.org/">Mojolicious</a> to serve HTML/JavaScript and feed topology data in JSON to vis.js running on a web browser.</p>
 <p>To start the web application, just run the following script. The application starts listening on TCP port 3000.</p>
-<pre><code>$ ./run-app.sh
+<pre tabindex="0"><code>$ ./run-app.sh
 </code></pre><p>With the port forwarding configuration in Vagrantfile, I can access the application page from the host PC&rsquo;s web browser with the following URL.</p>
-<pre><code>http://localhost:3000/index.html
+<pre tabindex="0"><code>http://localhost:3000/index.html
 </code></pre><p>Now everything is in place.</p>
 <h2 id="seeing-how-rstp-works">Seeing How RSTP Works</h2>
 <h3 id="electing-a-root-bridge-in-a-network">Electing a Root Bridge in a Network</h3>
@@ -322,7 +322,7 @@ bridge2 <b class="gr">32768</b>.<b class="bl">02:00:80:00:0a:0b</b> desig root 3
 <p><img src="https://genneko.github.io/images/learning-stp/rstp-3b-r1.jpg" alt="3-bridge topology. bridge1 became a root"></p>
 <p>Note that MAC addresses are shortened to 2-digit hexadecimal numbers on the visualization app for brevity. They only represent relative magnitude among the bridges. Actual MAC address can be seen in a popup which appears by putting mouse cursor over a bridge.</p>
 <p>Now let&rsquo;s try to make bridge0 a root bridge by configuring its bridge priority to a smaller value. Bridge priority can be changed with omnipotent ifconfig command. Here I set bridge0&rsquo;s priority to the smallest possible value, 0 <sup id="fnref:4"><a href="#fn:4" class="footnote-ref" role="doc-noteref">4</a></sup>.</p>
-<pre><code>$ sudo ifconfig bridge0 priority 0
+<pre tabindex="0"><code>$ sudo ifconfig bridge0 priority 0
 </code></pre><p>Changeing bridge priority caused another election process and bridge0 became a new root bridge.</p>
 <p><img src="https://genneko.github.io/images/learning-stp/rstp-3b-r0.jpg" alt="3-bridge topology. bridge0 became a root"></p>
 <pre><code>$ ./bridge.sh show
@@ -340,12 +340,12 @@ bridge2 <b class="gr">32768</b>.<b class="bl">02:00:80:00:0a:0b</b> desig root 0
 </code></pre>
 <p>It must be undesirable to change bridge priorities carelessly in a production network but it&rsquo;s okay in this experimental network. However, if you want to configure a specific bridge to be a root bridge when creating a topology, you can use bridge.sh script&rsquo;s -R (root) flag.</p>
 <p>For example, you can generate the same 3-bridge topology with the first bridge (e.g. bridge0) being a root bridge by running the following command. <code>-R 1</code> specifies that the first bridge to be a root bridge. The command sets its priority to 0 while leaving other bridge&rsquo;s priorities at default value of 32768. Without -R flag, all bridges will have default priority values.</p>
-<pre><code>$ sudo ./bridge.sh ring -R 1 3
+<pre tabindex="0"><code>$ sudo ./bridge.sh ring -R 1 3
 </code></pre><h3 id="selecting-a-root-port-on-each-bridge">Selecting a Root Port on Each Bridge</h3>
 <p>For each non-root bridge, a single root port is selected based on its distance (cost) to the root bridge. Basically, a port closest to the root bridge becomes the root port on a bridge.</p>
 <p>To calculate the distances, every RSTP-enabled port has a property called port pathcost. By default, it is automatically configured according to its link speed.</p>
 <p>In the previous example, all ports (epairs) have a cost of 2000, which is the default value for 10Gbps links! Running ifconfig on one of the epair interfaces let me confirm that they were configured as 10Gbase-T interfaces.</p>
-<pre><code>$ ifconfig epair0a
+<pre tabindex="0"><code>$ ifconfig epair0a
 epair0a: flags=8943&lt;UP,BROADCAST,RUNNING,PROMISC,SIMPLEX,MULTICAST&gt; metric 0 mtu 1500
         options=8&lt;VLAN_MTU&gt;
         ether 02:ff:00:00:07:0a
@@ -365,20 +365,20 @@ But what if a bridge has more than one ports with the same root pathcost?</p>
 <p>Another case is that a single bridge has two or more links with the same pathcost to another bridge.</p>
 <p>There&rsquo;s no such situations in the previous example. So I tried to create them.</p>
 <p>The first case can be generated by adding a new bridge and connect it to both bridge1 and bridge2. To achieve this, I ran the follwoing commands.</p>
-<pre><code>sudo ./bridge.sh ring 1
+<pre tabindex="0"><code>sudo ./bridge.sh ring 1
 sudo ./bridge.sh connect bridge1 bridge3
 sudo ./bridge.sh connect bridge2 bridge3
 </code></pre><p>Those commands added bridge3 and linked it to bridge2 and bridge3 with newly created epair3 and epair4 respectively. Here bridge3 has two ports, epair3b and epair4b, which have the same root pathcost of 4000.</p>
 <p>If a bridge has multiple ports with the same least root pathcost, it choose a port connected to a neighboring bridge with the lowest bridge id as the root port. In this case, bridge3&rsquo;s neighbors are bridge1 (shortened id: 32768.00)  and bridge2 (shortened id: 32768.01) and bridge1 has the lower bridge id. bridge3 chose epair3b as the root port because it is connected to the lowest id neighbor, bridge1.</p>
 <p><img src="https://genneko.github.io/images/learning-stp/rstp-4b-r0.jpg" alt="Root Port Selection with multiple equal-cost links 1"></p>
 <p>The second case can be observed by adding a parallel link between bridge0 and bridge1. I ran the following command.</p>
-<pre><code>sudo ./bridge.sh connect bridge0 bridge1
+<pre tabindex="0"><code>sudo ./bridge.sh connect bridge0 bridge1
 </code></pre><p>This command added a new link epair5 between bridge0 and bridge1. Now bridge1 has two ports with the same least root pathcost, epair0b and epair5b. This time, both ports also has the same neighbor, bridge0.</p>
 <p>If a bridge has multiple ports with the same least root pathcost and the same neighbor, it choose a port whose neighbor port has the lowest port id. A port id is comprised of a port priority and a port index (number). As with the bridge id, port priority can be user-configurable while port index is determined by the system. Recommended default value of the port priority is 128. On the visualization app, port ids are shown like 128.7 where 128 is a priority and 7 is a port index.</p>
 <p>In this example, epair0b&rsquo;s neighbor epair0a&rsquo;s port id is 128.7 and epair5b&rsquo;s neighbor epair5a&rsquo;s port id is 128.18. Therefore, bridge1 continued to use epair0b as the root bridge even after epair5a was added as a parallel link to bridge0.</p>
 <p><img src="https://genneko.github.io/images/learning-stp/rstp-4b-r0a.jpg" alt="Root Port Selection with multiple equal-cost links 2"></p>
 <p>If you want bridge1 to use epair5b as its root port, you can set its neighbor port&rsquo;s priority to lower value. I tried this by running the following command <sup id="fnref:5"><a href="#fn:5" class="footnote-ref" role="doc-noteref">5</a></sup>.</p>
-<pre><code>sudo ifconfig bridge0 ifpriority epair5a 64
+<pre tabindex="0"><code>sudo ifconfig bridge0 ifpriority epair5a 64
 </code></pre><p>Now epair5b&rsquo;s neighbor epair5a&rsquo;s port id was changed to 64.18 while epair0b&rsquo;s neighbor epair0a&rsquo;s port id is unchanged at 128.7. So bridge1 changes its root port from epair0b to epair5b.</p>
 <p><img src="https://genneko.github.io/images/learning-stp/rstp-4b-r0b.jpg" alt="Root Port Selection with multiple equal-cost links 3"></p>
 <h3 id="determining-designated-and-alternate-ports">Determining Designated and Alternate Ports</h3>
@@ -396,18 +396,18 @@ sudo ./bridge.sh connect bridge2 bridge3
 <h3 id="reacting-to-topology-changes">Reacting to Topology Changes</h3>
 <p>Next I wanted to see how RSTP reacts to topology changes.</p>
 <p>For this, I wiped the previous topology and created 4-bridge full-mesh topology with the following commands.</p>
-<pre><code>$ sudo ./bridge.sh destroy-all
+<pre tabindex="0"><code>$ sudo ./bridge.sh destroy-all
 $ sudo ./bridge.sh mesh -R 1 4
 </code></pre><p><img src="https://genneko.github.io/images/learning-stp/rstp-4b-mesh-01.jpg" alt="4 Bridge Mesh Topology 1"></p>
 <p>Here bridge0 became the root bridge. Other bridges selected their ports directly connected to the root bridge (epair0b on bridge1, epair1b on bridge2 and epair2b on bridge3) as the root ports.</p>
 <p>On each of the other links (epair3, epair4 and epair5), ports on both ends have the same pathcosts through its bridge&rsquo;s root port. So on each of those links, a port on the lowest id bridge became the designated port and another port became the alternate port.</p>
 <p>First, I brought down epair0 between bridge0 and bridge1.</p>
-<pre><code>$ sudo ./bridge.sh linkdown epair0
+<pre tabindex="0"><code>$ sudo ./bridge.sh linkdown epair0
 </code></pre><p>As bridge1&rsquo;s root port was changed from epair0b to epair3a, a path to the root bridge (bridge0) from bridge1 was now bridge1 - bridge2 - bridge0 and its pathcost was increased to 4000.</p>
 <p><img src="https://genneko.github.io/images/learning-stp/rstp-4b-mesh-02.jpg" alt="4 Bridge Mesh Topology 2"></p>
 <p>Bridge1 had two candidates for the new root port, epair3a and epair4a. Because both had the same root pathcost of 4000, neighbor bridge ids were used to determine the root port thus epair3a (neighbor bridge id was 32768.01) was selected over epair4a (neighbor bridge id was 32768.02).</p>
 <p>Now let&rsquo;s generate an exterme situation. I ran the following commands to do this.</p>
-<pre><code>$ sudo ./bridge.sh linkdown epair2
+<pre tabindex="0"><code>$ sudo ./bridge.sh linkdown epair2
 $ sudo ./bridge.sh linkdown epair5
 </code></pre><p><img src="https://genneko.github.io/images/learning-stp/rstp-4b-mesh-03.jpg" alt="4 Bridge Mesh Topology 3"></p>
 <p>Three out of six links were down now and logically four bridges were connected in line like bridge0 (root) - bridge2 (cost 2000) - bridge1 (cost 4000) - bridge3 (cost 6000).</p>

@@ -22,7 +22,7 @@ Maybe it&rsquo;s partly because I&rsquo;m …">
   <meta property="og:url" content="https://genneko.github.io/playing-with-bsd/hardware/freebsd-on-thinkpad-t480/" />
   <meta property="og:type" content="article" />
   <meta name="twitter:card" content="summary" />
-  <meta name="generator" content="Hugo 0.85.0" />
+  <meta name="generator" content="Hugo 0.88.1" />
 
   <link rel="stylesheet" href="https://genneko.github.io/css/style.css" media="all" />
   <link rel="stylesheet" href="https://genneko.github.io/css/syntax.css" media="all" />
@@ -231,7 +231,7 @@ Change the following settings and press F10 to save and exit.</p>
 </li>
 <li>
 <p>Before exiting the installer, I manually renamed a ZFS dataset for home directories as usual.</p>
-<pre><code>rm /home
+<pre tabindex="0"><code>rm /home
 zfs rename zroot/usr/home zroot/home
 zfs set mountpoint=/home zroot/home
 exit
@@ -242,20 +242,20 @@ exit
 <ul>
 <li>
 <p>Update the OS.</p>
-<pre><code>su
+<pre tabindex="0"><code>su
 freebsd-update fetch install
 shutdown -r now
 </code></pre></li>
 <li>
 <p>Install basic packages.
 I usually install non-X or lite versions if available but this time I selected full versions.</p>
-<pre><code>su
+<pre tabindex="0"><code>su
 pkg update
 pkg install git vim tmux bash sudo rsync perl5 ja-nkf zfs-stats portmaster gnupg1
 </code></pre></li>
 <li>
 <p>Configure sudoers.</p>
-<pre><code>visudo
+<pre tabindex="0"><code>visudo
 </code></pre></li>
 <li>
 <p>Configure user preferences such as dotfiles.</p>
@@ -287,22 +287,22 @@ pkg install git vim tmux bash sudo rsync perl5 ja-nkf zfs-stats portmaster gnupg
 <ul>
 <li>
 <p>Install Graphics Driver and reboot the system.</p>
-<pre><code>sudo pkg install drm-kmod
+<pre tabindex="0"><code>sudo pkg install drm-kmod
 sudo sysrc kld_list=&quot;/boot/modules/i915kms.ko&quot;
 shutdown -r now
 </code></pre></li>
 <li>
 <p>Install Xorg and releated packages.</p>
-<pre><code>sudo pkg install xorg xfce xfce4-goodies slim slim-themes
+<pre tabindex="0"><code>sudo pkg install xorg xfce xfce4-goodies slim slim-themes
 </code></pre></li>
 <li>
 <p>Install local language stuff</p>
-<pre><code>sudo pkg install japanese/font-std japanese/font-vlgothic japanese/font-takao ja-fcitx-mozc ja-fcitx-skk zh-fcitx-configtool
+<pre tabindex="0"><code>sudo pkg install japanese/font-std japanese/font-vlgothic japanese/font-takao ja-fcitx-mozc ja-fcitx-skk zh-fcitx-configtool
 </code></pre></li>
 <li>
 <p>Create ~/.xinitrc.<br>
 There are a lot of language configurations. Please ignore them if you do not need them.</p>
-<pre><code>#!/bin/sh
+<pre tabindex="0"><code>#!/bin/sh
 #
 # ~/.xinitrc for Xfce4
 #
@@ -328,7 +328,7 @@ exec startxfce4
 </code></pre></li>
 <li>
 <p>Configure and start services. This brings up a graphical login manager.</p>
-<pre><code>sudo sysrc dbus_enable=YES
+<pre tabindex="0"><code>sudo sysrc dbus_enable=YES
 sudo sysrc hald_enable=YES
 sudo sysrc polkitd_enable=YES
 sudo sysrc avahi_daemon_enable=YES
@@ -342,7 +342,7 @@ sudo service slim start
 </code></pre></li>
 <li>
 <p>Install applications.</p>
-<pre><code>sudo pkg install firefox thunderbird chromium ...
+<pre tabindex="0"><code>sudo pkg install firefox thunderbird chromium ...
 </code></pre></li>
 </ul>
 <h2 id="personal-notes-on-further-setup">Personal Notes on Further Setup</h2>
@@ -351,11 +351,11 @@ sudo service slim start
 <ul>
 <li>As I use a wireless mouse (Logicool&rsquo;s Unifying one) most of the time, I disabled touchpad and enabled &ldquo;Virtual Scrolling&rdquo; with the TrackPoint and the middle button instead.<br>
 [/boot/loader.conf]
-<pre><code>hw.psm.synaptics_support=&quot;1&quot;
+<pre tabindex="0"><code>hw.psm.synaptics_support=&quot;1&quot;
 </code></pre><p>[/etc/sysctl.conf]</p>
-<pre><code>hw.psm.synaptics.min_pressure=220
+<pre tabindex="0"><code>hw.psm.synaptics.min_pressure=220
 </code></pre><p>[/etc/rc.conf]</p>
-<pre><code>moused_flags=&quot;-V&quot;
+<pre tabindex="0"><code>moused_flags=&quot;-V&quot;
 </code></pre></li>
 </ul>
 <h3 id="suspendresume">Suspend/Resume</h3>
@@ -373,7 +373,7 @@ But at some point, I realized the following behaviors of the Logout dialog.</p>
 <p>After some struggle, those were solved by creating the following polkit rule file (e.g. 85-suspend.rules) in /usr/local/etc/polkit-1/rules.d directory.</p>
 <p><a href="https://forums.freebsd.org/threads/xfce4-power-manager-plugin-not-working-as-expected.67780/">https://forums.freebsd.org/threads/xfce4-power-manager-plugin-not-working-as-expected.67780/</a></p>
 <p><em>NOTE: To use this configuration, your user account have to be in operator group. I did this during installation as mentioned earlier.</em></p>
-<pre><code>// pkg info -D xfce4-session
+<pre tabindex="0"><code>// pkg info -D xfce4-session
 //
 // xfce4-session-4.12.1_6:
 // Always:
@@ -411,23 +411,23 @@ polkit.addRule(function (action, subject) {
 <li>XFCE4 Power Manager&rsquo;s Brightness Control sometimes shows weird behavior. When I switch the power between AC and battery, screen brightness initially changes as configured but gets back to the previous level when I move mouse cursor.<br>
 After struggling for a while, I found the following configurations with the XFCE4&rsquo;s brightness adjustment disabled allow me to automatically adjust brightness upon change of the power source (AC or battery).<br>
 [/boot/loader.conf]
-<pre><code>acpi_video_load=&quot;YES&quot;
+<pre tabindex="0"><code>acpi_video_load=&quot;YES&quot;
 </code></pre><p>[/etc/sysctl.conf]</p>
-<pre><code>hw.acpi.video.lcd0.economy=30
+<pre tabindex="0"><code>hw.acpi.video.lcd0.economy=30
 hw.acpi.video.lcd0.fullpower=60
 </code></pre></li>
 </ul>
 <h3 id="beep-on-logout">Beep on Logout</h3>
 <ul>
 <li>When unmute, opening the logout dialog makes a loud beep. I added the following line to ~/.xinitrc to avoid it.
-<pre><code>xset -b
+<pre tabindex="0"><code>xset -b
 </code></pre></li>
 </ul>
 <h3 id="epson-ink-jet-printer-ep-802a">EPSON Ink-Jet Printer EP-802A</h3>
 <ul>
 <li>
 <p>Install and configure CUPS as follows. Then point your web browser to localhost:631 and configure the printer.</p>
-<pre><code>sudo pkg install gutenprint
+<pre tabindex="0"><code>sudo pkg install gutenprint
 sudo sysrc cupsd_enable=YES
 sudo service cupsd start
 </code></pre></li>
@@ -450,7 +450,7 @@ Audacity itself can be installed via binary package.</li>
 <ul>
 <li>On the previous main PC (Windows 10), I used OneDrive to import photos taken and uploaded by smartphones.
 OneDrive Free Client allows me to achieve this on FreeBSD machine.
-<pre><code>sudo pkg install onedrive
+<pre tabindex="0"><code>sudo pkg install onedrive
 
 onedrive
 # Open the URL shown and sign in with your Microsoft account.  
@@ -471,7 +471,7 @@ onedrive --download-only --synchronize
 <ul>
 <li>
 <p>Install i386-wine-* (this time I chose &lsquo;devel&rsquo;).</p>
-<pre><code>sudo pkg install i386-wine-devel wine-gecko-devel wine-mono-devel winetricks
+<pre tabindex="0"><code>sudo pkg install i386-wine-devel wine-gecko-devel wine-mono-devel winetricks
 </code></pre></li>
 <li>
 <p>I can run IrfanView, Picasa3 and Yamaha&rsquo;s Mid Radio Player.</p>
@@ -487,7 +487,7 @@ onedrive --download-only --synchronize
 (Example 31.3. Failover Mode Between Ethernet and Wireless Interfaces).</li>
 </ul>
 <p>My configuration (in /etc/rc.conf) is as follows.</p>
-<pre><code>ifconfig_em0=&quot;ether &lt;WiFi MAC Address&gt; up&quot;
+<pre tabindex="0"><code>ifconfig_em0=&quot;ether &lt;WiFi MAC Address&gt; up&quot;
 wlans_iwm0=&quot;wlan0&quot;
 ifconfig_wlan0=&quot;WPA up&quot;
 create_args_wlan0=&quot;country JP&quot;
@@ -504,7 +504,7 @@ ifconfig_lagg0=&quot;up laggproto failover laggport em0 laggport wlan0 DHCP&quot
 </ul>
 <p>It suggests loading WiFi-related kernel modueles by loader instead of devd.<br>
 I achieved this by adding the following lines to /boot/loader.conf and reboot.</p>
-<pre><code>if_iwm_load=&quot;YES&quot;
+<pre tabindex="0"><code>if_iwm_load=&quot;YES&quot;
 iwm8265fw_load=&quot;YES&quot;
 </code></pre><p>This made iwm0 detected much earlier and lagg0 was successfully configured with both em0 and wlan0 as its members on boot.</p>
 <p>Then I got another suggestion on Twitter that it&rsquo;s better to load modules which are not required for boot from rc not loader.</p>
@@ -513,7 +513,7 @@ iwm8265fw_load=&quot;YES&quot;
 <a href="https://twitter.com/debdrup/status/1166016787013689344">https://twitter.com/debdrup/status/1166016787013689344</a></li>
 </ul>
 <p>I moved them from /boot/loader.conf to /etc/rc.conf and confirmed that it also worked as expected.</p>
-<pre><code>kld_list=&quot;/boot/modules/i915kms.ko if_iwm iwm8265fw&quot;
+<pre tabindex="0"><code>kld_list=&quot;/boot/modules/i915kms.ko if_iwm iwm8265fw&quot;
 </code></pre><p>(As I previously mentioned, i915kms.ko is for graphics.)</p>
 <h3 id="burning-cds">Burning CDs</h3>
 <p>I hadn&rsquo;t burnt CDs for a long time but recently I was asked to create an audio CD. So I plugged in a USB CD-R/RW drive to my laptop and tried it on FreeBSD.</p>
@@ -522,38 +522,38 @@ iwm8265fw_load=&quot;YES&quot;
 <ol>
 <li>
 <p>Check the CD drive&rsquo;s device number.</p>
-<pre><code>sudo cdrecord -scanbus
+<pre tabindex="0"><code>sudo cdrecord -scanbus
 ...
 	1,0,0	100) 'BUFFALO ' 'Optical Drive   ' '2.00' Removable CD-ROM
 ...
 </code></pre></li>
 <li>
 <p>Burn it.</p>
-<pre><code>sudo cdrecord -v dev=1,0,0 -pad -dao music.wav 
+<pre tabindex="0"><code>sudo cdrecord -v dev=1,0,0 -pad -dao music.wav 
 </code></pre></li>
 </ol>
 <p>Because running cdrecord with root privilege could burn CDs, it was obvious that device permissions kept the GUI burners run by a normal user from finding the burner.</p>
 <p>cd0 had the following owner/mode. As my user account (a normal user) was in operator group, I could read from the device but couldn&rsquo;t write to it.</p>
-<pre><code>crw-r-----  1 root  operator   0x7f Nov  9 10:16 cd0
+<pre tabindex="0"><code>crw-r-----  1 root  operator   0x7f Nov  9 10:16 cd0
 </code></pre><p>I adjusted the device permissions with devfs.</p>
 <ol>
 <li>
 <p>Add the following a devfs ruleset in /etc/devfs.rules.<br>
 I added pass and xpt because adding only cd0 didn&rsquo;t work.</p>
-<pre><code>[devfsrules_cdwriter=20]
+<pre tabindex="0"><code>[devfsrules_cdwriter=20]
 add path cd0 group operator mode 0660
 add path pass1 group operator mode 0660
 add path xpt0 group operator mode 0660
 </code></pre><p>Maybe &lsquo;cd0&rsquo;, &lsquo;pass1&rsquo; and &lsquo;xpt0&rsquo; could be &lsquo;cd*&rsquo;, &lsquo;pass*&rsquo; and &lsquo;xpt*&rsquo;.<br>
 But for now I use the formers with the following output.</p>
-<pre><code>camcontrol devlist
+<pre tabindex="0"><code>camcontrol devlist
 &lt;Samsung SSD 860 EVO 1TB RVT02B6Q&gt;  at scbus0 target 0 lun 0 (ada0,pass0)
 &lt;BUFFALO Optical Drive 2.00&gt;       at scbus1 target 0 lun 0 (pass1,cd0)
 &lt;Generic- SD/MMC 1.00&gt;             at scbus2 target 0 lun 0 (da0,pass2)
 </code></pre></li>
 <li>
 <p>Add a line to /etc/rc.conf to use the devfs ruleset.</p>
-<pre><code>devfs_system_ruleset=&quot;devfsrules_cdwriter&quot;
+<pre tabindex="0"><code>devfs_system_ruleset=&quot;devfsrules_cdwriter&quot;
 </code></pre></li>
 <li>
 <p>Reboot the system.</p>
@@ -568,28 +568,28 @@ It was a pleasant surprise to find that jitsi video conference using Firefox/Chr
 <ol>
 <li>
 <p>Install webcamd.</p>
-<pre><code>sudo pkg install webcamd
+<pre tabindex="0"><code>sudo pkg install webcamd
 </code></pre></li>
 <li>
 <p>Add a user to the webcamd group.</p>
-<pre><code>sudo pw groupmod webcamd -m genneko
+<pre tabindex="0"><code>sudo pw groupmod webcamd -m genneko
 </code></pre></li>
 <li>
 <p>Configure the cuse kernel module to be loaded on boot.</p>
-<pre><code>sudo sysrc kld_list+=cuse
+<pre tabindex="0"><code>sudo sysrc kld_list+=cuse
 </code></pre></li>
 <li>
 <p>Configure the webcamd to be started on boot.</p>
-<pre><code>sudo sysrc webcamd_enable=YES
+<pre tabindex="0"><code>sudo sysrc webcamd_enable=YES
 </code></pre><p>or</p>
-<pre><code>sudo service webcamd enable
+<pre tabindex="0"><code>sudo service webcamd enable
 </code></pre></li>
 <li>
 <p>Manually load the module and restart devd to start the service, or reboot the entire system.</p>
-<pre><code>sudo kldload cuse
+<pre tabindex="0"><code>sudo kldload cuse
 sudo service devd restart
 </code></pre><p>or</p>
-<pre><code>sudo shutdown -r now
+<pre tabindex="0"><code>sudo shutdown -r now
 </code></pre></li>
 </ol>
 <h2 id="references">References</h2>

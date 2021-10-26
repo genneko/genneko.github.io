@@ -18,7 +18,7 @@ Prerequisite  FreeBSD-11.1-RC3/amd64 Generic kernel No special packages/ports (j
   <meta property="og:url" content="https://genneko.github.io/playing-with-bsd/networking/freebsd-vti-ipsec/" />
   <meta property="og:type" content="article" />
   <meta name="twitter:card" content="summary" />
-  <meta name="generator" content="Hugo 0.85.0" />
+  <meta name="generator" content="Hugo 0.88.1" />
 
   <link rel="stylesheet" href="https://genneko.github.io/css/style.css" media="all" />
   <link rel="stylesheet" href="https://genneko.github.io/css/syntax.css" media="all" />
@@ -117,14 +117,14 @@ Here is a record of my experiment just for your information.</p>
 </ul>
 <h2 id="network-configuration">Network configuration</h2>
 <p><strong>NOTE</strong>: The following text shows bsd1 configurations only.</p>
-<pre><code>                       10.0.0.1      10.0.0.2
+<pre tabindex="0"><code>                       10.0.0.1      10.0.0.2
 192.168.10.0/24 --- [bsd1] ----- /// ----- [bsd2] --- 192.168.20.0/24
 172.16.10.0/24                                        172.16.20.0/24
 </code></pre><h2 id="strongswan-setup">strongSwan setup</h2>
 <h3 id="installation">Installation</h3>
-<pre><code>$ sudo pkg install strongswan
+<pre tabindex="0"><code>$ sudo pkg install strongswan
 </code></pre><h3 id="usrlocaletcipsecconf">/usr/local/etc/ipsec.conf</h3>
-<pre><code>conn route-based
+<pre tabindex="0"><code>conn route-based
   left = 10.0.0.1
   right = 10.0.0.2
   leftsubnet = 0.0.0.0/0
@@ -144,10 +144,10 @@ Here is a record of my experiment just for your information.</p>
 
   auto = start
 </code></pre><h3 id="usrlocaletcipsecsecrets">/usr/local/etc/ipsec.secrets</h3>
-<pre><code>10.0.0.2 %any : PSK &quot;xxxxxxxxxxxxxxxx&quot;
+<pre tabindex="0"><code>10.0.0.2 %any : PSK &quot;xxxxxxxxxxxxxxxx&quot;
 </code></pre><h3 id="usrlocaletcstrongswanconf">/usr/local/etc/strongswan.conf</h3>
 <p>Just add &lsquo;install_routes = no&rsquo;.</p>
-<pre><code>charon {
+<pre tabindex="0"><code>charon {
   install_routes = no
 
   load_modular = yes
@@ -159,13 +159,13 @@ Here is a record of my experiment just for your information.</p>
 include strongswan.d/*.conf
 </code></pre><h2 id="system-setup">System setup</h2>
 <h3 id="manually-configure-ipsec-interface-and-add-routes">Manually configure IPsec interface and add routes</h3>
-<pre><code>$ sudo ifconfig ipsec0 create reqid 100
+<pre tabindex="0"><code>$ sudo ifconfig ipsec0 create reqid 100
 $ sudo ifconfig ipsec0 inet tunnel 10.0.0.1 10.0.0.2 up
 $ sudo ifconfig ipsec0 inet 169.254.1.1/32 169.254.1.2
 $ sudo route add 192.168.20.0/24 169.254.1.2
 $ sudo route add 172.16.20.0/24 169.254.1.2
 </code></pre><h3 id="start-strongswan-and-do-some-testing">Start strongSwan and do some testing</h3>
-<pre><code>$ sudo service strongswan onestart
+<pre tabindex="0"><code>$ sudo service strongswan onestart
 ...
 $ sudo setkey -D
 $ sudo setkey -DP
@@ -173,7 +173,7 @@ $ sudo setkey -DP
 <p>At the time of 11.1-RC3, I couldn&rsquo;t find a way to fully setup ipsec interface only with the rc.conf. So I hesitantly use /etc/rc.local.</p>
 <p>Maybe /etc/network.subr (clone_up?) will be updated to support it in near future.</p>
 <h4 id="etcrcconf">/etc/rc.conf</h4>
-<pre><code>gateway_enable=&quot;YES&quot;
+<pre tabindex="0"><code>gateway_enable=&quot;YES&quot;
 cloned_interfaces=&quot;ipsec0&quot;
 create_args_ipsec0=&quot;reqid 100&quot;
 ifconfig_ipsec0=&quot;inet 169.254.1.1/32 169.254.1.2&quot;
@@ -182,7 +182,7 @@ route_remote1=&quot;192.168.20.0/24 169.254.1.2&quot;
 route_remote2=&quot;172.16.20.0/24 169.254.1.2&quot;
 strongswan_enable=&quot;YES&quot;
 </code></pre><h4 id="etcrclocal">/etc/rc.local</h4>
-<pre><code>ifconfig ipsec0 inet tunnel 10.0.0.1 10.0.0.2
+<pre tabindex="0"><code>ifconfig ipsec0 inet tunnel 10.0.0.1 10.0.0.2
 </code></pre><h2 id="references">References</h2>
 <ul>
 <li>

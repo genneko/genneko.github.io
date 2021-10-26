@@ -19,7 +19,7 @@ This article is a sort of personal notebook where I summarize …">
   <meta property="og:url" content="https://genneko.github.io/playing-with-bsd/system/learning-notes-on-jails/" />
   <meta property="og:type" content="article" />
   <meta name="twitter:card" content="summary" />
-  <meta name="generator" content="Hugo 0.85.0" />
+  <meta name="generator" content="Hugo 0.88.1" />
 
   <link rel="stylesheet" href="https://genneko.github.io/css/style.css" media="all" />
   <link rel="stylesheet" href="https://genneko.github.io/css/syntax.css" media="all" />
@@ -142,29 +142,29 @@ This article is a sort of personal notebook where I summarize …">
 <li>
 <p>Create ZFS datasets for jails and templates.<br>
 Here I&rsquo;m going to create a FreeBSD 11.2 template in /vm/tmpl/11.2.</p>
-<pre><code>sudo zfs create -o mountpoint=/vm zroot/vm
+<pre tabindex="0"><code>sudo zfs create -o mountpoint=/vm zroot/vm
 sudo zfs create zroot/vm/tmpl
 sudo zfs create zroot/vm/tmpl/11.2
 </code></pre></li>
 <li>
 <p>Download a base install set tarball for FreeBSD 11.2 release.</p>
-<pre><code>cd ~/tmp
+<pre tabindex="0"><code>cd ~/tmp
 fetch ftp://ftp.freebsd.org/pub/FreeBSD/releases/amd64/11.2-RELEASE/base.txz
 </code></pre></li>
 <li>
 <p>Extract the base tarball in the template directory.</p>
-<pre><code>sudo tar -xJvpf base.txz -C /vm/tmpl/11.2
+<pre tabindex="0"><code>sudo tar -xJvpf base.txz -C /vm/tmpl/11.2
 </code></pre></li>
 <li>
 <p>Copy timezone configuration from the host to the template.<br>
 Usually /etc/resolv.conf is also copied from the host, but after some experiments I decided to copy it by using /etc/jail.conf&rsquo;s exec.prestart and delete it by exec.poststop for most cases.<br>
 (But I won&rsquo;t do this if the host acts as a name server and its resolv.conf refers to itself. In such a case, I&rsquo;ll use a statically configured resolv.conf for jails)</p>
-<pre><code>sudo cp /etc/localtime /vm/tmpl/11.2/etc/
+<pre tabindex="0"><code>sudo cp /etc/localtime /vm/tmpl/11.2/etc/
 </code></pre></li>
 <li>
 <p>Write a minimum /etc/rc.conf for the template.</p>
-<pre><code>sudo vi /vm/tmpl/11.2/etc/rc.conf
-</code></pre><pre><code>sendmail_enable=&quot;NO&quot;
+<pre tabindex="0"><code>sudo vi /vm/tmpl/11.2/etc/rc.conf
+</code></pre><pre tabindex="0"><code>sendmail_enable=&quot;NO&quot;
 sendmail_submit_enable=&quot;NO&quot;
 sendmail_outbound_enable=&quot;NO&quot;
 sendmail_msp_queue_enable=&quot;NO&quot;
@@ -173,13 +173,13 @@ cron_flags=&quot;-J 60&quot;
 </code></pre></li>
 <li>
 <p>Edit system crontab in the template to disable adjkern.</p>
-<pre><code>sudo vi /vm/tmpl/11.2/etc/crontab
-</code></pre><pre><code>#1,31 0-5 * * * root adjkerntz -a
+<pre tabindex="0"><code>sudo vi /vm/tmpl/11.2/etc/crontab
+</code></pre><pre tabindex="0"><code>#1,31 0-5 * * * root adjkerntz -a
 </code></pre></li>
 <li>
 <p>Create /etc/periodic.conf to disable some of the predefined scheduled jobs which are not required for jails.</p>
-<pre><code>sudo vi /vm/tmpl/11.2/etc/periodic.conf
-</code></pre><pre><code># No output for successful script runs.
+<pre tabindex="0"><code>sudo vi /vm/tmpl/11.2/etc/periodic.conf
+</code></pre><pre tabindex="0"><code># No output for successful script runs.
 daily_show_success=&quot;NO&quot;
 weekly_show_success=&quot;NO&quot;
 monthly_show_success=&quot;NO&quot;
@@ -220,27 +220,27 @@ security_status_tcpwrap_enable=&quot;NO&quot;
 <p>Create directories to handle ports in jails.<br>
 The first one is to read-only mount host&rsquo;s ports tree and others are working spaces.<br>
 Also create /etc/make.conf to use the directories for building ports in jails.</p>
-<pre><code>sudo mkdir /vm/tmpl/11.2/usr/ports
+<pre tabindex="0"><code>sudo mkdir /vm/tmpl/11.2/usr/ports
 sudo mkdir -p /vm/tmpl/11.2/var/ports/{distfiles,packages}
 sudo vi /vm/tmpl/11.2/etc/make.conf
-</code></pre><pre><code>WRKDIRPREFIX = /var/ports
+</code></pre><pre tabindex="0"><code>WRKDIRPREFIX = /var/ports
 DISTDIR = /var/ports/distfiles
 PACKAGES = /var/ports/packages
 </code></pre></li>
 <li>
 <p>Apply system updates to the template.</p>
-<pre><code>sudo freebsd-update -b /vm/tmpl/11.2 fetch install
+<pre tabindex="0"><code>sudo freebsd-update -b /vm/tmpl/11.2 fetch install
 </code></pre></li>
 <li>
 <p>Optionally, you can customize the jails' root shell prompt to make it easily distinguishable from the host.</p>
-<pre><code>sudo vi /vm/tmpl/11.2/root/.cshrc
-</code></pre><pre><code># ANSI Color 32 = Green
+<pre tabindex="0"><code>sudo vi /vm/tmpl/11.2/root/.cshrc
+</code></pre><pre tabindex="0"><code># ANSI Color 32 = Green
 set prompt=&quot;%{\033[32m%}%B&lt;%n@%m&gt;%b%{\033[0m%}:%~%# &quot;
 </code></pre></li>
 <li>
 <p>Take a snapshot of the template dataset.<br>
 Strictly speaking, a template is a snapshot not a dataset. The snapshot can be cloned or sent/received to generate new datasets for production jails.</p>
-<pre><code>sudo zfs snapshot zroot/vm/tmpl/11.2@p3
+<pre tabindex="0"><code>sudo zfs snapshot zroot/vm/tmpl/11.2@p3
 </code></pre></li>
 </ol>
 <h2 id="creating-jails-from-the-template">Creating Jails from the Template</h2>
@@ -248,12 +248,12 @@ Strictly speaking, a template is a snapshot not a dataset. The snapshot can be c
 Usually, I use clone for quick testing while I prefer zfs send/receive for production jails.</p>
 <h3 id="by-zfs-clone">By ZFS Clone</h3>
 <p>Create four jails h1, h2, h3 and h4 by cloning the 11.2 template&rsquo;s p3 snapshot.</p>
-<pre><code>for jail in h1 h2 h3 h4; do
+<pre tabindex="0"><code>for jail in h1 h2 h3 h4; do
     sudo zfs clone zroot/vm/tmpl/11.2@p3 zroot/vm/$jail
 done
 </code></pre><h3 id="by-zfs-sendreceive">By ZFS Send/Receive</h3>
 <p>Create four jails h1, h2, h3 and h4 by sending/receiving the 11.2 template&rsquo;s p3 snapshot.</p>
-<pre><code>for jail in h1 h2 h3 h4; do
+<pre tabindex="0"><code>for jail in h1 h2 h3 h4; do
     sudo sh -c &quot;zfs send zroot/vm/tmpl/11.2@p3 | zfs receive zroot/vm/$jail&quot;
 done
 </code></pre><h2 id="configuring-jails">Configuring Jails</h2>
@@ -261,14 +261,14 @@ done
 <p>Do not forget to create a cloned loopback interface &ldquo;lo1&rdquo; on which jail&rsquo;s addresses are configured.</p>
 <p>PF is used for NAT and port forwarding.</p>
 <p>[/etc/rc.conf]</p>
-<pre><code>cloned_interfaces=&quot;lo1&quot;
+<pre tabindex="0"><code>cloned_interfaces=&quot;lo1&quot;
 pf_enable=&quot;YES&quot;
 pflog_enable=&quot;YES&quot;
 jail_enable=&quot;YES&quot;
 jail_list=&quot;h1 h2 h3 h4&quot;
 </code></pre><h3 id="system-jail-configuration">System Jail Configuration</h3>
 <p>[/etc/jail.conf]</p>
-<pre><code>exec.start = &quot;/bin/sh /etc/rc&quot;;
+<pre tabindex="0"><code>exec.start = &quot;/bin/sh /etc/rc&quot;;
 exec.stop = &quot;/bin/sh /etc/rc.shutdown&quot;;
 exec.clean;
 mount.devfs;
@@ -319,17 +319,17 @@ h4 {
 </code></pre><h3 id="per-jail-fstab">Per-Jail fstab</h3>
 <p>If you want some directories on the host to be visible in jails, create a fstab containing nullfs mount entries for each jail and specify it in /etc/jail.conf&rsquo;s <code>mount.fstab</code> parameter.</p>
 <p>[/vm/h1.fstab]</p>
-<pre><code>/usr/ports /vm/h1/usr/ports nullfs ro 0 0
+<pre tabindex="0"><code>/usr/ports /vm/h1/usr/ports nullfs ro 0 0
 </code></pre><p>Or you can also use <code>mount</code> parameter to specify a single line of fstab entry directly in /etc/jail.conf.</p>
 <p>[/etc/jail.conf]</p>
-<pre><code>...
+<pre tabindex="0"><code>...
 mount = &quot;/usr/ports /vm/${name}/usr/ports nullfs ro 0 0&quot;;
 ...
 </code></pre><h3 id="nat-configuration">NAT Configuration</h3>
 <p>PF configuration should be written in the strict order of categories.</p>
 <p>For IPv6 NAT, I explicitly specify a external (global) address instead of the interface name because an IPv6 interface usually has multiple addresses and it seems the interface name could be resolved to its link-local address.</p>
 <p>[/etc/pf.conf]</p>
-<pre><code># MACROS/TABLES
+<pre tabindex="0"><code># MACROS/TABLES
 XIF = &quot;em0&quot;
 JAILNET_V4 = &quot;127.1.1.0/24&quot;
 JAILNET_V6 = &quot;fd00:1:1:1::0/64&quot;
@@ -351,7 +351,7 @@ rdr pass log on $XIF inet6 proto tcp to $EXT_V6ADDR port 8080 -&gt; fd00:1:1:1::
 # FILTERING (Pass/Block)
 </code></pre><h3 id="hosts-table">Hosts Table</h3>
 <p>[/etc/hosts]</p>
-<pre><code>127.1.1.1 h1
+<pre tabindex="0"><code>127.1.1.1 h1
 127.1.1.2 h2
 127.1.1.3 h3
 127.1.1.4 h4
@@ -361,38 +361,38 @@ fd00:1:1:1::3 h3
 fd00:1:1:1::4 h4
 </code></pre><h2 id="managing-jails">Managing Jails</h2>
 <p>Start all jails.</p>
-<pre><code>sudo service jail start
+<pre tabindex="0"><code>sudo service jail start
 </code></pre><p>Start specific jail(s).</p>
-<pre><code>sudo service jail start h1
+<pre tabindex="0"><code>sudo service jail start h1
 </code></pre><p>Login to a jail.</p>
-<pre><code>sudo jexec h1
+<pre tabindex="0"><code>sudo jexec h1
 </code></pre><p>Run a command on a jail.</p>
-<pre><code>sudo jexec h1 ifconfig
+<pre tabindex="0"><code>sudo jexec h1 ifconfig
 </code></pre><p>List running jails.</p>
-<pre><code>jls
+<pre tabindex="0"><code>jls
 jls -v
 jls -s
 </code></pre><p><strong>NOTE:</strong> At first I was confused by <code>ip4=disable</code> output of <code>jls -s</code>. But later I looked at /usr/src/usr.sbin/jls/jls.c and learned that it&rsquo;s correct because ip4&rsquo;s value is &lsquo;disable&rsquo; unless explicitly set otherwise. It&rsquo;s just regarded as &lsquo;new&rsquo; when ip4.addr is set.</p>
 <p>Stop specific jail(s).</p>
-<pre><code>sudo service jail stop h1
+<pre tabindex="0"><code>sudo service jail stop h1
 </code></pre><p>Stop all jails.</p>
-<pre><code>sudo service jail stop
+<pre tabindex="0"><code>sudo service jail stop
 </code></pre><p>Manage binary packages on a jail.</p>
-<pre><code>sudo pkg -j h1 update
+<pre tabindex="0"><code>sudo pkg -j h1 update
 sudo pkg -j h1 upgrade
 sudp pkg -j h1 install git-lite vim-console
 </code></pre><p>Update package repositories on multiple jails using shell&rsquo;s for loop.</p>
-<pre><code>for jail in $(jls name); do
+<pre tabindex="0"><code>for jail in $(jls name); do
   sudo pkg -j $jail update
 done
 </code></pre><p>Apply system updates to a jail.</p>
-<pre><code>sudo freebsd-update -b /vm/h1 fetch install
+<pre tabindex="0"><code>sudo freebsd-update -b /vm/h1 fetch install
 </code></pre><p>If the host OS is newer than a jail, set UNAME_r to the jail&rsquo;s version.</p>
-<pre><code>sudo UNAME_r=11.1-RELEASE freebsd-update -b /vm/h1 fetch install
+<pre tabindex="0"><code>sudo UNAME_r=11.1-RELEASE freebsd-update -b /vm/h1 fetch install
 </code></pre><p>Upgrade system on a jail.</p>
-<pre><code>sudo freebsd-update -b /vm/h1 -r 11.3-RELEASE upgrade
+<pre tabindex="0"><code>sudo freebsd-update -b /vm/h1 -r 11.3-RELEASE upgrade
 </code></pre><p>When you have already upgraded the host, set UNAME_r to the jail&rsquo;s version.</p>
-<pre><code>sudo UNAME_r=11.2-RELEASE-p4 freebsd-update -b /vm/h1 -r 11.3-RELEASE upgrade
+<pre tabindex="0"><code>sudo UNAME_r=11.2-RELEASE-p4 freebsd-update -b /vm/h1 -r 11.3-RELEASE upgrade
 sudo UNAME_r=11.2-RELEASE-p4 freebsd-update -b /vm/h1 install
 # Although the following message is displayed here, reboot is not required for a jail.
 #
@@ -417,36 +417,36 @@ If you are using the version, you don&rsquo;t have to recompile your kernel.</em
 <h3 id="installing-and-updating-freebsd-source">Installing and Updating FreeBSD Source</h3>
 <h4 id="from-distribution-tarball">From Distribution Tarball</h4>
 <p>Download the tarball.</p>
-<pre><code>cd ~/tmp
+<pre tabindex="0"><code>cd ~/tmp
 fetch ftp://ftp.freebsd.org/pub/FreeBSD/releases/amd64/11.2-RELEASE/src.txz
 </code></pre><p>Extract the tarball.</p>
-<pre><code>sudo tar -xJvpf src.txz -C /
+<pre tabindex="0"><code>sudo tar -xJvpf src.txz -C /
 </code></pre><h4 id="from-subversion">From Subversion</h4>
 <p>Check out the source.</p>
-<pre><code>sudo svnlite checkout https://svn.freebsd.org/base/releng/11.2 /usr/src
+<pre tabindex="0"><code>sudo svnlite checkout https://svn.freebsd.org/base/releng/11.2 /usr/src
 </code></pre><p>Update the source.</p>
-<pre><code>sudo svnlite update /usr/src
+<pre tabindex="0"><code>sudo svnlite update /usr/src
 </code></pre><h3 id="building-vimage-enabled-kernel">Building VIMAGE-enabled Kernel</h3>
 <h4 id="the-simplest-way">The Simplest Way</h4>
 <p>Build kernel using a configuration file which comes with the FreeBSD source tree.<br>
 This config file contains some netgraph modules handy for VNET jails.</p>
-<pre><code>sudo cp /usr/src/share/examples/jails/VIMAGE /usr/src/sys/amd64/conf
+<pre tabindex="0"><code>sudo cp /usr/src/share/examples/jails/VIMAGE /usr/src/sys/amd64/conf
 cd /usr/src
 sudo make KERNCONF=VIMAGE kernel
 sudo shutdown -r now
 </code></pre><h4 id="minimum-configuration">Minimum Configuration</h4>
 <p>To add only VIMAGE to GENERIC, create a kernel configuration file with the following content.<br>
 [/usr/src/sys/amd64/conf/VIMAGE]</p>
-<pre><code>include GENERIC
+<pre tabindex="0"><code>include GENERIC
 ident VIMAGE
 options VIMAGE
 </code></pre><p>Then build.</p>
-<pre><code>cd /usr/src
+<pre tabindex="0"><code>cd /usr/src
 sudo make KERNCONF=VIMAGE kernel
 sudo shutdown -r now
 </code></pre><h3 id="preparing-helper-script">Preparing Helper Script</h3>
 <p>I made a quick-and-dirty modification to the jng script in the FreeBSD source tree and named it vnet. This small script is used to setup netgraph-based virtual switch/interfaces for the host and jails.</p>
-<pre><code>mkdir ~/src
+<pre tabindex="0"><code>mkdir ~/src
 cd ~/src
 git clone https://github.com/genneko/freebsd-vimage-jails.git jails
 sudo ln -s ~/src/jails/vnet /usr/sbin/
@@ -483,7 +483,7 @@ $gwv4 is the IP address of a default gateway for the jail and the host while $ip
 $plen is a subnet mask length for the bridged network.<br>
 The jail&rsquo;s virtual interface and the host&rsquo;s physical interface are connected by a ng_bridge named &lsquo;${net}br&rsquo;.<br>
 In this configuration, the jail uses the same router (gateway) as the host to go out.</p>
-<pre><code>b1 {
+<pre tabindex="0"><code>b1 {
         $net = &quot;em0&quot;;
         $gwv4 = &quot;192.168.1.1&quot;;
         $ipv4 = &quot;192.168.1.11&quot;;
@@ -531,7 +531,7 @@ $gwv4 is the IP address of this internal interface while $ipv4 is the IP address
 $plen is a subnet mask length for the virtual network.<br>
 The jail and the host&rsquo;s virtual interface are connected by a ng_bridge named &lsquo;${net}br&rsquo;.<br>
 In this configuration, the jail use the host as a gateway to the outside world.</p>
-<pre><code>v1 {
+<pre tabindex="0"><code>v1 {
         $net = &quot;vi0&quot;;
         $gwv4 = &quot;172.31.0.1&quot;;
         $ipv4 = &quot;172.31.0.11&quot;;
@@ -547,11 +547,11 @@ In this configuration, the jail use the host as a gateway to the outside world.<
 </code></pre><p>For a routed configuration, IP packet forwarding should be enabled to allow the jail to go out to the internet.<br>
 IPv4/IPv6 packet forwarding can be controlled by sysctl variables <code>net.inet.ip.forwarding</code> and <code>net.inet6.ip6.forwarding</code>.<br>
 Packet forwarding can be enabled dynamically by running the following commands.</p>
-<pre><code>sysctl net.inet.ip.forwarding=1
+<pre tabindex="0"><code>sysctl net.inet.ip.forwarding=1
 sysctl net.inet6.ip6.forwarding=1
 </code></pre><p>To make those configurations permanent, they can be configured in /etc/sysctl.conf but the following line in /etc/rc.conf looks nicer to me.</p>
 <p>[/etc/rc.conf]</p>
-<pre><code>gateway_enable=&quot;YES&quot;
+<pre tabindex="0"><code>gateway_enable=&quot;YES&quot;
 ipv6_gateway_enable=&quot;YES&quot;
 </code></pre><h4 id="isolated-network-configuration">Isolated Network Configuration</h4>
 <p>This is an example configuration for five VNET jails in a network isolated from the host. I used this configuration to experiment network software such as WireGuard VPN (see <a href="https://genneko.github.io/playing-with-bsd/networking/freebsd-wireguard-quicklook">this article</a>).</p>
@@ -590,7 +590,7 @@ ipv6_gateway_enable=&quot;YES&quot;
 </code></pre>
 <p>To use tcpdump on the central router (r1), define the following devfs ruleset which is specified by <code>devfs_ruleset</code> parameter in /etc/jail.conf.</p>
 <p>[/etc/devfs.rules]</p>
-<pre><code>[devfsrules_bpfjail=10]
+<pre tabindex="0"><code>[devfsrules_bpfjail=10]
 add include $devfsrules_jail
 add path 'bpf*' unhide
 
@@ -599,7 +599,7 @@ add include $devfsrules_jail
 add path 'tun*' unhide
 </code></pre><p>The whole jail.conf looks like this.</p>
 <p>[/etc/jail.conf]</p>
-<pre><code>exec.start = &quot;/bin/sh /etc/rc&quot;;
+<pre tabindex="0"><code>exec.start = &quot;/bin/sh /etc/rc&quot;;
 exec.stop = &quot;/bin/sh /etc/rc.shutdown&quot;;
 exec.clean;
 mount.devfs;
@@ -713,7 +713,7 @@ vpnh2 {
 }
 </code></pre><h5 id="see-network-configuration">See Network Configuration</h5>
 <p>The helper script can list networks (roughly equals to ng_bridges), jails, interfaces (ng_eiface) and their addresses.</p>
-<pre><code>$ sudo vnet list -r
+<pre tabindex="0"><code>$ sudo vnet list -r
 vi1
   r1 vi1_r1 172.31.1.1/24
   vpnr1 vi1_vpnr1 172.31.1.11/24
@@ -734,17 +734,17 @@ vri2
 <p>Download package files on the host.<br>
 With -d option, <code>pkg fetch</code> downloads the specified package plus its dependencies.<br>
 Downloaded files are stored in the host&rsquo;s /var/cache/pkg.</p>
-<pre><code>pkg fetch -d wireguard
+<pre tabindex="0"><code>pkg fetch -d wireguard
 </code></pre></li>
 <li>
 <p>Make the downloaded package files available to jails.<br>
 Although you can simply copy the files to jails' filesystem but nullfs mount /var/cache/pkg is much better and easier.<br>
 The following line in /etc/jail.conf achieves this.  The host&rsquo;s /var/cache/pkg is mounted on the jails' /mnt directory.</p>
-<pre><code>mount = &quot;/var/cache/pkg /vm/${name}/mnt nullfs ro 0 0&quot;;
+<pre tabindex="0"><code>mount = &quot;/var/cache/pkg /vm/${name}/mnt nullfs ro 0 0&quot;;
 </code></pre></li>
 <li>
 <p>Start the jails and install the package from the host.</p>
-<pre><code>pkg -j vpnr1 add /mnt/wireguard-0.0.20181218.txz
+<pre tabindex="0"><code>pkg -j vpnr1 add /mnt/wireguard-0.0.20181218.txz
 [vpnr1] Installing wireguard-0.0.20181218...
 [vpnr1] `-- Installing bash-4.4.23_1...
 [vpnr1] |   `-- Installing gettext-runtime-0.19.8.1_2...

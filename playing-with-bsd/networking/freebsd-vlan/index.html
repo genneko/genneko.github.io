@@ -21,7 +21,7 @@ But when I was playing with vnet jails, I suddenly got interested …">
   <meta property="og:url" content="https://genneko.github.io/playing-with-bsd/networking/freebsd-vlan/" />
   <meta property="og:type" content="article" />
   <meta name="twitter:card" content="summary" />
-  <meta name="generator" content="Hugo 0.85.0" />
+  <meta name="generator" content="Hugo 0.88.1" />
 
   <link rel="stylesheet" href="https://genneko.github.io/css/style.css" media="all" />
   <link rel="stylesheet" href="https://genneko.github.io/css/syntax.css" media="all" />
@@ -167,7 +167,7 @@ As an epair has &lsquo;a&rsquo; and &lsquo;b&rsquo; ends (e.g. epair0a and epair
 <p>In short, I could achieve the goal by adding the following lines in the standard configuration files.</p>
 <h3 id="etcrcconf">/etc/rc.conf</h3>
 <p>The host&rsquo;s part of the VLANs can be configured in this way.</p>
-<pre><code>#
+<pre tabindex="0"><code>#
 # Create
 #   3 bridges (VLANs)
 #   6 epairs
@@ -206,7 +206,7 @@ ifconfig_bridge30=&quot;addm em0.30 addm epair301b addm epair302b up&quot;
 </code></pre><h3 id="etcjailconf">/etc/jail.conf</h3>
 <p>Each jail is given the &lsquo;a&rsquo;-end of the corresponding epair by &lsquo;vnet.interface&rsquo;.<br>
 For brevity, I use &lsquo;exec.start&rsquo; here to assign IP and gateway addresses to the jails, but it might be more common to do this in each jail&rsquo;s /etc/rc.conf.</p>
-<pre><code>exec.start = &quot;/bin/sh /etc/rc&quot;;
+<pre tabindex="0"><code>exec.start = &quot;/bin/sh /etc/rc&quot;;
 exec.stop = &quot;/bin/sh /etc/rc.shutdown&quot;;
 exec.clean;
 mount.devfs;
@@ -233,7 +233,7 @@ v301 { $vif = &quot;epair301a&quot;; $addr = &quot;192.168.30.11/24&quot;; $gw =
 v302 { $vif = &quot;epair302a&quot;; $addr = &quot;192.168.30.12/24&quot;; $gw = &quot;192.168.30.2&quot;; }
 </code></pre><h3 id="switch">Switch</h3>
 <p>This is a pseudo-config of an imaginary switch.</p>
-<pre><code>vlan 10
+<pre tabindex="0"><code>vlan 10
 vlan 20
 vlan 30
 
@@ -277,7 +277,7 @@ The host has only the em0 configured while the switch has all VLANs and IP addre
 </li>
 <li>
 <p>Create three bridges on the host, each of which forms a separate VLAN.</p>
-<pre><code>ifconfig bridge10 create
+<pre tabindex="0"><code>ifconfig bridge10 create
 ifconfig bridge20 create
 ifconfig bridge30 create
 </code></pre><p><img src="https://genneko.github.io/images/freebsd-vlan/vlan-bridges2-s.png" alt="Create bridges (vlans)"></p>
@@ -285,7 +285,7 @@ ifconfig bridge30 create
 <li>
 <p>Create 802.1Q logical interfaces for vlan 10, 20 and 30 on the parent interface (em0) and add them to the bridges (VLANs).<br>
 Those logical interfaces become trunk (tagged) ports on the bridges.</p>
-<pre><code>ifconfig em0.10 create
+<pre tabindex="0"><code>ifconfig em0.10 create
 ifconfig em0.20 create
 ifconfig em0.30 create
 ifconfig em0.10 up
@@ -298,7 +298,7 @@ ifconfig bridge30 addm em0.30 up
 </li>
 <li>
 <p>Create virtual interfaces (epairs) for the jails and add &lsquo;b&rsquo; ends of them to the bridges (VLANs) as access (untagged) ports.</p>
-<pre><code>ifconfig epair101 create
+<pre tabindex="0"><code>ifconfig epair101 create
 ifconfig epair102 create
 ifconfig epair201 create
 ifconfig epair202 create
@@ -318,7 +318,7 @@ ifconfig bridge30 addm epair301b addm epair302b
 <li>
 <p>Create the vnet jails and move &lsquo;a&rsquo; ends of the epairs from the host to the jails.<br>
 See <a href="https://www.freebsd.org/cgi/man.cgi?query=jail(8)">jail(8)</a> for the command to manually creating/destroying jails.</p>
-<pre><code>jail -c name=v101 vnet persist
+<pre tabindex="0"><code>jail -c name=v101 vnet persist
 jail -c name=v102 vnet persist
 jail -c name=v201 vnet persist
 jail -c name=v202 vnet persist
@@ -334,7 +334,7 @@ ifconfig epair302a vnet v302
 </li>
 <li>
 <p>Assign IP addresses to the epairs on jails.</p>
-<pre><code>jexec v101 ifconfig epair101a 192.168.10.11/24
+<pre tabindex="0"><code>jexec v101 ifconfig epair101a 192.168.10.11/24
 jexec v102 ifconfig epair102a 192.168.10.12/24
 jexec v201 ifconfig epair201a 192.168.20.11/24
 jexec v202 ifconfig epair202a 192.168.20.12/24
@@ -350,11 +350,11 @@ jexec v302 ifconfig epair302a 192.168.30.12/24
 <h3 id="allow-the-host-to-access-the-jails-directly">Allow the Host to Access the Jails Directly</h3>
 <p>To let the host directly access the jails, assign an IP address to each bridge interface.<br>
 This can be done by adding <code>inet 192.168.xx.1/24</code> to the following lines in the host&rsquo;s /etc/rc.conf.</p>
-<pre><code>ifconfig_bridge10=&quot;inet 192.168.10.1/24 addm em0.10 addm epair101b addm epair102b up&quot;
+<pre tabindex="0"><code>ifconfig_bridge10=&quot;inet 192.168.10.1/24 addm em0.10 addm epair101b addm epair102b up&quot;
 ifconfig_bridge20=&quot;inet 192.168.20.1/24 addm em0.20 addm epair201b addm epair202b up&quot;
 ifconfig_bridge30=&quot;inet 192.168.30.1/24 addm em0.30 addm epair301b addm epair302b up&quot;
 </code></pre><p>You can also do it manually.</p>
-<pre><code>ifconfig bridge10 inet 192.168.10.1/24
+<pre tabindex="0"><code>ifconfig bridge10 inet 192.168.10.1/24
 ifconfig bridge20 inet 192.168.20.1/24
 ifconfig bridge30 inet 192.168.30.1/24
 </code></pre><p><img src="https://genneko.github.io/images/freebsd-vlan/vlan-bridges7-s.png" alt="Assign IP addresses to the bridges"></p>
@@ -362,21 +362,21 @@ ifconfig bridge30 inet 192.168.30.1/24
 <p>At this point, the jails in different VLANs (subnets) can communicate each other but their packets still have to go through the switch.<br>
 You can avoid the packets leaving the host by enabling the IP forwarding on the host and making it act as a router.</p>
 <p>After assigning IP addresses to the bridges, add the following line to the host&rsquo;s /etc/rc.conf.</p>
-<pre><code>gateway_enable=&quot;YES&quot;
+<pre tabindex="0"><code>gateway_enable=&quot;YES&quot;
 </code></pre><p>To manually enable the IP forwarding, use the following commands.</p>
-<pre><code>sysctl net.inet.ip.fowarding=1
+<pre tabindex="0"><code>sysctl net.inet.ip.fowarding=1
 </code></pre><blockquote>
 <p><strong>NOTE</strong>: To route packets between the bridges (VLANs), make sure to assign IP addresses to the bridges as described in the previous section, not their member interfaces such as em0.10.</p>
 </blockquote>
 <p>You also have to change the default gateway for each jail from the switch&rsquo;s vlan address to the host&rsquo;s bridge interface address.</p>
-<pre><code>v101 { $vif = &quot;epair101a&quot;; $addr = &quot;192.168.10.11/24&quot;; $gw = &quot;192.168.10.1&quot;; }
+<pre tabindex="0"><code>v101 { $vif = &quot;epair101a&quot;; $addr = &quot;192.168.10.11/24&quot;; $gw = &quot;192.168.10.1&quot;; }
 v102 { $vif = &quot;epair102a&quot;; $addr = &quot;192.168.10.12/24&quot;; $gw = &quot;192.168.10.1&quot;; }
 v201 { $vif = &quot;epair201a&quot;; $addr = &quot;192.168.20.11/24&quot;; $gw = &quot;192.168.20.1&quot;; }
 v202 { $vif = &quot;epair202a&quot;; $addr = &quot;192.168.20.12/24&quot;; $gw = &quot;192.168.20.1&quot;; }
 v301 { $vif = &quot;epair301a&quot;; $addr = &quot;192.168.30.11/24&quot;; $gw = &quot;192.168.30.1&quot;; }
 v302 { $vif = &quot;epair302a&quot;; $addr = &quot;192.168.30.12/24&quot;; $gw = &quot;192.168.30.1&quot;; }
 </code></pre><p>To change them dynamically, run the following commands.</p>
-<pre><code>jexec v101 route delete default 192.168.10.2
+<pre tabindex="0"><code>jexec v101 route delete default 192.168.10.2
 jexec v101 route add default 192.168.10.1
 jexec v102 route delete default 192.168.10.2
 jexec v102 route add default 192.168.10.1
@@ -399,14 +399,14 @@ jexec v302 route add default 192.168.30.1
 <h3 id="use-another-freebsd-host-to-emulate-the-switch">Use Another FreeBSD Host to Emulate the Switch</h3>
 <p>If you don&rsquo;t have a switch at hand, you can setup another FreeBSD host to emulate it for the testing purpose.</p>
 <p>A minimal configuration for the second host to act like a simple layer 3 switch (or more exactly a router capable of handling VLAN tags).</p>
-<pre><code>cloned_interfaces=&quot;em0.10 em0.20 em0.30&quot;
+<pre tabindex="0"><code>cloned_interfaces=&quot;em0.10 em0.20 em0.30&quot;
 ifconfig_em0=&quot;192.168.1.2/24&quot;
 ifconfig_em0_10=&quot;inet 192.168.10.2/24&quot;
 ifconfig_em0_20=&quot;inet 192.168.20.2/24&quot;
 ifconfig_em0_30=&quot;inet 192.168.30.2/24&quot;
 gateway_enable=&quot;YES&quot;
 </code></pre><p>If the host has multiple physical interfaces, it can be more like a switch.</p>
-<pre><code>cloned_interfaces=&quot;bridge10 bridge20 bridge30 em0.10 em0.20 em0.30&quot;
+<pre tabindex="0"><code>cloned_interfaces=&quot;bridge10 bridge20 bridge30 em0.10 em0.20 em0.30&quot;
 ifconfig_em0=&quot;192.168.1.2/24&quot;
 ifconfig_em0_10=&quot;up&quot;
 ifconfig_em0_20=&quot;up&quot;

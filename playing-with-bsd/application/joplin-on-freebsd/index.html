@@ -24,7 +24,7 @@ Please refer to the …">
   <meta property="og:url" content="https://genneko.github.io/playing-with-bsd/application/joplin-on-freebsd/" />
   <meta property="og:type" content="article" />
   <meta name="twitter:card" content="summary" />
-  <meta name="generator" content="Hugo 0.85.0" />
+  <meta name="generator" content="Hugo 0.88.1" />
 
   <link rel="stylesheet" href="https://genneko.github.io/css/style.css" media="all" />
   <link rel="stylesheet" href="https://genneko.github.io/css/syntax.css" media="all" />
@@ -193,29 +193,29 @@ One is to install it with npm (Node Package Manager) and the other is to build i
 <li>
 <p>Install dependencies.<br>
 pkgconf and vips are required for installing node-gyp.</p>
-<pre><code>sudo pkg install node8 npm-node8 pkgconf vips
+<pre tabindex="0"><code>sudo pkg install node8 npm-node8 pkgconf vips
 sudo npm install -g node-gyp
 </code></pre></li>
 <li>
 <p>Install joplin terminal application.</p>
-<pre><code>NPM_CONFIG_PREFIX=~/.joplin-bin npm install -g joplin
+<pre tabindex="0"><code>NPM_CONFIG_PREFIX=~/.joplin-bin npm install -g joplin
 sudo ln -s ~/.joplin-bin/bin/joplin /usr/local/bin/joplin
 </code></pre></li>
 <li>
 <p>Start the terminal app by running the following command.</p>
-<pre><code>joplin
+<pre tabindex="0"><code>joplin
 </code></pre></li>
 <li>
 <p>Yeah. I got it working!<br>
 <img src="https://genneko.github.io/images/joplin-on-freebsd/joplin-terminal-app.png" alt="Joplin Terminal App"><br>
 Now synchronization and other options can be setup with the built-in :config command (it&rsquo;s like vi&rsquo;s colon commands).<br>
 For example, use the following commands on the terminal app to setup synchronization to a WebDAV folder.</p>
-<pre><code>:config sync.target 6
+<pre tabindex="0"><code>:config sync.target 6
 :config sync.6.path https://davserver.example.com/some/dav/folder
 :config sync.6.username dav_username
 :config sync.6.password dav_password
 </code></pre><p>What&rsquo;s great about the terminal app is that those commands can be also run on a shell prompt like:</p>
-<pre><code>joplin config sync.target 6
+<pre tabindex="0"><code>joplin config sync.target 6
 joplin config sync.6.path https://davserver.example.com/some/dav/folder
 joplin config sync.6.username dav_username
 joplin config sync.6.password dav_password
@@ -232,22 +232,22 @@ I remember the days I struggled to exit UNIX editors such as vi, emacs, joe and 
 <p>Install dependencies.<br>
 pkgconf and vips are required for installing node-gyp.<br>
 Joplin website says that Yarn is also required but it doesn&rsquo;t seem to apply to the terminal app.</p>
-<pre><code>sudo pkg install node8 npm-node8 pkgconf vips
+<pre tabindex="0"><code>sudo pkg install node8 npm-node8 pkgconf vips
 sudo npm install -g node-gyp
 </code></pre></li>
 <li>
 <p>Get (clone) the source from GitHub.</p>
-<pre><code>cd ~/tmp/or/somewhere
+<pre tabindex="0"><code>cd ~/tmp/or/somewhere
 git clone https://github.com/laurent22/joplin.git
 </code></pre></li>
 <li>
 <p>Build the tools.</p>
-<pre><code>cd joplin/Tools
+<pre tabindex="0"><code>cd joplin/Tools
 npm install
 </code></pre></li>
 <li>
 <p>Build the terminal application (aka CLI client).</p>
-<pre><code>cd ../CliClient
+<pre tabindex="0"><code>cd ../CliClient
 npm install
 bash ./build.sh
 rsync --delete -aP ../ReactNativeClient/locales/ build/locales/
@@ -255,7 +255,7 @@ sudo ln -s $(pwd)/build/main.js /usr/local/bin/joplin
 </code></pre></li>
 <li>
 <p>Start the terminal app by running the following command.</p>
-<pre><code>joplin
+<pre tabindex="0"><code>joplin
 </code></pre></li>
 </ol>
 <p>Please refer to <a href="https://joplinapp.org/terminal/">Terminal Application Documentation</a> for more information.</p>
@@ -272,16 +272,16 @@ sudo ln -s $(pwd)/build/main.js /usr/local/bin/joplin
 <p>But anyway, I wanted to use Web Clipper on FreeBSD (and I also want to use Joplin behind a HTTP proxy) so I forked Joplin repo on GitHub and created a personal branch &lsquo;headless_proxy&rsquo; from master, where I merged upstream&rsquo;s headless-server and proxy_test branches with some dirty modifications to avoid a few issues I encountered.</p>
 <p>Installation steps are exactly the same as <a href="#build-the-app-from-source">Build the Terminal App from Source</a> except the github repository to clone and the branch to use.</p>
 <p>So please refer to <a href="#build-the-app-from-source">the section</a> and replace the step 2 with the following command lines.</p>
-<pre><code>git clone https://github.com/genneko/joplin.git
+<pre tabindex="0"><code>git clone https://github.com/genneko/joplin.git
 cd joplin
 git checkout headless_proxy
 </code></pre><p>This custom terminal app can be run the same as the original one.</p>
 <p>To start Web Clipper API service, type the following command in the terminal app.</p>
-<pre><code>:server start
+<pre tabindex="0"><code>:server start
 </code></pre><p>To stop the service, run the following command in the app or exit the app.</p>
-<pre><code>:server stop
+<pre tabindex="0"><code>:server stop
 </code></pre><p>The service can be also run without UI by running the following command on shell prompt.</p>
-<pre><code>joplin server start
+<pre tabindex="0"><code>joplin server start
 </code></pre><p>Now I can use Web Clipper extension on FreeBSD!
 <img src="https://genneko.github.io/images/joplin-on-freebsd/webclipper-on-freebsd.png" alt="Web Clipper runs on FreeBSD"></p>
 <h2 id="desktop-application">Desktop Application</h2>
@@ -294,32 +294,32 @@ git checkout headless_proxy
 <strong>This step is no longer required. electron4 package has been available in &ldquo;quarterly&rdquo; for some time now.</strong></p>
 <p>This change is required because the default &ldquo;quarterly&rdquo; set didn&rsquo;t have devel/electron4 yet.<br>
 It was achieved by creating an overriding repository configuration file FreeBSD.conf in /usr/local/etc/pkg/repos and recreating the repository catalog as follows.</p>
-<pre><code>sudo mkdir -p /usr/local/etc/pkg/repos
+<pre tabindex="0"><code>sudo mkdir -p /usr/local/etc/pkg/repos
 echo 'FreeBSD: { url: &quot;pkg+http://pkg.FreeBSD.org/${ABI}/latest&quot; }' &gt; /usr/local/etc/pkg/repos/FreeBSD.conf
 sudo pkg update -f
 </code></pre><p><em>I first tried to build devel/electron4 from port, but unfortunately my FreeBSD VM seemed to crash with the host (I was not there when the crash happened. I only saw the host OS had been restarted) at the late stage of hours of build process. So I decided to go with pre-built package in the latest package set.</em></p>
 </li>
 <li>
 <p>Install electron4 package and its dependencies.</p>
-<pre><code>sudo pkg install electron4
+<pre tabindex="0"><code>sudo pkg install electron4
 </code></pre></li>
 <li>
 <p>Install Joplin&rsquo;s dependencies.<br>
 pkgconf and vips are required for installing node-gyp.</p>
-<pre><code>sudo pkg install node8 npm-node8 pkgconf vips
+<pre tabindex="0"><code>sudo pkg install node8 npm-node8 pkgconf vips
 sudo npm install -g node-gyp
 </code></pre></li>
 <li>
 <p>Get (clone) the source from GitHub and apply a patch.</p>
-<pre><code>cd ~/tmp/or/somewhere
+<pre tabindex="0"><code>cd ~/tmp/or/somewhere
 git clone https://github.com/laurent22/joplin.git
 </code></pre><p>To successfully build the Electron app, I had to make small modifications to at least two files.<br>
 They might be wrong ways but anyway here&rsquo;s <a href="https://gist.githubusercontent.com/genneko/fbd6420404caf5d518563bb056cf46ed/raw/75183ecdea088152fc2bb0dfceb8a6096dc5a427/patch-joplin-electron-freebsd.txt">a patch</a> to apply as follows.</p>
-<pre><code>cd joplin
+<pre tabindex="0"><code>cd joplin
 patch &lt; ~/tmp/patch-joplin-electron-freebsd.txt
 </code></pre><p><strong>2019-09-05</strong><br>
 <strong>Instead of manually applying the patch to the upstream source, my forked version can also be used as follows.</strong> <em>(Sorry, but at your own risk)</em></p>
-<pre><code>cd ~/tmp/or/somewhere
+<pre tabindex="0"><code>cd ~/tmp/or/somewhere
 git clone https://github.com/genneko/joplin.git
 cd joplin
 git checkout electron_freebsd
@@ -327,19 +327,19 @@ git checkout electron_freebsd
 </li>
 <li>
 <p>Build the tools.</p>
-<pre><code>cd Tools
+<pre tabindex="0"><code>cd Tools
 npm install
 </code></pre></li>
 <li>
 <p>Build the Electron app by mostly following the <a href="https://github.com/laurent22/joplin/blob/master/BUILD.md#building-the-electron-application">build instruction</a>.<br>
 I omitted a packaging part.</p>
-<pre><code>cd ElectronClient/app
+<pre tabindex="0"><code>cd ElectronClient/app
 rsync --delete -a ../../ReactNativeClient/lib/ lib/
 npm install
 </code></pre></li>
 <li>
 <p>Run the desktop app.</p>
-<pre><code>electron .
+<pre tabindex="0"><code>electron .
 </code></pre></li>
 <li>
 <p>Yay! Many thanks to folks around the devel/electron4 port!
@@ -352,11 +352,11 @@ npm install
 <ol>
 <li>
 <p>Install python36 and py36-sqlite3 packages.</p>
-<pre><code>sudo pkg install py36-sqlite3
+<pre tabindex="0"><code>sudo pkg install py36-sqlite3
 </code></pre></li>
 <li>
 <p>Install Joplin Web by following the instructions on its <a href="https://github.com/foxmask/joplin-web">webpage</a>.</p>
-<pre><code>cd
+<pre tabindex="0"><code>cd
 python3.6 -m venv .joplin-web
 cd .joplin-web/
 source bin/activate
@@ -366,10 +366,10 @@ pip install -r requirements.txt
 </code></pre></li>
 <li>
 <p>Edit a config file.</p>
-<pre><code>cp joplin_web/env.sample joplin_web/.env
+<pre tabindex="0"><code>cp joplin_web/env.sample joplin_web/.env
 vi joplin_web/.env
 </code></pre><p>[joplin_web/.env]</p>
-<pre><code>...
+<pre tabindex="0"><code>...
 JOPLIN_PATH='/home/genneko/.config/joplin/'
 JOPLIN_PROFILE_PATH='/home/genneko/.config/joplin/'
 JOPLIN_TOKEN='XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'
@@ -377,16 +377,16 @@ API_USE_JOPLIN_WEBCLIPPER=True
 </code></pre><p>I&rsquo;m not 100% sure but the terminal app seems to store its database in $HOME/.config/joplin while the desktop app puts it in $HOME/.config/joplin-desktop.</p>
 <p>JOPLIN_TOKEN is a kind of API key. I had been wondering where to get this for the terminal app for a while, then I found it in the app&rsquo;s database file.
 It looks like its value can be retrieved by running the following query.</p>
-<pre><code>sqlite3 ~/.config/joplin/database.sqlite &quot;select value from settings where key = 'api.token'&quot;
+<pre tabindex="0"><code>sqlite3 ~/.config/joplin/database.sqlite &quot;select value from settings where key = 'api.token'&quot;
 </code></pre></li>
 <li>
 <p>Prepare a database for Joplin Web.<br>
 This creates joplin_web.sqlite3 file in the current directory.</p>
-<pre><code>python manage.py migrate
+<pre tabindex="0"><code>python manage.py migrate
 </code></pre></li>
 <li>
 <p>Run the Joplin Web and point web browser to localhost:8001.</p>
-<pre><code>python manage.py runserver 8001
+<pre tabindex="0"><code>python manage.py runserver 8001
 </code></pre></li>
 <li>
 <p>I can see and edit the Joplin notes on the web browser.<br>
@@ -398,7 +398,7 @@ Its behavior is somewhat unstable because it&rsquo;s apparently work in progress
 <p>Joplin Web Clipper Service provides a clean and well-documented <a href="https://joplinapp.org/api/">REST API</a>.</p>
 <p>For example, you can get a list of notebooks by using the following command line.<br>
 (<a href="https://stedolan.github.io/jq/">jq</a> is a powerful command-line JSON processor and can be installed from package)</p>
-<pre><code>curl -s http://localhost:41184/folders | jq
+<pre tabindex="0"><code>curl -s http://localhost:41184/folders | jq
 [
   {
     &quot;id&quot;: &quot;395a8d2573aa46849e67d06d69b9b692&quot;,
@@ -418,15 +418,15 @@ Its behavior is somewhat unstable because it&rsquo;s apparently work in progress
 <ol>
 <li>
 <p>Install dependencies.</p>
-<pre><code>sudo pkg install p5-JSON p5-libwww
+<pre tabindex="0"><code>sudo pkg install p5-JSON p5-libwww
 </code></pre></li>
 <li>
 <p>Get (clone) the source from GitHub.</p>
-<pre><code>git clone https://github.com/sciurius/perl-Joplin-API.git
+<pre tabindex="0"><code>git clone https://github.com/sciurius/perl-Joplin-API.git
 </code></pre></li>
 <li>
 <p>Build and install the module to ~/local/lib/perl5/site_perl.</p>
-<pre><code>cd perl-Joplin-API
+<pre tabindex="0"><code>cd perl-Joplin-API
 mkdir ~/local
 perl Makefile.PL PREFIX=~/local
 make
@@ -435,7 +435,7 @@ make install
 <li>
 <p>Try to run the similar operation with perl. Great!<br>
 This makes me dream of writing a small web frontend with Mojolicious or some kind of automation scripts.</p>
-<pre><code>cat | perl -Mlib=$HOME/local/lib/perl5/site_perl -MJoplin
+<pre tabindex="0"><code>cat | perl -Mlib=$HOME/local/lib/perl5/site_perl -MJoplin
 $j = Joplin-&gt;connect(server=&gt;&quot;http://localhost:41184&quot;, apikey=&gt;&quot;&quot;);
 $books = $j-&gt;find_folders();
 for my $book (@$books){

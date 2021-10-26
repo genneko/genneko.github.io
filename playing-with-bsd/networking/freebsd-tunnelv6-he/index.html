@@ -18,7 +18,7 @@ Unfortunately, native IPv6 service is still unavailable for me.">
   <meta property="og:url" content="https://genneko.github.io/playing-with-bsd/networking/freebsd-tunnelv6-he/" />
   <meta property="og:type" content="article" />
   <meta name="twitter:card" content="summary" />
-  <meta name="generator" content="Hugo 0.85.0" />
+  <meta name="generator" content="Hugo 0.88.1" />
 
   <link rel="stylesheet" href="https://genneko.github.io/css/style.css" media="all" />
   <link rel="stylesheet" href="https://genneko.github.io/css/syntax.css" media="all" />
@@ -115,7 +115,7 @@ Unfortunately, native IPv6 service is still unavailable for me.">
 <li>
 <p>Create a tunnel on the TunnelBroker web site. Tunnel details such as addresses and prefixes are shown on the page.<br>
 I use the following parameters in this example.</p>
-<pre><code>RPI-B LAN IPv4 Address (ue0) : 192.168.1.3 (Behind a NAT box)
+<pre tabindex="0"><code>RPI-B LAN IPv4 Address (ue0) : 192.168.1.3 (Behind a NAT box)
 RPI-B LAN IPv6 Address (ue0) : 2001:db8:2:beef::3   &lt;--+
 RPI-B WAN IPv6 Address (gif0): 2001:db8:1:beef::2 &lt;--+ |
                                                      | |
@@ -134,7 +134,7 @@ Routed /64 Prefix            : 2001:db8:2:beef::/64 &lt;--+
 </li>
 <li>
 <p>Login to the RPI-B and add the following lines to /etc/rc.conf.</p>
-<pre><code>pf_enabled=&quot;YES&quot;
+<pre tabindex="0"><code>pf_enabled=&quot;YES&quot;
 pflog_enabled=&quot;YES&quot;
 cloned_interfaces=&quot;gif0&quot;
 ifconfig_gif0=&quot;tunnel 192.168.1.3 10.10.10.10&quot;
@@ -145,7 +145,7 @@ ipv6_gateway_enable=&quot;YES&quot;
 </code></pre></li>
 <li>
 <p>Create or update /etc/pf.conf.</p>
-<pre><code>$ sudo vi /etc/pf.conf
+<pre tabindex="0"><code>$ sudo vi /etc/pf.conf
 ext_if = &quot;gif0&quot;
 int_if = &quot;ue0&quot;
 localnet = $int_if:network
@@ -164,14 +164,14 @@ pass in on $int_if inet6 proto udp from port = 546 to port = 547
 </code></pre></li>
 <li>
 <p>Start pf and apply changes.</p>
-<pre><code>$ sudo service pf start
+<pre tabindex="0"><code>$ sudo service pf start
 $ sudo service pflog start
 $ sudo service netif restart
 $ sudo service routing restart
 </code></pre></li>
 <li>
 <p>Test IPv6 reachability across the tunnel.</p>
-<pre><code>$ ping6 ff02::1%gif0
+<pre tabindex="0"><code>$ ping6 ff02::1%gif0
 </code></pre></li>
 </ol>
 <h2 id="setting-up-ra-and-dhcpv6">Setting up RA and DHCPv6</h2>
@@ -179,7 +179,7 @@ $ sudo service routing restart
 <ol>
 <li>
 <p>On the RPI-B, create /etc/rtadvd.conf.</p>
-<pre><code>$ sudo vi /etc/rtadvd.conf
+<pre tabindex="0"><code>$ sudo vi /etc/rtadvd.conf
 ue0:\
   :rltime#1200:raflags=&quot;mo&quot;:mtu#1480:\
   :noifprefix:addr=&quot;2001:db8:2:beef::&quot;:prefixlen#64:\
@@ -192,7 +192,7 @@ ue0:\
 <li>
 <p>Install the ISC-DSCP-Server and create /usr/local/etc/dhcpd6.conf.<br>
 Here I configure so that only a single host &lsquo;pc1&rsquo; can get a statically configured IPv6 address (and DNS server addresses).</p>
-<pre><code>$ sudo pkg update
+<pre tabindex="0"><code>$ sudo pkg update
 $ sudo pkg install isc-dscp43-server
 $ sudo vi /usr/local/etc/dhcpd6.conf
 default-lease-time 600;
@@ -209,14 +209,14 @@ subnet6 2001:db8:2:beef::/64 {
 </code></pre></li>
 <li>
 <p>Add the following lines to /etc/rc.conf to enable rtadvd and dhcpd6 on the LAN setgment (ue0).</p>
-<pre><code> rtadvd_enable=&quot;YES&quot;
+<pre tabindex="0"><code> rtadvd_enable=&quot;YES&quot;
  rtadvd_interfaces=&quot;ue0&quot;
  dhcpd6_enable=&quot;YES&quot;
  dhcpd6_ifaces=&quot;ue0&quot;
 </code></pre></li>
 <li>
 <p>Start rtadvd and dhcpd6.</p>
-<pre><code>$ sudo service rtadvd start
+<pre tabindex="0"><code>$ sudo service rtadvd start
 $ sudo service isc-dhcpd6 start
 </code></pre></li>
 </ol>

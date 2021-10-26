@@ -19,7 +19,7 @@ NOTE: WireGuard is still …">
   <meta property="og:url" content="https://genneko.github.io/playing-with-bsd/networking/freebsd-wireguard-android/" />
   <meta property="og:type" content="article" />
   <meta name="twitter:card" content="summary" />
-  <meta name="generator" content="Hugo 0.85.0" />
+  <meta name="generator" content="Hugo 0.88.1" />
 
   <link rel="stylesheet" href="https://genneko.github.io/css/style.css" media="all" />
   <link rel="stylesheet" href="https://genneko.github.io/css/syntax.css" media="all" />
@@ -151,7 +151,7 @@ Roaming between home WiFi and 4G network.</p>
 <h2 id="install-wireguard">Install WireGuard</h2>
 <h3 id="freebsd">FreeBSD</h3>
 <p>I also installed libqrencode package to pass configuration to Android.</p>
-<pre><code>sudo pkg install wireguard libqrencode
+<pre tabindex="0"><code>sudo pkg install wireguard libqrencode
 </code></pre><h3 id="android">Android</h3>
 <p>Install WireGuard App (Beta) from Google Play.<br>
 <a href="https://play.google.com/store/apps/details?id=com.wireguard.android">https://play.google.com/store/apps/details?id=com.wireguard.android</a></p>
@@ -160,7 +160,7 @@ Roaming between home WiFi and 4G network.</p>
 <ol>
 <li>
 <p>Generate private/public key pairs for FreeBSD and Android.</p>
-<pre><code>sudo su
+<pre tabindex="0"><code>sudo su
 cd /usr/local/etc/wireguard
 wg genkey &gt; freebsd.private
 wg pubkey &lt; freebsd.private &gt; freebsd.public
@@ -169,9 +169,9 @@ wg pubkey &lt; android.private &gt; android.public
 </code></pre></li>
 <li>
 <p>Create a configuration file for the server (FreeBSD).</p>
-<pre><code>vi wg0.conf
+<pre tabindex="0"><code>vi wg0.conf
 </code></pre><p>[wg0.conf]</p>
-<pre><code>[Interface]
+<pre tabindex="0"><code>[Interface]
 Address = 192.168.222.1/32
 PrivateKey = &lt;content of freebsd.private&gt;
 ListenPort = 51820
@@ -182,9 +182,9 @@ AllowedIPs = 192.168.222.2/32
 </code></pre></li>
 <li>
 <p>Create a configuration file for the client (Android).</p>
-<pre><code>vi android.conf
+<pre tabindex="0"><code>vi android.conf
 </code></pre><p>[android.conf]</p>
-<pre><code>[Interface]
+<pre tabindex="0"><code>[Interface]
 Address = 192.168.222.2/32
 PrivateKey = &lt;content of android.private&gt;
 
@@ -195,13 +195,13 @@ Endpoint = wg.example.com:51820
 </code></pre></li>
 <li>
 <p>Start WireGuard service on the server.</p>
-<pre><code>sysrc wireguard_enable=&quot;YES&quot;
+<pre tabindex="0"><code>sysrc wireguard_enable=&quot;YES&quot;
 sysrc wireguard_interfaces=&quot;wg0&quot;
 service wireguard start
 </code></pre></li>
 <li>
 <p>Display a QR code representing the Android configuration.</p>
-<pre><code>qrencode -t ansi &lt; android.conf
+<pre tabindex="0"><code>qrencode -t ansi &lt; android.conf
 </code></pre></li>
 </ol>
 <h3 id="android-1">Android</h3>
@@ -220,10 +220,10 @@ service wireguard start
 <p>I observed packets on the FreeBSD&rsquo;s external and WireGuard interfaces while I ran ping from the Android to the FreeBSD&rsquo;s internal address.</p>
 <p>[Android] Using Local Shell on ConnectBot<br>
 I got ping replys successfully.</p>
-<pre><code>ping 192.168.222.1
+<pre tabindex="0"><code>ping 192.168.222.1
 </code></pre><p>[FreeBSD] External Interface<br>
 I saw WireGuard&rsquo;s UDP packets between the Android and FreeBSD&rsquo;s external addresses. Contents of the packets looked encrypted.</p>
-<pre><code>sudo tcpdump -vln -X -i vtnet0
+<pre tabindex="0"><code>sudo tcpdump -vln -X -i vtnet0
 ...
 14:14:55.589817 IP (tos 0x0, ttl 51, id 11367, offset 0, flags [DF], proto UDP (17), length 156)
     yyy.yyy.yyy.yyy.62553 &gt; xxx.xxx.xxx.xxx.51820: UDP, length 128
@@ -251,7 +251,7 @@ I saw WireGuard&rsquo;s UDP packets between the Android and FreeBSD&rsquo;s exte
         0x0090: e372 9a33 9a9f f30f e5bc ee91 .r.3........
 </code></pre><p>[FreeBSD] WireGuard Interface<br>
 I could see plain ping packets between the Android and FreeBSD&rsquo;s internal addresses.</p>
-<pre><code>sudo tcpdump -vln -X -i wg0
+<pre tabindex="0"><code>sudo tcpdump -vln -X -i wg0
 ...
 14:14:54.590165 IP (tos 0x0, ttl 64, id 51967, offset 0, flags [DF], proto ICMP (1), length 84)
     192.168.222.2 &gt; 192.168.222.1: ICMP echo request, id 16, seq 25, length 64
@@ -271,7 +271,7 @@ I could see plain ping packets between the Android and FreeBSD&rsquo;s internal 
         0x0050: 3435 3637 4567
 </code></pre><p>[FreeBSD] WireGuard status<br>
 Peer&rsquo;s endpoint was the one for 4G network.</p>
-<pre><code>wg show
+<pre tabindex="0"><code>wg show
 interface: wg0
   public key: ZnytpGElvUA1yxcdjhIqZ4L3NxZmbMJBdC9IvI5giUA=
   private key: (hidden)
@@ -288,7 +288,7 @@ peer: DFrE6f3TM1mVhFE8WLCgcEjCJHwfcj2T6xUt/Rzk6VY=
 Surprisingly, ping replys continued without break.</p>
 <p>[FreeBSD] External Interface<br>
 Client&rsquo;s IP address was changed to the home router&rsquo;s external address because the Android phone was now connected to the home WiFi and its private address was NATed by the router.</p>
-<pre><code>14:14:57.551820 IP (tos 0x0, ttl 45, id 47299, offset 0, flags [DF], proto UDP (17), length 156)
+<pre tabindex="0"><code>14:14:57.551820 IP (tos 0x0, ttl 45, id 47299, offset 0, flags [DF], proto UDP (17), length 156)
     zzz.zzz.zzz.zzz.60259 &gt; xxx.xxx.xxx.xxx.51820: UDP, length 128
         0x0000: 4500 009c b8c3 4000 2d11 41bb ZZZZ ZZZZ E.....@.-.A.....
         0x0010: XXXX XXXX eb63 ca6c 0088 d099 0400 0000 .....c.l........
@@ -314,7 +314,7 @@ Client&rsquo;s IP address was changed to the home router&rsquo;s external addres
         0x0090: afcf a584 1557 9845 0ce5 d9c0 .....W.E....
 </code></pre><p>[FreeBSD] WireGuard Interface<br>
 On the WireGuard interface, plain ping packets kept flowing as if nothing happened.</p>
-<pre><code>14:14:57.552188 IP (tos 0x0, ttl 64, id 52033, offset 0, flags [DF], proto ICMP (1), length 84)
+<pre tabindex="0"><code>14:14:57.552188 IP (tos 0x0, ttl 64, id 52033, offset 0, flags [DF], proto ICMP (1), length 84)
     192.168.222.2 &gt; 192.168.222.1: ICMP echo request, id 16, seq 28, length 64
         0x0000: 4500 0054 cb41 4000 4001 3212 c0a8 de02 E..T.A@.@.2.....
         0x0010: c0a8 de01 0800 9674 0010 001c 6325 475c .......t....c%G\
@@ -332,7 +332,7 @@ On the WireGuard interface, plain ping packets kept flowing as if nothing happen
         0x0050: 3435 3637 4567
 </code></pre><p>[FreeBSD] WireGuard status<br>
 Peer&rsquo;s endpoint was updated.</p>
-<pre><code>wg show
+<pre tabindex="0"><code>wg show
 interface: wg0
   public key: ZnytpGElvUA1yxcdjhIqZ4L3NxZmbMJBdC9IvI5giUA=
   private key: (hidden)

@@ -19,7 +19,7 @@ Mounting from zfs:zroot/ROOT/default failed with error 6; retrying for 3 more se
   <meta property="og:url" content="https://genneko.github.io/playing-with-bsd/storage/mounting-from-zfs-failed/" />
   <meta property="og:type" content="article" />
   <meta name="twitter:card" content="summary" />
-  <meta name="generator" content="Hugo 0.85.0" />
+  <meta name="generator" content="Hugo 0.88.1" />
 
   <link rel="stylesheet" href="https://genneko.github.io/css/style.css" media="all" />
   <link rel="stylesheet" href="https://genneko.github.io/css/syntax.css" media="all" />
@@ -101,7 +101,7 @@ Mounting from zfs:zroot/ROOT/default failed with error 6; retrying for 3 more se
 </nav>
 </aside>
       <p>Last week, one of my FreeBSD 11.2 servers failed to boot with the following error after freebsd-update.</p>
-<pre><code>Mounting from zfs:zroot/ROOT/default failed with error 6; retrying for 3 more seconds
+<pre tabindex="0"><code>Mounting from zfs:zroot/ROOT/default failed with error 6; retrying for 3 more seconds
 </code></pre><p>It was the first time I encountered this type of error.</p>
 <p>After struggling for some hours, I was able to boot the server by disconnecting an external USB harddrive, which I had prepared as a secondary backup storage.
 But since then, I had been wondering what the root cause was.</p>
@@ -113,7 +113,7 @@ But anyway, here is what I did to fight the problem.</p>
 <li>
 <p>First, I re-connected the USB disk to the server.<br>
 Once it was detected as da4, I ran <code>gpart show</code> and confirmed there was only a single UFS partition on it.</p>
-<pre><code>$ gpart show da4
+<pre tabindex="0"><code>$ gpart show da4
 =&gt;        40  2930277088  da4  GPT  (1.4T)
           40        2008       - free -  (1.0M)
         2048  2930274304    1  freebsd-ufs  (1.4T)
@@ -123,7 +123,7 @@ Once it was detected as da4, I ran <code>gpart show</code> and confirmed there w
 <p>Next I checked if there&rsquo;s any ZFS pool available for import.<br>
 I did this because similar problems were reported on the web and they seem to have something to do with ZFS pools on USB storage.<br>
 Oh wait! Another zroot? Where does it come from?</p>
-<pre><code>$ sudo zpool import
+<pre tabindex="0"><code>$ sudo zpool import
    pool: zroot
      id: 10466099340317815455
   state: FAULTED
@@ -143,12 +143,12 @@ Oh wait! Another zroot? Where does it come from?</p>
 <p>The previous command doesn&rsquo;t tell me where the pool resides.<br>
 I disconnect the USB disk and ran <code>zpool import</code> again.<br>
 This time it didn&rsquo;t show any pool. So the pool must be on the disk (da4).</p>
-<pre><code>$ sudo zpool import
+<pre tabindex="0"><code>$ sudo zpool import
 </code></pre></li>
 <li>
 <p>Then I examined ZFS label information on the disk with <code>zdb -l</code>.<br>
 First, I ran the command on the whole disk (/dev/da4) but no label was found.</p>
-<pre><code>$ sudo zdb -l /dev/da4
+<pre tabindex="0"><code>$ sudo zdb -l /dev/da4
 ------------------------------------
 LABEL 0
 ------------------------------------
@@ -169,7 +169,7 @@ failed to unpack label 3
 <li>
 <p>Next, I ran it on the UFS partition (/dev/da4p1).<br>
 Bingo! It looks like one of the four ZFS labels is still there even after the partition was reformatted in UFS.</p>
-<pre><code>$ sudo zdb -l /dev/da4p1
+<pre tabindex="0"><code>$ sudo zdb -l /dev/da4p1
 ------------------------------------
 LABEL 0
 ------------------------------------
@@ -227,7 +227,7 @@ failed to unpack label 3
 </code></pre></li>
 <li>
 <p>I cleared the label with <code>zpool labelclear</code> on the partition after I took a backup of its contents and confirmed <code>zpool import</code> didn&rsquo;t list the pool any more.</p>
-<pre><code>$ sudo mount /dev/da4p1 /mnt
+<pre tabindex="0"><code>$ sudo mount /dev/da4p1 /mnt
 (backup data in /mnt to somewhere)
 $ sudo umount /mnt
 $ sudo zpool labelclear -f /dev/da4p1
@@ -240,7 +240,7 @@ $ sudo zpool import
 By the way, why did this happen?</p>
 <p>I found my note on how I reused the USB disk as a secondary backup device on the server.<br>
 It goes like this.</p>
-<pre><code># Re-create GPT.
+<pre tabindex="0"><code># Re-create GPT.
 sudo gpart destroy -F da4
 sudo gpart create -s gpt da4
 # Create a single UFS partition.
@@ -253,7 +253,7 @@ The pool might be in a ZFS partition at the end of the disk and the partitions m
 So there&rsquo;s no wonder if one of four ZFS labels were intact after being reused as a UFS partition.</p>
 <h2 id="lesson-learned">Lesson Learned</h2>
 <p>Before reusing a disk on FreeBSD systems, run <code>zpool labelclear</code> on a whole disk and each partition.</p>
-<pre><code>zpool labelclear -f da4
+<pre tabindex="0"><code>zpool labelclear -f da4
 zpool labelclear -f da4p1
 zpool labelclear -f da4p2
 zpool labelclear -f da4p3

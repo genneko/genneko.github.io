@@ -19,7 +19,7 @@ As it was really quick and easy to setup and it has been working completely fine
   <meta property="og:url" content="https://genneko.github.io/playing-with-bsd/networking/freebsd-wireguard-jail/" />
   <meta property="og:type" content="article" />
   <meta name="twitter:card" content="summary" />
-  <meta name="generator" content="Hugo 0.85.0" />
+  <meta name="generator" content="Hugo 0.88.1" />
 
   <link rel="stylesheet" href="https://genneko.github.io/css/style.css" media="all" />
   <link rel="stylesheet" href="https://genneko.github.io/css/syntax.css" media="all" />
@@ -127,13 +127,13 @@ This is also one of the reasons I use bridge/epair this time instead of netgraph
 <p>I have achieved my goal by roughly taking the following steps.</p>
 <h2 id="create-a-jail-filesystem">Create a Jail Filesystem</h2>
 <p>As usual, I created a jail&rsquo;s filesystem from a template ZFS snapshot.</p>
-<pre><code>$ sudo sh -c &quot;zfs send zroot/vm/tmpl/12.1@p3 | zfs receive zroot/vm/wg&quot;
+<pre tabindex="0"><code>$ sudo sh -c &quot;zfs send zroot/vm/tmpl/12.1@p3 | zfs receive zroot/vm/wg&quot;
 </code></pre><p>Refer to <a href="https://genneko.github.io/playing-with-bsd/system/learning-notes-on-jails#creating-a-template">this article</a> for details on how to create a template.</p>
 <h2 id="configure-internal-network">Configure Internal Network</h2>
 <p>I created a bridge (bridge0) for the internal jail network (192.168.20.0/24) and an epair (epair0a/b), attached the &lsquo;b&rsquo; side of the epair to the bridge and assigned an IP address to the bridge.<br>
 Adding the IP address to the bridge0 makes it the third routed interface on the host and the address becomes the default gateway for the jail.</p>
 <p>[/etc/rc.conf]</p>
-<pre><code>cloned_interfaces=&quot;bridge0 epair0&quot;
+<pre tabindex="0"><code>cloned_interfaces=&quot;bridge0 epair0&quot;
 ifconfig_bridge0=&quot;inet 192.168.20.1/24 addm epair0b up&quot;
 ifconfig_epair0b=&quot;up&quot;
 </code></pre><p><img src="https://genneko.github.io/images/freebsd-wireguard-jail/wgjail-topology.png" alt="Network Topology"></p>
@@ -143,7 +143,7 @@ ifconfig_epair0b=&quot;up&quot;
 You can connect the jail to the host directly with the epair by using the following configuration.<br>
 With this config, epair0b becomes the host&rsquo;s third routed interface.</p>
 <p>[/etc/rc.conf]</p>
-<pre><code>cloned_interfaces=&quot;epair0&quot;
+<pre tabindex="0"><code>cloned_interfaces=&quot;epair0&quot;
 ifconfig_epair0b=&quot;inet 192.168.20.1/24&quot;
 </code></pre><p><img src="https://genneko.github.io/images/freebsd-wireguard-jail/wgjail-epair.png" alt="A jail directly connected with an epair"></p>
 <h2 id="adjust-firewall-rules">Adjust Firewall Rules</h2>
@@ -151,24 +151,24 @@ ifconfig_epair0b=&quot;inet 192.168.20.1/24&quot;
 <ul>
 <li>
 <p>Define macros for the internal jail and WireGuard subnets, the WireGuard jail&rsquo;s address and the WireGuard port.</p>
-<pre><code>&gt; jailnet = &quot;192.168.20.0/24&quot;
+<pre tabindex="0"><code>&gt; jailnet = &quot;192.168.20.0/24&quot;
 &gt; wgnet = &quot;192.168.250.0/24&quot;
 &gt; wg_ipv4 = &quot;192.168.20.2&quot;
 &gt; wg_port = &quot;51820&quot;
 </code></pre></li>
 <li>
 <p>Add outgoing packets from the jail and the WireGuard subnet to the NAT target.</p>
-<pre><code>&lt; nat on $ext_if inet from $localnet to any -&gt; ($ext_if)
+<pre tabindex="0"><code>&lt; nat on $ext_if inet from $localnet to any -&gt; ($ext_if)
 ---
 &gt; nat on $ext_if inet from { $localnet $jailnet $wgnet } to any -&gt; ($ext_if)
 </code></pre></li>
 <li>
 <p>Add a rdr (port-forwarding) rule to redirect incoming UDP packets destined to the port 51820 of the host&rsquo;s public IP address to the jail.</p>
-<pre><code>&gt; rdr pass log on { $ext_if $int_if } inet proto udp to ($ext_if) port $wg_port -&gt; $wg_ipv4
+<pre tabindex="0"><code>&gt; rdr pass log on { $ext_if $int_if } inet proto udp to ($ext_if) port $wg_port -&gt; $wg_ipv4
 </code></pre></li>
 <li>
 <p>Allow incoming packets from the jail and the WireGuard subnet.</p>
-<pre><code>&gt; pass in from { $jailnet $wgnet }
+<pre tabindex="0"><code>&gt; pass in from { $jailnet $wgnet }
 </code></pre></li>
 </ul>
 <h2 id="configure-the-jail">Configure the Jail</h2>
@@ -176,13 +176,13 @@ ifconfig_epair0b=&quot;inet 192.168.20.1/24&quot;
 <ul>
 <li>
 <p>Edit or create /etc/devfs.rules to add a devfs ruleset for the jail. This is required for the jail to create WireGuard interfaces.</p>
-<pre><code>[devfsrules_bpfjail=10]
+<pre tabindex="0"><code>[devfsrules_bpfjail=10]
 add include $devfsrules_jail
 add path 'bpf*' unhide
 </code></pre></li>
 <li>
 <p>Edit or create /etc/jail.conf to add basic configurations for the WireGuard jail &ldquo;wg&rdquo;.</p>
-<pre><code>exec.start = &quot;/bin/sh /etc/rc&quot;;
+<pre tabindex="0"><code>exec.start = &quot;/bin/sh /etc/rc&quot;;
 exec.stop = &quot;/bin/sh /etc/rc.shutdown&quot;;
 exec.clean;
 mount.devfs;
@@ -210,29 +210,29 @@ wg {
 </code></pre></li>
 <li>
 <p>Edit /etc/rc.conf to enable the jail on system startup.</p>
-<pre><code>jail_enable=&quot;YES&quot;
+<pre tabindex="0"><code>jail_enable=&quot;YES&quot;
 jail_list=&quot;wg&quot;
 </code></pre></li>
 </ul>
 <h3 id="on-the-jails-filesystem">On the Jail&rsquo;s Filesystem</h3>
 <ul>
 <li>Pre-edit the jail&rsquo;s /etc/rc.conf (/vm/wg/etc/rc.conf on the host) to configure its IP address/default gateway address and enable packet forwarding (router) function.
-<pre><code>ifconfig_epair0a=&quot;192.168.20.2/24&quot;
+<pre tabindex="0"><code>ifconfig_epair0a=&quot;192.168.20.2/24&quot;
 defaultrouter=&quot;192.168.20.1&quot;
 gateway_enable=&quot;YES&quot;
 </code></pre></li>
 </ul>
 <h2 id="apply-configurations-and-start-the-jail">Apply Configurations and Start the Jail</h2>
 <p>Once the jail configurations on the host and the jail&rsquo;s filesystem were finished, I ran the following commands to actually build the internal network, reload the firewall rules and start the jail.</p>
-<pre><code>$ sudo service netif cloneup
+<pre tabindex="0"><code>$ sudo service netif cloneup
 $ sudo service pf reload
 $ sudo service jail start
 </code></pre><h2 id="install-and-configure-wireguard">Install and Configure WireGuard</h2>
 <h3 id="on-the-jail">On the Jail</h3>
 <p>Next I used <a href="https://www.freebsd.org/cgi/man.cgi?query=pkg(8)">pkg</a>&rsquo;s -j option to install WireGuard and libqrencode on the jail. The latter will be used for generating a QR code to pass WireGuard configuration to Android device.</p>
-<pre><code>$ sudo pkg -j wg install wireguard libqrencode
+<pre tabindex="0"><code>$ sudo pkg -j wg install wireguard libqrencode
 </code></pre><p>Then, finally I logged in to the jail and configured WireGuard. See <a href="https://genneko.github.io/playing-with-bsd/networking/freebsd-wireguard-android/#configure-wireguard">this article</a> for more details.</p>
-<pre><code>$ sudo jexec -l wg
+<pre tabindex="0"><code>$ sudo jexec -l wg
 &lt;root@wg&gt;# cd /usr/local/etc/wireguard/
 &lt;root@wg&gt;# wg genkey | tee wg.private | wg pubkey &gt; wg.public
 &lt;root@wg&gt;# wg genkey | tee android.private | wg pubkey &gt; android.public
@@ -241,7 +241,7 @@ $ sudo service jail start
 &lt;root@wg&gt;# sysrc wireguard_enable=&quot;YES&quot;
 &lt;root@wg&gt;# sysrc wireguard_interfaces=&quot;wg0&quot;
 </code></pre><p>[wg0.conf]</p>
-<pre><code>[Interface]
+<pre tabindex="0"><code>[Interface]
 Address = 192.168.250.1/32
 PrivateKey = &lt;content of wg.private&gt;
 ListenPort = 51820
@@ -250,7 +250,7 @@ ListenPort = 51820
 PublicKey = &lt;content of android.public&gt;
 AllowedIPs = 192.168.250.2/32
 </code></pre><p>[android.conf]</p>
-<pre><code>[Interface]
+<pre tabindex="0"><code>[Interface]
 Address = 192.168.250.2/32
 PrivateKey = &lt;content of android.private&gt;
 DNS = 192.168.10.1
@@ -263,7 +263,7 @@ Endpoint = wg.example.com:51820
 <p>Install WireGuard App from Google Play.<br>
 <a href="https://play.google.com/store/apps/details?id=com.wireguard.android">https://play.google.com/store/apps/details?id=com.wireguard.android</a></p>
 <p>Then configure Android app using a QR code generated by qrencode. See <a href="https://genneko.github.io/playing-with-bsd/networking/freebsd-wireguard-android/#android-1">this article</a> for more details.</p>
-<pre><code>&lt;root@wg&gt;# qrencode -t ansi &lt; android.conf
+<pre tabindex="0"><code>&lt;root@wg&gt;# qrencode -t ansi &lt; android.conf
 </code></pre><h2 id="references">References</h2>
 <ul>
 <li>
