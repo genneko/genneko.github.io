@@ -3,10 +3,10 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://genneko.github.io/tags/freebsd/</loc>
-    <lastmod>2021-10-26T17:42:39+09:00</lastmod>
+    <lastmod>2022-03-01T22:01:00+09:00</lastmod>
   </url><url>
     <loc>https://genneko.github.io/</loc>
-    <lastmod>2021-10-26T17:42:39+09:00</lastmod>
+    <lastmod>2022-03-01T22:01:00+09:00</lastmod>
   </url><url>
     <loc>https://genneko.github.io/tags/jail/</loc>
     <lastmod>2020-04-29T23:53:00+09:00</lastmod>
@@ -15,7 +15,7 @@
     <lastmod>2020-04-29T23:53:00+09:00</lastmod>
   </url><url>
     <loc>https://genneko.github.io/tags/</loc>
-    <lastmod>2021-10-26T17:42:39+09:00</lastmod>
+    <lastmod>2022-03-01T22:01:00+09:00</lastmod>
   </url><url>
     <loc>https://genneko.github.io/playing-with-bsd/networking/freebsd-vlan/</loc>
     <lastmod>2020-04-29T23:53:00+09:00</lastmod>
@@ -33,7 +33,7 @@
     <lastmod>2020-04-26T22:46:00+09:00</lastmod>
   </url><url>
     <loc>https://genneko.github.io/tags/application/</loc>
-    <lastmod>2021-10-26T17:42:39+09:00</lastmod>
+    <lastmod>2022-03-01T22:01:00+09:00</lastmod>
   </url><url>
     <loc>https://genneko.github.io/playing-with-bsd/application/running-xapps-on-a-jail/</loc>
     <lastmod>2020-04-11T17:06:00+09:00</lastmod>
@@ -45,13 +45,13 @@
     <lastmod>2020-05-24T18:06:00+09:00</lastmod>
   </url><url>
     <loc>https://genneko.github.io/tags/font/</loc>
-    <lastmod>2021-10-26T17:42:39+09:00</lastmod>
+    <lastmod>2022-03-01T22:01:00+09:00</lastmod>
   </url><url>
     <loc>https://genneko.github.io/playing-with-bsd/application/howto-use-joplin-on-freebsd/</loc>
-    <lastmod>2021-10-26T17:42:39+09:00</lastmod>
+    <lastmod>2022-03-01T22:01:00+09:00</lastmod>
   </url><url>
     <loc>https://genneko.github.io/tags/installation/</loc>
-    <lastmod>2021-10-26T17:42:39+09:00</lastmod>
+    <lastmod>2022-03-01T22:01:00+09:00</lastmod>
   </url><url>
     <loc>https://genneko.github.io/playing-with-bsd/storage/expanding-zfs-on-geli/</loc>
     <lastmod>2019-11-17T19:37:00+09:00</lastmod>

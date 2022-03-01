@@ -19,7 +19,7 @@ Originally it had two 500GB disks, but now it has a 500GB and a 1TB ones …">
   <meta property="og:url" content="https://genneko.github.io/playing-with-bsd/storage/growing-a-zfs-mirror/" />
   <meta property="og:type" content="article" />
   <meta name="twitter:card" content="summary" />
-  <meta name="generator" content="Hugo 0.88.1" />
+  <meta name="generator" content="Hugo 0.92.2" />
 
   <link rel="stylesheet" href="https://genneko.github.io/css/style.css" media="all" />
   <link rel="stylesheet" href="https://genneko.github.io/css/syntax.css" media="all" />
@@ -124,9 +124,9 @@ config:
 
 	NAME          STATE     READ WRITE CKSUM
 	zroot         ONLINE       0     0     0
-   mirror-0    ONLINE       0     0     0
-     gpt/zfs0  ONLINE       0     0     0
-     gpt/zfs1  ONLINE       0     0     0
+	  mirror-0    ONLINE       0     0     0
+	    gpt/zfs0  ONLINE       0     0     0
+	    gpt/zfs1  ONLINE       0     0     0
 
 errors: No known data errors
 
@@ -201,9 +201,9 @@ config:
 
 	NAME                     STATE     READ WRITE CKSUM
 	zroot                    DEGRADED     0     0     0
-   mirror-0               DEGRADED     0     0     0
-     9104698428201665404  UNAVAIL      0     0     0  was /dev/gpt/zfs0
-     gpt/zfs1             ONLINE       0     0     0
+	  mirror-0               DEGRADED     0     0     0
+	    9104698428201665404  UNAVAIL      0     0     0  was /dev/gpt/zfs0
+	    gpt/zfs1             ONLINE       0     0     0
 
 errors: No known data errors
 
@@ -233,9 +233,9 @@ config:
 
 	NAME          STATE     READ WRITE CKSUM
 	zroot         ONLINE       0     0     0
-   mirror-0    ONLINE       0     0     0
-     gpt/zfs0  ONLINE       0     0     0
-     gpt/zfs1  ONLINE       0     0     0
+	  mirror-0    ONLINE       0     0     0
+	    gpt/zfs0  ONLINE       0     0     0
+	    gpt/zfs1  ONLINE       0     0     0
 
 errors: No known data errors
 </code></pre></li>

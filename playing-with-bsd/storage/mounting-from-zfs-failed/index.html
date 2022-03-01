@@ -19,7 +19,7 @@ Mounting from zfs:zroot/ROOT/default failed with error 6; retrying for 3 more se
   <meta property="og:url" content="https://genneko.github.io/playing-with-bsd/storage/mounting-from-zfs-failed/" />
   <meta property="og:type" content="article" />
   <meta name="twitter:card" content="summary" />
-  <meta name="generator" content="Hugo 0.88.1" />
+  <meta name="generator" content="Hugo 0.92.2" />
 
   <link rel="stylesheet" href="https://genneko.github.io/css/style.css" media="all" />
   <link rel="stylesheet" href="https://genneko.github.io/css/syntax.css" media="all" />
@@ -135,9 +135,9 @@ Oh wait! Another zroot? Where does it come from?</p>
  config:
 
 	zroot                     FAULTED  corrupted data
-      mirror-0                DEGRADED
-        10037725760255352733  UNAVAIL  cannot open
-        15874716908755608597  UNAVAIL  corrupted data
+	  mirror-0                DEGRADED
+	    10037725760255352733  UNAVAIL  cannot open
+	    15874716908755608597  UNAVAIL  corrupted data
 </code></pre></li>
 <li>
 <p>The previous command doesn&rsquo;t tell me where the pool resides.<br>

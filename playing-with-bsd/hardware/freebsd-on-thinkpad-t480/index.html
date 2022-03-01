@@ -22,7 +22,7 @@ Maybe it&rsquo;s partly because I&rsquo;m …">
   <meta property="og:url" content="https://genneko.github.io/playing-with-bsd/hardware/freebsd-on-thinkpad-t480/" />
   <meta property="og:type" content="article" />
   <meta name="twitter:card" content="summary" />
-  <meta name="generator" content="Hugo 0.88.1" />
+  <meta name="generator" content="Hugo 0.92.2" />
 
   <link rel="stylesheet" href="https://genneko.github.io/css/style.css" media="all" />
   <link rel="stylesheet" href="https://genneko.github.io/css/syntax.css" media="all" />
@@ -352,9 +352,9 @@ sudo service slim start
 <li>As I use a wireless mouse (Logicool&rsquo;s Unifying one) most of the time, I disabled touchpad and enabled &ldquo;Virtual Scrolling&rdquo; with the TrackPoint and the middle button instead.<br>
 [/boot/loader.conf]
 <pre tabindex="0"><code>hw.psm.synaptics_support=&quot;1&quot;
-</code></pre><p>[/etc/sysctl.conf]</p>
+</code></pre>[/etc/sysctl.conf]
 <pre tabindex="0"><code>hw.psm.synaptics.min_pressure=220
-</code></pre><p>[/etc/rc.conf]</p>
+</code></pre>[/etc/rc.conf]
 <pre tabindex="0"><code>moused_flags=&quot;-V&quot;
 </code></pre></li>
 </ul>
@@ -412,7 +412,7 @@ polkit.addRule(function (action, subject) {
 After struggling for a while, I found the following configurations with the XFCE4&rsquo;s brightness adjustment disabled allow me to automatically adjust brightness upon change of the power source (AC or battery).<br>
 [/boot/loader.conf]
 <pre tabindex="0"><code>acpi_video_load=&quot;YES&quot;
-</code></pre><p>[/etc/sysctl.conf]</p>
+</code></pre>[/etc/sysctl.conf]
 <pre tabindex="0"><code>hw.acpi.video.lcd0.economy=30
 hw.acpi.video.lcd0.fullpower=60
 </code></pre></li>
